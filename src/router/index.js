@@ -1,12 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-const Home = () => import('@/router/Home/index'); // 主页 首屏
-const User = () => import('@/router/User/index'); // 个人中心
-const userInfor = () => import('@/router/User/infor'); // 个人信息
-const userOrder = () => import('@/router/User/order'); // 订单页面
-const log = () => import('@/router/Log/index'); // 初始化控制台页面
-
 Vue.use(Router);
 
 const routes = [
@@ -14,29 +8,24 @@ const routes = [
     path: '/index',
     alias: ['/home', '/'],
     name: 'home',
-    component: Home,
+    component: () => import('@/router/Home/index'), // 主页 首屏
     meta: { title: '车主入口' },
   }, {
     path: '/user/index',
     alias: ['/user/', '/user'],
     name: 'user',
-    component: User,
+    component: () => import('@/router/User/index'), // 个人中心
     meta: { title: '个人中心' },
   }, {
     path: '/user/infor',
     name: 'userInfor',
-    component: userInfor,
+    component: () => import('@/router/User/infor'), // 个人信息
     meta: { title: '个人信息' },
   }, {
     path: '/user/order',
     name: 'userOrder',
-    component: userOrder,
+    component: () => import('@/router/User/order'), // 订单页面
     meta: { title: '订单信息' },
-  }, {
-    path: '/log',
-    name: 'log',
-    component: log,
-    meta: { title: '控制台页面' },
   },
 ];
 
