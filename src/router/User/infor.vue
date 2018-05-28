@@ -93,12 +93,11 @@ export default {
 // 头部导航栏
 .user-infor .mint-header {
   background: #d00;
-  margin-bottom: 15px;
 }
 
 // 主要内容
 .user-infor .infor-main {
-  margin-bottom: 15px;
+  margin-top: 15px;
   padding: 0px 15px;
   border-top: 1px solid #ddd;
   border-top: 1px solid #ddd;
