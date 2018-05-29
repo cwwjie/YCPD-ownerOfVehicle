@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}wx20/index.html`)"
+          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}/wx20/index.html`)"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">

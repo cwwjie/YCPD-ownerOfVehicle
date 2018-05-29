@@ -16,7 +16,7 @@
     <div  
       v-if="!loginIofor"
       class="home-login" 
-      v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}wx20/index.html`)"
+      v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}/wx20/index.html`)"
     >
       <div class="login-content">
         <div class="login-img">
@@ -267,7 +267,7 @@ export default {
         this.$router.push('/user');
       }
     },
-    
+
     jumpToUrl(url) { // 页面的跳转 根据 url 进行跳转
       window.location.href = url;
     },
