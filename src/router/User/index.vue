@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}/wx/Transfer.aspx`)"
+          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}wx20/index.html`)"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
@@ -314,14 +314,6 @@ export default {
 
     callService() { // 呼叫客服
       window.location.href = 'tel://4001106558';
-    },
-
-    jumpToRegister() { // 跳转注册
-      window.location.href = `${
-          RedirectRUL.host
-        }/wx/selectmobile.aspx?history=${
-          RedirectRUL.host
-        }/wx/Transfer.aspx`;
     },
 
     jumpToOrder() { // 跳转客服
