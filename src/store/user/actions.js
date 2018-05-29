@@ -53,7 +53,30 @@ let actions = {
             })
             .catch(error => reject(`向服务器获用户信息的头像发生错误！ 原因:${error}`));
         });
-    }
+    },
+    
+    /**
+     * 获取 用于交换 openid 的 code 方法
+     * @param {string} param code
+     */
+    getGetOpenidCode: ({commit}, param) => {
+        return new Promise((resolve, reject) => {
+            fetch(`${RequestedURL.getGetOpenidCode}?action=GetOpenID&code=${param}`, {
+                'method': 'GET',
+                'contentType': "application/json; charset=utf-8"
+            }).then(
+                response => response.json(),
+                error => error
+            ).then(val => {
+                if (val && val.OpenID) {
+                    resolve(val.OpenID);
+                } else {
+                    reject(`向服务器获用于交换 openid 的 code 有错误！ 原因:${JSON.stringify(val)}`);
+                }
+            })
+            .catch(error => reject(`向服务器获用于交换 openid 的 code 发生错误！ 原因:${error}`));
+        });
+    },
 }
 
 export default actions

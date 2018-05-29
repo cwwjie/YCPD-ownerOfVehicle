@@ -233,10 +233,10 @@ export default {
       pictures: { // 图片
         logo: require('./../../assets/YCPD.png'),
         fourPlate: [ // 四板块入口 一个小时强制刷新一次
-          `http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/fourPlate1.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
-          `http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/fourPlate2.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
-          `http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/fourPlate3.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
-          `http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/fourPlate4.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
+          `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/fourPlate1.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
+          `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/fourPlate2.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
+          `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/fourPlate3.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
+          `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/fourPlate4.png?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
         ]
       },
 
@@ -248,7 +248,7 @@ export default {
 
       swiperlist: [{ // 轮播图 每隔一个小时强制刷新一次
         alt: "养车频道-banner",
-        src: `http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在七牛云储存里, 方便替换
+        src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
       }],
 
       redirectRUL: RedirectRUL, // 重定向跳转链接

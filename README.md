@@ -35,13 +35,15 @@ npm run build
 
 ```
 
-### 如何打包上传生产环境
+### 打包 上传 生产
+
 1. 项目打包: npm run build
 2. 打包转换为aspx文件: node toAspx
 3. 覆盖到 http://svn.hotgz.com:3390/svn/ABY/UI/WeixinWeb/wx
 4. SVN 提交
 
-### 本地开发环境 如何进行微信端测试
+### 本地 开发 测试
+
 1. 项目打包: npm run builddev
 2. 打包转换为aspx文件: node toAspx
 3. 覆盖到 http://svn.hotgz.com:3390/svn/ABY/UI/WeixinWeb/wx
@@ -50,15 +52,15 @@ npm run build
     - Web.config
     - https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
 6. 使用微信Web开发工具调试
-7. 测试 openid ozkjr1ARY97XNMVZQH2zWRKPzYm4
+7. 测试 openid 黄测试(ozkjr1ARY97XNMVZQH2zWRKPzYm4) 曾测试(oI0FV0pK5sqCnE_LBBXb6sxdROwg)
 
-### 如何上传到远程测试环境
+### 上传 测试
+
 1. 项目打包: npm run builddev
-2. 打包转换为aspx文件: node toAspx
-3. 远程桌面: mstsc
-4. 将dist里面 ownerEntrance.aspx ownerEntrance 覆盖到 远程桌面 C:\Web\YCPD_WX\wx 下
-5. 打开连接: http://shzj.demo.hotgz.com/wx/ownerEntrance.aspx?openid=oI0FV0pK5sqCnE_LBBXb6sxdROwg
-6. 完成
+2. 远程桌面: mstsc
+3. 将dist里面 覆盖到 远程桌面 C:\Web\YCPD_WX\wx20 下
+4. 打开微信开发工具: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx98bac09017cef825&redirect_uri=http%3A%2F%2Fshzj.demo.hotgz.com%2Fwx20%2Findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
+5. 完成
 
 ## License
 MIT

@@ -102,7 +102,7 @@
 
       <!-- 弧 以及 深圳城市剪影 -->
       <div class="user-header-arc">
-        <img class="user-header-sketch" :src="pictures.citySketch" />
+        <img class="user-header-sketch" src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/user/sketch-picture.png" />
       </div>
     </div>
 

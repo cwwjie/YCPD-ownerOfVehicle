@@ -5,22 +5,19 @@
 <script>
 
 import loadPageVar from './utils/loadPageVar.js';
-let loadPageOpenid = loadPageVar('openid'); // url 解析 openid
 
 export default {
   name: 'Index',
 
-  data () {
-    return {
-      openid: loadPageOpenid ? loadPageOpenid : false // openid 不存在为 false
-    }
-  },
-
   // 仅执行一次
   mounted() {
+    document.getElementById('backups').innerHTML = ''; // 当 Vue 成功加载, 删除备份策略
+    
     if (process.env.NODE_ENV === 'development') { // 测试环境
+
       this.initDevelopment();
     } else { // 生产环境
+    
       this.initProduction();
     }
   },
@@ -31,21 +28,39 @@ export default {
      */
     initDevelopment() {
       const _this = this;
+      let loadPageOpenid = loadPageVar('openid');      // url 解析 openid
+      let loadPageCode = loadPageVar('code');          // url 解析 code
       let testOpenid = 'oI0FV0pK5sqCnE_LBBXb6sxdROwg'; //测试 openid
 
-      if (this.openid) { // 优先使用 解析openid
-        testOpenid = this.openid;
+      let initOpenid = openid => { // 获取 用户信息
+
+        _this.$store.dispatch('getUserInfor', openid)
+        .then(val => {
+
+          console.log('成功通过 openid 获取用户信息: ', val);
+          _this.initHeadImage(openid); // 获取 用户头像
+        }, 
+          error => console.error(error)
+        );
       }
 
-      this.$store.commit('initOpenid', testOpenid); // 存储到vuex
-      // 可注释掉
-      this.$store.dispatch('getUserInfor', testOpenid) // 通过 openid 获取 用户信息
-      .then(val => {
-        console.log('成功通过 openid 获取用户信息: ', val);
-        _this.initHeadImage(testOpenid); // 通过 openid 获取 用户头像
-      }, error => {
-        console.error(error);
-      });
+      if (loadPageCode) { // code 存在
+        this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid 
+        .then(openid => {
+
+          _this.$store.commit('initOpenid', openid); // 存储 vuex
+          initOpenid(openid);
+        }, error => {
+          console.error(error);
+        });
+      } else {
+        if (loadPageOpenid) { // 解析openid
+          testOpenid = loadPageOpenid; // 优先
+        }
+        
+        this.$store.commit('initOpenid', testOpenid); // 存储 vuex
+        initOpenid(testOpenid);
+      }
     },
 
     /**
@@ -53,31 +68,38 @@ export default {
      */
     initProduction() {
       const _this = this;
-      const openid = this.openid;
+      let loadPageCode = loadPageVar('code');     // url 解析 code
 
-      if (openid) { // openid 存在
+      if (loadPageCode) { // code 存在 
 
-        this.$store.commit('initOpenid', openid);    // 存储到vuex
-        this.$store.dispatch('getUserInfor', openid) // 通过 openid 获取 用户信息
-        .then(() => { // 成功后再请求 用户头像
-            _this.initHeadImage(openid);
+        this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid
+        .then(openid => {
 
-          },error => console.error(error) // 失败则打印错误信息
-        );
-      } else {  // openid 不存在
-        console.error('无法获取 openid');
+          _this.$store.commit('initOpenid', openid);     // 存储 vuex
+          _this.$store.dispatch('getUserInfor', openid)  // 获取 用户信息
+          .then(() => { // 成功
+            _this.initHeadImage(openid); // 用户头像
+
+            }, error => console.error(error) // 失败
+          );
+        }, error => {
+          console.error(error);
+        });
+
+      } else {  // code 不存在
+        console.error('无法获取 code 以及 对应用户的openid');
       }
     },
 
     /**
      * 获取 用户 头像
-     * @param {string} openid 区分测试和生产环境 所以 传值
+     * @param {string} openid 传值 区分 测试 生产
      */
     initHeadImage(openid) {
       this.$store.dispatch('getHeadImageUrl', openid) // 通过 openid 获取 用户头像
       .then(
         {},                           // 成功 不操作
-        error => console.error(error) // 失败 打印错误信息
+        error => console.error('获取 用户 头像失败, 原因:' + error) // 失败 打印错误信息
       );
     }
   },
