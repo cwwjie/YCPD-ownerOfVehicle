@@ -25,7 +25,7 @@ let RequestedURL = {
      * @param {methods} GET
      * @param {contentType} text application/json; charset=utf-8
      */
-    getGetOpenidCode: `${window.location.host}/wx/Handler.ashx`,
+    getGetOpenidCode: `http://${window.location.host}/wx/Handler.ashx`,
 }
 
 /**

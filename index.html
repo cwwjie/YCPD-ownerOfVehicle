@@ -19,6 +19,7 @@
 
     <!-- 避免 Vue 加载不出来的保底策略 -->
     <div id="backups" class="backups">
+      <div id="backupMark" class="backups-mark"  onclick="this.remove()"><span>正在加载...</span></div>
       <div class="home-swiper">
         <img alt="养车频道-banner" src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg">
       </div>
@@ -211,6 +212,13 @@
       </div>
     </div>
 
+    <script>
+      window.vueLoadTime = setTimeout(function() { // 10秒后Vue仍加载不出来
+        alert('非常抱歉, 获取您的用户信息失败, 请检查你的网络或者联系客服.');
+        document.getElementById('backupMark').remove();
+      }, 10000);
+    </script>
+
     <style>
       .main-flex-start {
         display: -webkit-box;
@@ -225,7 +233,10 @@
         /* 新版本语法: Opera 12.1, Firefox 22+ */
         justify-content: flex-start;
       }
-      html,
+      html {
+        margin: 0px;
+        padding: 0px;
+      }
       body {
         margin: 0px;
         padding: 0px;
@@ -234,6 +245,27 @@
       }
       .backups {
         background: #efefef;
+      }
+      .backups .backups-mark {
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.48);
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .backups .backups-mark span {
+        font-size: 24px;
+        display: block;
+        color: #fff;
       }
       .backups .home-swiper {
         border-bottom: 1px solid #ddd;

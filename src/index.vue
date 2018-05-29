@@ -11,7 +11,7 @@ export default {
 
   // 仅执行一次
   mounted() {
-    document.getElementById('backups').innerHTML = ''; // 当 Vue 成功加载, 删除备份策略
+    this.destroyBackups(); // 当 Vue 成功加载, 删除备份策略
     
     if (process.env.NODE_ENV === 'development') { // 测试环境
 
@@ -24,42 +24,63 @@ export default {
 
   methods: {
     /**
+     * 删除备份策略的方法
+     */
+    destroyBackups() {
+      document.getElementById('backups').innerHTML = '';
+      window.clearInterval(window.vueLoadTime);
+    },
+
+    /**
      * 测试环境 模拟请求
      */
     initDevelopment() {
       const _this = this;
       let loadPageOpenid = loadPageVar('openid');      // url 解析 openid
       let loadPageCode = loadPageVar('code');          // url 解析 code
-      let testOpenid = 'oI0FV0pK5sqCnE_LBBXb6sxdROwg'; //测试 openid
+      // let testOpenid = 'oI0FV0pK5sqCnE_LBBXb6sxdROwg'; // 测试 openid
 
-      let initOpenid = openid => { // 获取 用户信息
+      /**
+       * 获取 用户信息
+       */
+      let initOpenid = openid => {
 
         _this.$store.dispatch('getUserInfor', openid)
         .then(val => {
 
-          console.log('成功通过 openid 获取用户信息: ', val);
+          _this.saveOpenid(openid);    // 存储
+          _this.$store.commit('initOpenid', openid); // 存储 vuex
           _this.initHeadImage(openid); // 获取 用户头像
         }, 
           error => console.error(error)
         );
       }
 
-      if (loadPageCode) { // code 存在
-        this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid 
-        .then(openid => {
-
-          _this.$store.commit('initOpenid', openid); // 存储 vuex
-          initOpenid(openid);
-        }, error => {
-          console.error(error);
-        });
-      } else {
-        if (loadPageOpenid) { // 解析openid
-          testOpenid = loadPageOpenid; // 优先
-        }
+      if (loadPageOpenid) { // 解析 openid 存在 (权限最大)
         
-        this.$store.commit('initOpenid', testOpenid); // 存储 vuex
-        initOpenid(testOpenid);
+        initOpenid(loadPageOpenid);
+      } else { // 无解析 openid
+        
+        if (window.localStorage && window.localStorage.openid) { // 本地openid
+
+          initOpenid(window.localStorage.openid);
+        } else { // 无本地openid
+
+          if (loadPageCode) { // code 解析存在
+
+            this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid 
+            .then(openid => {
+
+              initOpenid(openid);
+            }, error => {
+              console.error(error);
+            });
+
+          } else { // code 解析不存在
+
+            console.error('无法获取 code 以及 对应用户的openid');
+          }          
+        }        
       }
     },
 
@@ -69,25 +90,51 @@ export default {
     initProduction() {
       const _this = this;
       let loadPageCode = loadPageVar('code');     // url 解析 code
+      /**
+       * 获取 用户信息
+       */
+      let initOpenid = openid => {
 
-      if (loadPageCode) { // code 存在 
+        _this.$store.dispatch('getUserInfor', openid)
+        .then(val => {
 
-        this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid
-        .then(openid => {
+          _this.saveOpenid(openid);    // 存储
+          _this.$store.commit('initOpenid', openid); // 存储 vuex
+          _this.initHeadImage(openid); // 获取 用户头像
+        }, 
+          error => console.error(error)
+        );
+      }
 
-          _this.$store.commit('initOpenid', openid);     // 存储 vuex
-          _this.$store.dispatch('getUserInfor', openid)  // 获取 用户信息
-          .then(() => { // 成功
-            _this.initHeadImage(openid); // 用户头像
+      if (window.localStorage && window.localStorage.openid) { // 本地openid
 
-            }, error => console.error(error) // 失败
-          );
-        }, error => {
-          console.error(error);
-        });
+        initOpenid(window.localStorage.openid);
+      } else {
 
-      } else {  // code 不存在
-        console.error('无法获取 code 以及 对应用户的openid');
+        if (loadPageCode) { // code 存在 
+
+          this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid
+          .then(openid => {
+
+            initOpenid(openid);
+          }, error => {
+            console.error(error);
+          });
+
+        } else {  // code 不存在
+        
+          console.error('无法获取 code 以及 对应用户的openid');
+        }
+      }
+    },
+
+    /**
+     * 本地存储 openid
+     * @param {string} openid openid
+     */
+    saveOpenid(openid) {
+      if (window.localStorage) { // 兼容
+        window.localStorage.setItem('openid', openid);
       }
     },
 
