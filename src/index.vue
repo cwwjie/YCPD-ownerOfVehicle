@@ -47,9 +47,8 @@ export default {
 
         _this.$store.dispatch('getUserInfor', openid)
         .then(val => {
-
+          
           _this.saveOpenid(openid);    // 存储
-          _this.$store.commit('initOpenid', openid); // 存储 vuex
           _this.initHeadImage(openid); // 获取 用户头像
         }, 
           error => console.error(error)
@@ -57,12 +56,15 @@ export default {
       }
 
       if (loadPageOpenid) { // 解析 openid 存在 (权限最大)
-        
+
+        this.$store.commit('initOpenid', loadPageOpenid); // 存储 vuex  因为getuserinfo 会失败, 可能不会被 commit 进去 所以在此初始化 openid
         initOpenid(loadPageOpenid);
       } else { // 无解析 openid
         
         if (window.localStorage && window.localStorage.openid) { // 本地openid
 
+          // localStorage 的 openid 是正确可用
+          _this.$store.commit('initOpenid', window.localStorage.openid); // 存储 vuex
           initOpenid(window.localStorage.openid);
         } else { // 无本地openid
 
@@ -71,6 +73,7 @@ export default {
             this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid 
             .then(openid => {
 
+              _this.saveOpenid(openid);    // 存储
               initOpenid(openid);
             }, error => {
               console.error(error);
@@ -99,7 +102,6 @@ export default {
         .then(val => {
 
           _this.saveOpenid(openid);    // 存储
-          _this.$store.commit('initOpenid', openid); // 存储 vuex
           _this.initHeadImage(openid); // 获取 用户头像
         }, 
           error => console.error(error)
@@ -108,6 +110,7 @@ export default {
 
       if (window.localStorage && window.localStorage.openid) { // 本地openid
 
+        _this.$store.commit('initOpenid', window.localStorage.openid); // 存储 vuex
         initOpenid(window.localStorage.openid);
       } else {
 
@@ -116,6 +119,7 @@ export default {
           this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid
           .then(openid => {
 
+            _this.saveOpenid(openid);    // 存储
             initOpenid(openid);
           }, error => {
             console.error(error);
@@ -129,10 +133,11 @@ export default {
     },
 
     /**
-     * 本地存储 openid
+     * 本地存储 openid vuex
      * @param {string} openid openid
      */
     saveOpenid(openid) {
+      this.$store.commit('initOpenid', openid); // 存储 vuex
       if (window.localStorage) { // 兼容
         window.localStorage.setItem('openid', openid);
       }

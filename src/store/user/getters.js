@@ -12,7 +12,7 @@ export default {
         if (states.info) { // 已登录
             loginIofor = states.info;
 
-            if (states.headImageUrl) { // 并且成功获取到头像
+            if (states.headImageUrl) { // 头像
                 loginIofor.headImageUrl = states.headImageUrl;
             } else {
                 loginIofor.headImageUrl = false;

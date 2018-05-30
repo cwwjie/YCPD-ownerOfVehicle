@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}/wx20/index.html`)"
+          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?openid=${openid}&history=${redirectRUL.host}/wx20/index.html`)"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
@@ -285,6 +285,12 @@ export default {
       return this.$store.getters.getLoginIofor
     },
 
+    openid() {
+      // 为什么不能通过 getters getLoginIofor 带出 openid?
+      // 因为 即使未登录 openid 也是存在的 
+      return this.$store.state.user.openid
+    },
+
     userRelated() { // 用户积分 优惠券 会员
       let VIP = {
         '1': '黄金会员',
@@ -295,7 +301,6 @@ export default {
 
       let related = {
         points: this.$store.state.user.points, // 用户积分
-        coupons: this.$store.state.user.coupons.count, // 优惠券数量
         VIP: { // VIP会员
           grade: this.$store.state.user.VIP.grade,
           name: VIP[this.$store.state.user.VIP.grade]

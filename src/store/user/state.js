@@ -10,10 +10,6 @@ let state = {
 
     points: 0, // 用户积分
 
-    coupons: { // 优惠券
-        count: 0,
-    },
-
     VIP: { // VIP会员
         grade: 0,
     },
@@ -43,9 +39,6 @@ if (process.env.NODE_ENV === 'development') {
     // }
     // state.headImageUrl = 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5muUMU39cxp5g5mxRbr2JY0HSFeyJYHfIIIUAOib3vF6Av729SKDicia4UC1VHepbG9iah3YC6pJBn6YEaJ7PbROx5piahmDhPIicAk/132'; // 头像
     // state.points = 150; // 积分
-    // state.coupons = { // 优惠券
-    //     count: 9,
-    // }
     // state.VIP = { // 会员
     //     grade: 1,
     // }

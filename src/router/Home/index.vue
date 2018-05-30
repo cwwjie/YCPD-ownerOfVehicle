@@ -16,7 +16,13 @@
     <div  
       v-if="!loginIofor"
       class="home-login" 
-      v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?history=${redirectRUL.host}/wx20/index.html`)"
+      v-on:click="jumpToUrl(`${
+        redirectRUL.host
+      }/wx/selectmobile.aspx?openid=${
+        openid
+      }&history=${
+        redirectRUL.host
+      }/wx20/index.html`)"
     >
       <div class="login-content">
         <div class="login-img">
@@ -169,7 +175,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 底部 TabBar -->
     <tabbar 
       :selectIndex="0"
@@ -257,8 +263,12 @@ export default {
   
   computed: {
     loginIofor() { // 用户信息 
-      return this.$store.state.user.info // 如果未登录 返回 false
+      return this.$store.getters.getLoginIofor // 如果未登录 返回 false
     },
+
+    openid() {
+      return this.$store.state.user.openid
+    }
   },
 
   methods: {
