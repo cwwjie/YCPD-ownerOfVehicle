@@ -157,6 +157,26 @@ export default {
   },
 
   mounted() {
+    const _this = this;
+    let initNavbarSelected = () => {
+      if (localStorage && localStorage.userOrderSelected) {
+        let mySel = localStorage.userOrderSelected;
+
+        if (
+          mySel === 'record' || 
+          mySel === 'reserved' || 
+          mySel === 'paying' || 
+          mySel === 'forService' || 
+          mySel === 'beEvaluated'
+        ) {
+          _this.navbarSelected = mySel;
+        }
+
+        localStorage.removeItem('userOrderSelected');
+      }
+    }
+
+    initNavbarSelected(); // 选项卡 选中
     this.getApointment('record');
     this.getApointment('reserved');
     this.getApointment('paying');

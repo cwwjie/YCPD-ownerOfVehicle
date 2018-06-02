@@ -26,6 +26,17 @@ const routes = [
     name: 'userOrder',
     component: () => import('@/router/User/order'), // 订单页面
     meta: { title: '订单信息' },
+  }, {
+    path: '/ticket/list/index',
+    alias: ['/ticket/list/', '/ticket/list'],
+    name: 'ticketList',
+    component: () => import('@/router/Ticket/list'), // 购买券列表
+    meta: { title: '购买券列表' },
+  }, {
+    path: '/ticket/list/detail',
+    name: 'ticketListDetail',
+    component: () => import('@/router/Ticket/list-detail'), // 购买券列表
+    meta: { title: '购买券列表' },
   },
 ];
 
