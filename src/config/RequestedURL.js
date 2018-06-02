@@ -4,7 +4,7 @@ let RequestedURL = {
     picc: 'http://picc.hotgz.com',
 
     /**
-     * 通过openid获取用户信息 的链接
+     * 用户信息 (openid)
      * @param {methods} POST
      * @param {contentType} json application/json; charset=utf-8
      * @param {string} OpenID openid
@@ -12,7 +12,7 @@ let RequestedURL = {
     getUserInfor: 'http://ycpdapi.hotgz.com/Customer/GetCustomerInfoByOpenID',
 
     /**
-     * 通过openid用户信息的头像 的链接
+     * 用户 头像 (openid)
      * @param {methods} GET
      * @param {contentType} text text/html; charset=utf-8
      * @param {string} Type 1
@@ -21,11 +21,18 @@ let RequestedURL = {
     getHeadImageUrl: 'http://picc.hotgz.com/GetOpenID.aspx',
     
     /**
-     * 获取 用于交换 openid 的 code 方法
+     * 交换 openid 的 code
      * @param {methods} GET
      * @param {contentType} text application/json; charset=utf-8
      */
-    getGetOpenidCode: `http://${window.location.host}/wx/Handler.ashx`,
+    getOpenidCode: `http://${window.location.host}/wx/Handler.ashx`,
+
+    /**
+     * 预约记录
+     * @param {methods} POST
+     * @param {contentType} text application/json; charset=utf-8
+     */
+    getApointment: `http://api.demo.hotgz.com/Apointment/GetDatas`,
 }
 
 /**
@@ -36,7 +43,8 @@ let RequestedURL = {
 if (process.env.NODE_ENV === 'development') {
     RequestedURL.getUserInfor = 'http://api.demo.hotgz.com/Customer/GetCustomerInfoByOpenID';
     RequestedURL.getHeadImageUrl = 'http://shzj.demo.hotgz.com/GetOpenID.aspx';
-    RequestedURL.getGetOpenidCode = 'http://shzj.demo.hotgz.com/wx/Handler.ashx';
+    RequestedURL.getOpenidCode = 'http://shzj.demo.hotgz.com/wx/Handler.ashx';
+    RequestedURL.getApointment = `http://ycpdapi.hotgz.com/Apointment/GetDatas`;
 }
 
 export default RequestedURL

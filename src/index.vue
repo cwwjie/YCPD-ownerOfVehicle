@@ -38,7 +38,6 @@ export default {
       const _this = this;
       let loadPageOpenid = loadPageVar('openid');      // url 解析 openid
       let loadPageCode = loadPageVar('code');          // url 解析 code
-      // let testOpenid = 'oI0FV0pK5sqCnE_LBBXb6sxdROwg'; // 测试 openid
 
       /**
        * 获取 用户信息
@@ -70,7 +69,7 @@ export default {
 
           if (loadPageCode) { // code 解析存在
 
-            this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid 
+            this.$store.dispatch('getOpenidCode', loadPageCode) // 交换 openid 
             .then(openid => {
 
               _this.saveOpenid(openid);    // 存储
@@ -116,7 +115,7 @@ export default {
 
         if (loadPageCode) { // code 存在 
 
-          this.$store.dispatch('getGetOpenidCode', loadPageCode) // 交换 openid
+          this.$store.dispatch('getOpenidCode', loadPageCode) // 交换 openid
           .then(openid => {
 
             _this.saveOpenid(openid);    // 存储

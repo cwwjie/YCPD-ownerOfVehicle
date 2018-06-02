@@ -62,5 +62,22 @@ npm run build
 4. 打开微信开发工具: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx98bac09017cef825&redirect_uri=http%3A%2F%2Fshzj.demo.hotgz.com%2Fwx20%2Findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
 5. 完成
 
+### 预约记录 openid
+ozkjr1EI3qaZXGWLN5KGDOz81aN8
+ozkjr1EfnSnXZvkBQBLmIIX4x1nc
+ozkjr1BQr_fMNE4ynca4_XskmQtQ
+ozkjr1I6dSIaeeyXo8qerliL7PWY
+ozkjr1FkQTV_FtwHAo_vptzmhy-I
+ozkjr1NAliDZcQpH87ZppqB0imPk
+ozkjr1K-YTBdHcLd9Wy9p3a98lI8
+ozkjr1AAzzqBWUoPI--2O7WxgE1Y
+ozkjr1IgpFmdV7eOtuxJ3_1bc_Pw
+ozkjr1JtGUdxwJGRVnqu9Ps7RxLs
+ozkjr1FhIFAm3e5gWgHu8CJAu7mw
+ozkjr1MLA9v_o7KMbIw5c0E98QNQ
+ozkjr1LeNafzXYFPmk3bhpiFxqUM
+ozkjr1EvglnpUrtcnl8Y_BFzJOOw
+ozkjr1CpCvfTgB7isuNf6alrGkvU
+
 ## License
 MIT

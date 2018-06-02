@@ -59,9 +59,9 @@ let actions = {
      * 获取 用于交换 openid 的 code 方法
      * @param {string} param code
      */
-    getGetOpenidCode: ({commit}, param) => {
+    getOpenidCode: ({commit}, param) => {
         return new Promise((resolve, reject) => {
-            fetch(`${RequestedURL.getGetOpenidCode}?action=GetOpenID&code=${param}`, {
+            fetch(`${RequestedURL.getOpenidCode}?action=GetOpenID&code=${param}`, {
                 'method': 'GET',
                 'contentType': "application/json; charset=utf-8"
             }).then(
