@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${window.location.host}/wx20/index.html`)"
+          v-on:click="jumpToUrl(`http://${locationhost}/wx/selectmobile.aspx?openid=${openid}&history=http://${locationhost}/wx20/index.html`)"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
@@ -70,7 +70,7 @@
           </div>
           <div 
             class="header-tab-item"
-            v-on:click="jumpToUrl(`${window.location.host}/wx/Coupons.aspx`)"
+            v-on:click="jumpToUrl(`http://${locationhost}/wx/Coupons.aspx`)"
           >
             <div class="item-name">{{loginIofor.Coupons}}</div>
             <div class="item-name">优惠券</div>
@@ -272,6 +272,8 @@ export default {
       pictures: { // 所有图片
         citySketch: require('./../../assets/sketch-picture.png'), // 城市剪影
       },
+
+      locationhost: window.location.host
     }
   },
 

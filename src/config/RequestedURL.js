@@ -37,10 +37,11 @@ let RequestedURL = {
 
 /**
  * 测试环境 重写 RequestedURL
+ * 考虑到会有人将正式环境上传到测试环境 测试环境新增判断
  * 测试环境有时候需要重写方法, 方便测试, 生产环境不会执行下面方法
  * 此方法可以随意改动，
  */
-if (process.env.NODE_ENV === 'development') {
+if (window.location.host === 'shzj.demo.hotgz.com' || process.env.NODE_ENV === 'development') {
     RequestedURL.getUserInfor = 'http://api.demo.hotgz.com/Customer/GetCustomerInfoByOpenID';
     RequestedURL.getHeadImageUrl = 'http://shzj.demo.hotgz.com/GetOpenID.aspx';
     RequestedURL.getOpenidCode = 'http://shzj.demo.hotgz.com/wx/Handler.ashx';

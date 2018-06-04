@@ -163,7 +163,7 @@ export default {
 // 这里是存放全局样式的地方
 @import '~vux/src/styles/reset.less'; // vux 初始化样式
 
-// 禁止使用 iframe 放置广告弹出
+// 禁止使用 iframe 防止广告弹出
 iframe { display: none !important; }
 
 </style>
