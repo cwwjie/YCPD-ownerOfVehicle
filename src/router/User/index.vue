@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`${redirectRUL.host}/wx/selectmobile.aspx?openid=${openid}&history=${redirectRUL.host}/wx20/index.html`)"
+          v-on:click="jumpToUrl(`${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${window.location.host}/wx20/index.html`)"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
@@ -70,7 +70,7 @@
           </div>
           <div 
             class="header-tab-item"
-            v-on:click="jumpToUrl(`${redirectRUL.host}/wx/Coupons.aspx`)"
+            v-on:click="jumpToUrl(`${window.location.host}/wx/Coupons.aspx`)"
           >
             <div class="item-name">{{loginIofor.Coupons}}</div>
             <div class="item-name">优惠券</div>
@@ -253,9 +253,6 @@ import tabbar from './../../components/TabBar.vue';
 
 import ajaxs from './ajaxs.js';
 
-// 配置文件
-import RedirectRUL from './../../config/RedirectRUL';
-
 export default {
   name: 'user',
 
@@ -272,8 +269,6 @@ export default {
 
   data () {
     return {
-      redirectRUL: RedirectRUL, // 重定向跳转链接
-
       pictures: { // 所有图片
         citySketch: require('./../../assets/sketch-picture.png'), // 城市剪影
       },

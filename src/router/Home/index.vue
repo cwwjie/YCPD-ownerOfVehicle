@@ -17,11 +17,11 @@
       v-if="!loginIofor"
       class="home-login" 
       v-on:click="jumpToUrl(`${
-        redirectRUL.host
+        window.location.host
       }/wx/selectmobile.aspx?openid=${
         openid
       }&history=${
-        redirectRUL.host
+        window.location.host
       }/wx20/index.html`)"
     >
       <div class="login-content">
@@ -41,13 +41,13 @@
     <div class="home-entry-list">
       <div class="entry-list-content">
 
-        <div class="entry-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/piccin.aspx?type=xiche`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`${window.location.host}/wx/piccin.aspx?type=xiche`)">
           <div class="entry-svg-content" style="background-color: #3eb7fc">
             <CARWASH color="#fff"/>
           </div>
           <div class="item-name">便捷洗车</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrl(`${redirectRUL.host}/picc/GasStation/GasStationList.aspx`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`${window.location.host}/picc/GasStation/GasStationList.aspx`)">
           <div class="entry-svg-content" style="background-color: #41b287">
             <GAS2 color="#fff"/>
           </div>
@@ -66,13 +66,13 @@
           <div class="item-name">快速充电</div>
         </div>
 
-        <div class="entry-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/piccin.aspx?type=baoyang`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`${window.location.host}/wx/piccin.aspx?type=baoyang`)">
           <div class="entry-svg-content" style="background-color: #fadb14">
             <Vehiclemaintenance color="#fff"/>
           </div>
           <div class="item-name">放心保养</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/piccin.aspx?type=xiche`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`${window.location.host}/wx/piccin.aspx?type=xiche`)">
           <div class="entry-svg-content" style="background-color: #ec499c">
             <nurse color="#fff"/>
           </div>
@@ -97,21 +97,21 @@
     <!-- 新增四个板块入口 -->
     <div class="home-fourPlate">
       <div class="fourPlate-top main-flex-start">
-        <div class="fourPlate-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/piccin.aspx?type=pay`)">
+        <div class="fourPlate-item" v-on:click="jumpToUrl(`${window.location.host}/wx/piccin.aspx?type=pay`)">
           <div class="fourPlate-left">
             <div class="item-depict">
               <img alt="门店支付" :src="pictures.fourPlate[0]" />
             </div>
           </div>
         </div>
-        <div class="fourPlate-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/approveapoint.aspx`)">
+        <div class="fourPlate-item" v-on:click="jumpToUrl(`${window.location.host}/wx/approveapoint.aspx`)">
           <div class="item-depict">
             <img alt="车主评价" :src="pictures.fourPlate[1]" />
           </div>
         </div>
       </div>
       <div class="fourPlate-bottom main-flex-start">
-        <div class="fourPlate-item" v-on:click="jumpToUrl(`${redirectRUL.host}/wx/index.aspx?StoreType_Name=4S店&booking=false`)">
+        <div class="fourPlate-item" v-on:click="jumpToUrl(`${window.location.host}/wx/index.aspx?StoreType_Name=4S店&booking=false`)">
           <div class="fourPlate-left">
             <div class="item-depict">
               <img alt="4S店入口" :src="pictures.fourPlate[2]" />
@@ -218,9 +218,6 @@ import tabbar from './../../components/TabBar.vue';
 import convertDate from './../../utils/convertDate';
 import ajaxs from './ajaxs.js';
 
-// 配置文件
-import RedirectRUL from './../../config/RedirectRUL';
-
 export default {
   name: 'home',
 
@@ -256,8 +253,6 @@ export default {
         alt: "养车频道-banner",
         src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
       }],
-
-      redirectRUL: RedirectRUL, // 重定向跳转链接
     }
   },
   
