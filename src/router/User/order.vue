@@ -27,14 +27,15 @@
       <mt-tab-container-item id="record">
         <div class="order-list" v-if="apointment.record.length !== 0">
           <div class="order-item" v-for="(record, key) in apointment.record" :key="key">
-            <div class="item-key">{{key + 1}}</div>
-            <div class="item-describe">
-              <div class="describe-content">
-                <div class="describe-main">{{record.ServiceName.replace(/（/g, "(").replace(/）/g, ")")}}</div>
-                <div class="describe-subs">{{record.StoreName}} | {{record.IsMatch}} | {{record.Status}}</div>
-              </div>
+            <div class="item-title">
+              <div class="item-title-left">{{record.ServiceName}}</div>
+              <div class="item-title-right">{{record.Status}}</div>
             </div>
-            <div class="item-time">{{record.BookDate}}</div>
+            <div class="item-content">
+              <div class="item-content-left">{{record.CarNo}}</div>
+              <div class="item-content-right">{{record.BookDate}} {{record.BookTime}}</div>
+            </div>
+            <div class="item-address">{{record.StoreName}}</div>
           </div>
         </div>
         <div class="order-none" v-else>暂无消费记录</div>
@@ -279,50 +280,55 @@ export default {
     background: #fff;
 
     .order-item {
-      display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
-      display: -moz-box;     /* 老版本语法: Firefox (buggy) */
-      display: -ms-flexbox;  /* 混合版本语法: IE 10 */
-      display: -webkit-flex; /* 新版本语法: Chrome 21+ */
-      display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
-      justify-content: start;
-      align-items: center;
-      border-bottom: 1px solid #ddd;
+      padding: 15px;
+      color: #606266;
 
-      .item-key {
-        width: 50px;
-        text-align: center;
-        line-height: 70px;
-        font-size: 18px;
-        color: #303133;
-      }
-
-      .item-describe {
+      .item-title {
         display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
         display: -moz-box;     /* 老版本语法: Firefox (buggy) */
         display: -ms-flexbox;  /* 混合版本语法: IE 10 */
         display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+        display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
+        justify-content: start;
         align-items: center;
-        flex: 1;
-        padding: 12.5px 0px;
-
-        .describe-main {
-          font-size: 14px;
-          padding-bottom: 2.5px;
-          color: #606266;
-        }
-
-        .describe-subs {
-          font-size: 12px;
-          color: #909399;
-        }
-      }
-
-      .item-time {
-        padding-right: 15px;
-        padding-bottom: 20px;
         font-size: 12px;
-        color: #909399;
+
+        .item-title-left {
+          color: #303133;
+        }
+
+        .item-title-right {
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          text-align: right;
+          color: #409EFF;
+        }
       }
+
+      .item-content {
+        display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+        display: -moz-box;     /* 老版本语法: Firefox (buggy) */
+        display: -ms-flexbox;  /* 混合版本语法: IE 10 */
+        display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+        display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
+        justify-content: start;
+        align-items: center;
+        font-size: 12px;
+
+        .item-content-right {
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          text-align: right;
+        }
+      }
+
+      .item-address {
+        font-size: 12px;
+        color: #606266;
+      }
+      
     }
   }
 
