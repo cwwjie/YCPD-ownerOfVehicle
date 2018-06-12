@@ -149,25 +149,25 @@
           <div class="entry-svg-content">
             <alreadyReserved color="#f8535a" width="26" height="26"/>
           </div>
-          <div class="item-name-line1">已预约</div>
+          <div class="item-name-line1">全部</div>
         </div>
         <div class="entry-item" v-on:click="jumpToOrder()">
           <div class="entry-svg-content">
             <payment2 color="#f8535a" width="30" height="30"/>
           </div>
-          <div class="item-name-line1">待付款</div>
+          <div class="item-name-line1">待支付</div>
         </div>
         <div class="entry-item" v-on:click="jumpToOrder()">
           <div class="entry-svg-content">
             <addedServices color="#f8535a"/>
           </div>
-          <div class="item-name-line1">待服务</div>
+          <div class="item-name-line1">已预约</div>
         </div>
         <div class="entry-item" v-on:click="jumpToOrder()">
           <div class="entry-svg-content">
             <evaluate2 color="#f8535a" width="26" height="26"/>
           </div>
-          <div class="item-name-line1">待评价</div>
+          <div class="item-name-line1">已评价 </div>
         </div>
         
 

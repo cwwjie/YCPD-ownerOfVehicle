@@ -13,100 +13,82 @@
 
     <!-- 顶部选项卡 -->
     <mt-navbar v-model="navbarSelected">
-      <mt-tab-item id="record">消费记录</mt-tab-item>
-      <mt-tab-item id="reserved">已预约</mt-tab-item>
-      <mt-tab-item id="paying">待付款</mt-tab-item>
-      <mt-tab-item id="forService">待服务</mt-tab-item>
-      <mt-tab-item id="beEvaluated">待评价</mt-tab-item>
+      <mt-tab-item id="all">全部</mt-tab-item>
+      <mt-tab-item id="paying">待支付</mt-tab-item>
+      <mt-tab-item id="order">已预约</mt-tab-item>
+      <mt-tab-item id="evaluate">已评价</mt-tab-item>
     </mt-navbar>
 
     <!-- 显示面板 -->
     <mt-tab-container v-model="navbarSelected">
 
-      <!-- 消费记录 -->
-      <mt-tab-container-item id="record">
-        <div class="order-list" v-if="apointment.record.length !== 0">
-          <div class="order-item" v-for="(record, key) in apointment.record" :key="key">
+      <!-- 全部记录 -->
+      <mt-tab-container-item id="all">
+        <div class="order-list" v-if="apointment.all.length !== 0">
+          <div class="order-item" v-for="(all, key) in apointment.all" :key="key">
             <div class="item-title">
-              <div class="item-title-left">{{record.ServiceName}}</div>
-              <div class="item-title-right">{{record.Status}}</div>
+              <div class="item-title-left">{{all.ServiceName}}</div>
+              <div class="item-title-right">{{all.Status}}</div>
             </div>
             <div class="item-content">
-              <div class="item-content-left">{{record.CarNo}}</div>
-              <div class="item-content-right">{{record.BookDate}} {{record.BookTime}}</div>
+              <div class="item-content-left">{{all.CarNo}}</div>
+              <div class="item-content-right">{{all.BookDate}} {{all.BookTime}}</div>
             </div>
-            <div class="item-address">{{record.StoreName}}</div>
+            <div class="item-address">{{all.StoreAddress}}</div>
           </div>
         </div>
-        <div class="order-none" v-else>暂无消费记录</div>
+        <div class="order-none" v-else>暂无记录</div>
       </mt-tab-container-item>
 
-      <!-- 已预约 -->
-      <mt-tab-container-item id="reserved">
-        <div class="order-list" v-if="apointment.reserved.length !== 0">
-          <div class="order-item" v-for="(reserved, key) in apointment.reserved" :key="key">
-            <div class="item-key">{{key + 1}}</div>
-            <div class="item-describe">
-              <div class="describe-content">
-                <div class="describe-main">{{reserved.ServiceName.replace(/（/g, "(").replace(/）/g, ")")}}</div>
-                <div class="describe-subs">{{reserved.StoreName}} | {{reserved.IsMatch}} | {{reserved.Status}}</div>
-              </div>
-            </div>
-            <div class="item-time">{{reserved.BookDate}}</div>
-          </div>
-        </div>
-        <div class="order-none" v-else>暂无已预约项</div>
-      </mt-tab-container-item>
-
-      <!-- 待付款 -->
       <mt-tab-container-item id="paying">
         <div class="order-list" v-if="apointment.paying.length !== 0">
           <div class="order-item" v-for="(paying, key) in apointment.paying" :key="key">
-            <div class="item-key">{{key + 1}}</div>
-            <div class="item-describe">
-              <div class="describe-content">
-                <div class="describe-main">{{paying.ServiceName.replace(/（/g, "(").replace(/）/g, ")")}}</div>
-                <div class="describe-subs">{{paying.StoreName}} | {{paying.IsMatch}} | {{paying.Status}}</div>
-              </div>
+            <div class="item-title">
+              <div class="item-title-left">{{paying.ServiceName}}</div>
+              <div class="item-title-right">{{paying.Status}}</div>
             </div>
-            <div class="item-time">{{paying.BookDate}}</div>
+            <div class="item-content">
+              <div class="item-content-left">{{paying.CarNo}}</div>
+              <div class="item-content-right">{{paying.BookDate}} {{paying.BookTime}}</div>
+            </div>
+            <div class="item-address">{{paying.StoreAddress}}</div>
           </div>
         </div>
-        <div class="order-none" v-else>暂无待付款项</div>
+        <div class="order-none" v-else>暂无待支付项</div>
       </mt-tab-container-item>
 
-      <!-- 待服务 -->
-      <mt-tab-container-item id="forService">
-        <div class="order-list" v-if="apointment.forService.length !== 0">
-          <div class="order-item" v-for="(forService, key) in apointment.forService" :key="key">
-            <div class="item-key">{{key + 1}}</div>
-            <div class="item-describe">
-              <div class="describe-content">
-                <div class="describe-main">{{forService.ServiceName.replace(/（/g, "(").replace(/）/g, ")")}}</div>
-                <div class="describe-subs">{{forService.StoreName}} | {{forService.IsMatch}} | {{forService.Status}}</div>
-              </div>
+      <mt-tab-container-item id="order">
+        <div class="order-list" v-if="apointment.order.length !== 0">
+          <div class="order-item" v-for="(order, key) in apointment.order" :key="key">
+            <div class="item-title">
+              <div class="item-title-left">{{order.ServiceName}}</div>
+              <div class="item-title-right">{{order.Status}}</div>
             </div>
-            <div class="item-time">{{forService.BookDate}}</div>
+            <div class="item-content">
+              <div class="item-content-left">{{order.CarNo}}</div>
+              <div class="item-content-right">{{order.BookDate}} {{order.BookTime}}</div>
+            </div>
+            <div class="item-address">{{order.StoreAddress}}</div>
           </div>
         </div>
-        <div class="order-none" v-else>暂无待服务项</div>
+        <div class="order-none" v-else>暂无已预约记录</div>
       </mt-tab-container-item>
 
-      <!-- 待评价 -->
-      <mt-tab-container-item id="beEvaluated">
-        <div class="order-list" v-if="apointment.beEvaluated.length !== 0">
-          <div class="order-item" v-for="(beEvaluated, key) in apointment.beEvaluated" :key="key">
-            <div class="item-key">{{key + 1}}</div>
-            <div class="item-describe">
-              <div class="describe-content">
-                <div class="describe-main">{{beEvaluated.ServiceName.replace(/（/g, "(").replace(/）/g, ")")}}</div>
-                <div class="describe-subs">{{beEvaluated.StoreName}} | {{beEvaluated.IsMatch}} | {{beEvaluated.Status}}</div>
-              </div>
+      <mt-tab-container-item id="evaluate">
+        <div class="order-list" v-if="apointment.evaluate.length !== 0">
+          <div class="order-item" v-for="(evaluate, key) in apointment.evaluate" :key="key">
+            <div class="item-title">
+              <div class="item-title-left">{{evaluate.ServiceName}}</div>
+              <div class="item-title-right">{{evaluate.Status}}</div>
             </div>
-            <div class="item-time">{{beEvaluated.BookDate}}</div>
+            <div class="item-content">
+              <div class="item-content-left">{{evaluate.CarNo}}</div>
+              <div class="item-content-right">{{evaluate.BookDate}} {{evaluate.BookTime}}</div>
+            </div>
+            <div class="item-address">{{evaluate.StoreAddress}}</div>
           </div>
         </div>
-        <div class="order-none" v-else>暂无待评价项</div>
+        <div class="order-none" v-else>暂无评价记录</div>
       </mt-tab-container-item>
     </mt-tab-container>
 
@@ -144,15 +126,14 @@ export default {
   data () {
     return {
       // 顶部选项卡
-      navbarSelected: "record", // 消费记录:record 已预约:reserved 待付款:paying 待服务:forService 待评价:beEvaluated
+      navbarSelected: "all", // 全部:all 待支付:paying 已预约:order 已评价:evaluate
 
       // 预约记录
       apointment: {
-        record: [],      // 消费记录
-        reserved: [],    // 已预约
-        paying: [],      // 待付款
-        forService: [],  // 待服务
-        beEvaluated: [], // 待评价
+        all: [],      // 全部
+        paying: [],    // 待支付
+        order: [],      // 已预约
+        evaluate: [],  // 已评价
       }
     }
   },
@@ -164,11 +145,10 @@ export default {
         let mySel = localStorage.userOrderSelected;
 
         if (
-          mySel === 'record' || 
-          mySel === 'reserved' || 
+          mySel === 'all' || 
           mySel === 'paying' || 
-          mySel === 'forService' || 
-          mySel === 'beEvaluated'
+          mySel === 'order' || 
+          mySel === 'evaluate'
         ) {
           _this.navbarSelected = mySel;
         }
@@ -178,54 +158,49 @@ export default {
     }
 
     initNavbarSelected(); // 选项卡 选中
-    this.getApointment('record');
-    this.getApointment('reserved');
+    this.getApointment('all');
     this.getApointment('paying');
-    this.getApointment('forService');
-    this.getApointment('beEvaluated');
+    this.getApointment('order');
+    this.getApointment('evaluate');
   },
   
   methods: {
     /**
      * 预约记录
-     * @param {string} status 必填 全部:-1, 待支付:0, 已预约:1 已评价:2, 已结算:3
+     * @param {string} status 必填 全部:-1, 待支付:0, 已预约:1 已评价:2 or 3
      * @return {Promise} resolve(apointment) reject(error)
      */
     getApointment(status) {
       let openid = this.$store.state.user.openid;
       let keyValueState = { // status 键值对
-        record: '-1',
-        reserved: '1',
+        all: '-1',
         paying: '0',
-        forService: '2',
-        beEvaluated: '3',
+        order: '1',
+        evaluate: '2',
       }
       const _this = this;
 
       if (openid && status && keyValueState[status]) { // 必填
         ajaxs.getApointment(openid, keyValueState[status])
         .then(val => {
+          console.log(keyValueState[status],val)
           let newApointment = JSON.parse(JSON.stringify(_this.apointment)); // 深复制
           
-          if (status === 'record') {
+          if (status === 'all') {
 
-            newApointment.record = val.List;
-            _this.apointment = newApointment;
-          } else if (status === 'reserved') {
-            
-            newApointment.reserved = val.List;
+            newApointment.all = val.List;
             _this.apointment = newApointment;
           } else if (status === 'paying') {
             
             newApointment.paying = val.List;
             _this.apointment = newApointment;
-          } else if (status === 'forService') {
+          } else if (status === 'order') {
             
-            newApointment.forService = val.List;
+            newApointment.order = val.List;
             _this.apointment = newApointment;
-          } else if (status === 'beEvaluated') {
+          } else if (status === 'evaluate') {
             
-            newApointment.beEvaluated = val.List;
+            newApointment.evaluate = val.List;
             _this.apointment = newApointment;
           }
         }, error => {
