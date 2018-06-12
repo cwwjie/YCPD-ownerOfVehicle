@@ -130,7 +130,25 @@ export default {
 
       // 预约记录
       apointment: {
-        all: [],      // 全部
+        all: [         // 全部
+          // {
+          //   BookDate: "2018-06-02",
+          //   BookID: "180601010001477692",
+          //   BookTime: "0800",
+          //   Brand: "别克",
+          //   CarNo: "粤BG956A",
+          //   IsMatch: "已扫码",
+          //   Model: "1.6 自动 LE",
+          //   Series: "凯越",
+          //   ServiceName: "（平安）购车险送保养预约（全合成）",
+          //   Status: "已预约",
+          //   StoreAddress: "南山区粤海街道海文花园5栋S38",
+          //   StoreName: "快车品味深大学府店",
+          //   UserName: "龚俊辉",
+          //   Volume: 3.7,
+          //   Years: "2011",
+          // }
+        ],
         paying: [],    // 待支付
         order: [],      // 已预约
         evaluate: [],  // 已评价
@@ -140,6 +158,9 @@ export default {
 
   mounted() {
     const _this = this;
+    /**
+     * 初始化选项卡
+     */
     let initNavbarSelected = () => {
       if (localStorage && localStorage.userOrderSelected) {
         let mySel = localStorage.userOrderSelected;
@@ -181,9 +202,9 @@ export default {
       const _this = this;
 
       if (openid && status && keyValueState[status]) { // 必填
-        ajaxs.getApointment(openid, keyValueState[status])
+
+        ajaxs.getApointment(openid, keyValueState[status]) // 请求记录
         .then(val => {
-          console.log(keyValueState[status],val)
           let newApointment = JSON.parse(JSON.stringify(_this.apointment)); // 深复制
           
           if (status === 'all') {

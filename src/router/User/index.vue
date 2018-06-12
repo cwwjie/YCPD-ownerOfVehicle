@@ -145,25 +145,25 @@
     <div class="user-entry-list">
       <div class="entry-list-content">
 
-        <div class="entry-item" v-on:click="jumpToOrder()">
+        <div class="entry-item" v-on:click="jumpToOrder('all')">
           <div class="entry-svg-content">
             <alreadyReserved color="#f8535a" width="26" height="26"/>
           </div>
           <div class="item-name-line1">全部</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToOrder()">
+        <div class="entry-item" v-on:click="jumpToOrder('paying')">
           <div class="entry-svg-content">
             <payment2 color="#f8535a" width="30" height="30"/>
           </div>
           <div class="item-name-line1">待支付</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToOrder()">
+        <div class="entry-item" v-on:click="jumpToOrder('order')">
           <div class="entry-svg-content">
             <addedServices color="#f8535a"/>
           </div>
           <div class="item-name-line1">已预约</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToOrder()">
+        <div class="entry-item" v-on:click="jumpToOrder('evaluate')">
           <div class="entry-svg-content">
             <evaluate2 color="#f8535a" width="26" height="26"/>
           </div>
@@ -318,15 +318,13 @@ export default {
       window.location.href = 'tel://4001106558';
     },
 
-    jumpToOrder() { // 跳转客服
+    jumpToOrder(navbarSelected) { // 跳转客服
       if (this.loginIofor) { // 已经登录
-        
-        Toast({ // 暂未正式上线, 上线删除下面
-          message: '即将上线',
-          duration: 1000
-        });
-        // 上线跳转到 /user/order
-        // this.$router.push('/user/order');
+
+        if (navbarSelected) { // 顶部选项卡
+          localStorage.setItem('userOrderSelected', navbarSelected);
+        }
+        this.$router.push('/user/order');
       } else {
         Toast({
           message: '请登录',
