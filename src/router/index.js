@@ -11,6 +11,10 @@ const routes = [
     component: () => import('@/router/Home/index'), // 主页 首屏
     meta: { title: '车主入口' },
   }, {
+    path: '/city',
+    component: () => import('@/router/Home/city'), // 主页 首屏
+    meta: { title: '选择地区' },
+  }, {
     path: '/user/index',
     alias: ['/user/', '/user'],
     name: 'user',

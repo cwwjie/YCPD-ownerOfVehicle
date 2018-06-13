@@ -5,11 +5,31 @@
   <div class="home">
     <!-- 轮播图 -->
     <div class="home-swiper">
-      <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
-        <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">
-          <img :alt="value.alt" :src="value.src"/>
-        </mt-swipe-item>
-      </mt-swipe>
+      <div class="home-swiper-operation">
+        <div class="swiper-operation-content flex-start-center">
+          <div class="home-swiper-area flex-start-center"
+            @click="$router.push('/city');"
+          >
+            <span>深圳</span>
+            <i><img src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/dowm.png?x-oss-process=image/resize,m_fill,w_48,h_48,limit_0/auto-orient,0/quality,q_100" /></i>
+          </div>
+          <div class="home-swiper-title flex-rest">
+            &nbsp;
+          </div>
+          <div class="home-swiper-customer">
+            <a href="tel://4001106558">
+              <headphones color="#fff" width="24" height="24"/>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="home-swiper-content">
+        <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
+          <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">
+            <img :alt="value.alt" :src="value.src"/>
+          </mt-swipe-item>
+        </mt-swipe>
+      </div>
     </div>
 
     <!-- 登陆框 目前暂时 如果已登录时 则不显示 -->
@@ -211,6 +231,7 @@ import Vehiclemaintenance from './../../assets/Vehicle-maintenance.vue'; // 保�
 import nurse from './../../assets/nurse.vue';      // 养护
 import rescue from './../../assets/rescue.vue';    // 紧急救援
 import violation from './../../assets/violation.vue'; // 违章查询
+import headphones from './../../assets/headphones.vue'; // 耳机
 
 // 自己封装的组件
 import tabbar from './../../components/TabBar.vue';
@@ -224,11 +245,13 @@ export default {
   components: {
     // SVG组件
     CARWASH, GAS2, park, charge, Vehiclemaintenance, 
-    nurse, rescue, violation, Toast,
+    nurse, rescue, violation, headphones,
     // 自写组件
     tabbar,
     // vue-awesome
-    icon
+    icon,
+    // mint-ui
+    Toast,
   },
 
   data () {
@@ -308,7 +331,46 @@ export default {
 
 // 轮播图
 .home .home-swiper {
+  position: relative;
   border-bottom: 1px solid #ddd;
+
+  .home-swiper-operation {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 1;
+
+    .swiper-operation-content {
+      height: 24px;
+      padding: 15px;
+    }
+
+    .home-swiper-area {
+      color: #fff;
+
+      span {
+        display: block;
+        padding-right: 5px;
+      }
+
+      i {
+        display: block;
+        width: 24px;
+        height: 24px;
+
+        img {
+          display: block;
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      .home-swiper-customer {
+        text-align: right;
+      }
+    }
+  }
 
   .mint-swipe-items-wrap {
     img {
