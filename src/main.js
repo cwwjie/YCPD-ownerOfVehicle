@@ -13,7 +13,14 @@ import './index.less'; // weui 样式
 if (process.env.NODE_ENV === 'development') { // 如果是测试环境, 则生成控制台
   require.ensure([], require => { // 异步加载控制台
     let VConsole = require('vconsole');
-    new VConsole();
+
+    let defaultPlugins = ['system', 'network', 'element', 'storage'];
+    if (window.location.host === 'localhost:8000') { // 本地测试不需要 system 输出
+      defaultPlugins = ['network', 'element', 'storage']
+    }
+    new VConsole({
+      defaultPlugins: defaultPlugins
+    });
   });
 }
 
