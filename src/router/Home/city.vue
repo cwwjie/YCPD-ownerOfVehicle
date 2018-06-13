@@ -20,6 +20,39 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 侧边栏 -->
+        <div class="side-bar">
+            <div class="side-bar-list">
+                <div class="side-bar-item">热门</div>
+                <div class="side-bar-item">A</div>
+                <div class="side-bar-item">B</div>
+                <div class="side-bar-item">C</div>
+                <div class="side-bar-item">D</div>
+                <div class="side-bar-item">E</div>
+                <div class="side-bar-item">F</div>
+                <div class="side-bar-item">G</div>
+                <div class="side-bar-item">H</div>
+                <div class="side-bar-item">I</div>
+                <div class="side-bar-item">J</div>
+                <div class="side-bar-item">K</div>
+                <div class="side-bar-item">L</div>
+                <div class="side-bar-item">M</div>
+                <div class="side-bar-item">N</div>
+                <div class="side-bar-item">O</div>
+                <div class="side-bar-item">P</div>
+                <div class="side-bar-item">Q</div>
+                <div class="side-bar-item">R</div>
+                <div class="side-bar-item">S</div>
+                <div class="side-bar-item">T</div>
+                <div class="side-bar-item">U</div>
+                <div class="side-bar-item">V</div>
+                <div class="side-bar-item">W</div>
+                <div class="side-bar-item">X</div>
+                <div class="side-bar-item">Y</div>
+                <div class="side-bar-item">Z</div>
+            </div>
+        </div>
         <!-- 内容 -->
         <div class="main">
             <div class="main-content">
@@ -64,6 +97,20 @@
                     </div>
                 </div>
                 <div class="main-others">
+                    <div class="main-others-group">
+                        <div class="others-group-title">A</div>
+                        <div class="others-group-list">
+                            <div class="main-others-item">南京</div>
+                            <div class="main-others-item">天津</div>
+                        </div>
+                    </div>
+                    <div class="main-others-group">
+                        <div class="others-group-title">B</div>
+                        <div class="others-group-list">
+                            <div class="main-others-item">重庆</div>
+                            <div class="main-others-item">西安</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -217,13 +264,29 @@ export default {
     }
 }
 
+// 侧边栏
+.side-bar {
+    position: fixed;
+    top: 90px;
+    right: 5px;
+    padding: 5px 2.5px;
+    background: rgba(255, 255, 255, 0.42);
+
+    .side-bar-list {
+        text-align: center;
+
+        .side-bar-item {
+            font-size: 12px;
+        }
+    }
+}
+
 // 顶部搜索栏
 .city .main {
     padding-bottom: 15px;
     
     .main-content {
         background: #fff;
-        border-bottom: 1px solid #ddd;
     }
 
     .main-location {
@@ -266,6 +329,29 @@ export default {
                     text-align: center;
                     border: 1px solid #ddd;
                     background: #fff;
+                }
+            }
+        }
+    }
+
+    .main-others {
+        .main-others-group {
+            .others-group-title {
+                background: #f0f0f0;
+                padding-left: 15px;
+                line-height: 26px;
+            }
+
+            .others-group-list {
+                border-top: 1px solid #ddd;
+                background: #fff;
+
+                .main-others-item {
+                    border-bottom: 1px solid #ddd;
+                    line-height: 50px;
+                    padding: 0px 15px;
+                    font-size: 16px;
+                    color: @black1;
                 }
             }
         }
