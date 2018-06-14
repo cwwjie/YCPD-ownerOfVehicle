@@ -307,7 +307,7 @@ export default {
 
     .main-recommend {
         background: #f0f0f0;
-        padding: 15px 0px 0px 15px;
+        padding: 15px 20px 0px 15px;
 
         .main-recommend-lable {
             padding-bottom: 10px;
