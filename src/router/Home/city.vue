@@ -24,33 +24,11 @@
         <!-- 侧边栏 -->
         <div class="side-bar">
             <div class="side-bar-list">
-                <div class="side-bar-item">热门</div>
-                <div class="side-bar-item">A</div>
-                <div class="side-bar-item">B</div>
-                <div class="side-bar-item">C</div>
-                <div class="side-bar-item">D</div>
-                <div class="side-bar-item">E</div>
-                <div class="side-bar-item">F</div>
-                <div class="side-bar-item">G</div>
-                <div class="side-bar-item">H</div>
-                <div class="side-bar-item">I</div>
-                <div class="side-bar-item">J</div>
-                <div class="side-bar-item">K</div>
-                <div class="side-bar-item">L</div>
-                <div class="side-bar-item">M</div>
-                <div class="side-bar-item">N</div>
-                <div class="side-bar-item">O</div>
-                <div class="side-bar-item">P</div>
-                <div class="side-bar-item">Q</div>
-                <div class="side-bar-item">R</div>
-                <div class="side-bar-item">S</div>
-                <div class="side-bar-item">T</div>
-                <div class="side-bar-item">U</div>
-                <div class="side-bar-item">V</div>
-                <div class="side-bar-item">W</div>
-                <div class="side-bar-item">X</div>
-                <div class="side-bar-item">Y</div>
-                <div class="side-bar-item">Z</div>
+                <div class="side-bar-item" 
+                    v-for="(item, key) in sideBarList" 
+                    :style="`height: ${getsideBarHeight}px; line-height: ${getsideBarHeight}px;`"
+                    :key="key"
+                >{{item.name}}</div>
             </div>
         </div>
         <!-- 内容 -->
@@ -126,6 +104,74 @@ export default {
 
     data () {
         return {
+            sideBarList: [ // 侧边栏数据
+                {
+                    name: '热门',
+                }, {
+                    name: 'A',
+                }, {
+                    name: 'B',
+                }, {
+                    name: 'C',
+                }, {
+                    name: 'D',
+                }, {
+                    name: 'E',
+                }, {
+                    name: 'F',
+                }, {
+                    name: 'G',
+                }, {
+                    name: 'H',
+                }, {
+                    name: 'I',
+                }, {
+                    name: 'J',
+                }, {
+                    name: 'K',
+                }, {
+                    name: 'L',
+                }, {
+                    name: 'M',
+                }, {
+                    name: 'N',
+                }, {
+                    name: 'O',
+                }, {
+                    name: 'P',
+                }, {
+                    name: 'Q',
+                }, {
+                    name: 'R',
+                }, {
+                    name: 'S',
+                }, {
+                    name: 'T',
+                }, {
+                    name: 'U',
+                }, {
+                    name: 'V',
+                }, {
+                    name: 'W',
+                }, {
+                    name: 'X',
+                }, {
+                    name: 'Y',
+                }, {
+                    name: 'Z',
+                },
+            ],
+            equipmentHeight: ( // 设备高端
+                document.body.offsetHeight || 
+                document.documentElement.clientHeight || 
+                window.innerHeight
+            )
+        }
+    },
+  
+    computed: {
+        getsideBarHeight() { // 侧边栏 每个item 高度
+            return (this.equipmentHeight - 50) / this.sideBarList.length
         }
     },
 }
@@ -267,10 +313,10 @@ export default {
 // 侧边栏
 .side-bar {
     position: fixed;
-    top: 90px;
-    right: 5px;
-    padding: 5px 2.5px;
-    background: rgba(255, 255, 255, 0.42);
+    top: 50px;
+    right: 0px;
+    padding: 0px 2.5px;
+    // background: rgba(255, 255, 255, 0.42);
 
     .side-bar-list {
         text-align: center;
