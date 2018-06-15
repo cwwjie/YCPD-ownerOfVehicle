@@ -68,9 +68,9 @@ npm run build
     1. 项目打包: npm run builddev
     2. 远程桌面: mstsc
     3. 将dist里面 覆盖到 远程桌面 C:\Web\YCPD_WX\wx20 下
-    4. 打开微信开发工具: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx98bac09017cef825&redirect_uri=http%3A%2F%2Fshzj.demo.hotgz.com%2Fwx20%2Findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
+    4. 打开微信开发工具: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa21f56d22d9482b1&redirect_uri=http%3a%2f%2fstore.demo.ichebaoyang.com%2fwx20%2findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
 - 测试url
-    - https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx98bac09017cef825&redirect_uri=http%3A%2F%2Fshzj.demo.hotgz.com%2Fwx20%2Findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
+    - https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa21f56d22d9482b1&redirect_uri=http%3a%2f%2fstore.demo.ichebaoyang.com%2fwx20%2findex.html&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect
 
 
 ### 预约记录 openid

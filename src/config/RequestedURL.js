@@ -32,7 +32,7 @@ let RequestedURL = {
      * @param {methods} POST
      * @param {contentType} text application/json; charset=utf-8
      */
-    getApointment: `http://api.demo.hotgz.com/Apointment/GetDatas`,
+    getApointment: 'http://api.demo.hotgz.com/Apointment/GetDatas',
 }
 
 /**
@@ -41,11 +41,11 @@ let RequestedURL = {
  * 测试环境有时候需要重写方法, 方便测试, 生产环境不会执行下面方法
  * 此方法可以随意改动，
  */
-if (window.location.host === 'shzj.demo.hotgz.com' || process.env.NODE_ENV === 'development') {
+if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_ENV === 'development') {
     RequestedURL.getUserInfor = 'http://api.demo.hotgz.com/Customer/GetCustomerInfoByOpenID';
-    RequestedURL.getHeadImageUrl = 'http://shzj.demo.hotgz.com/GetOpenID.aspx';
-    RequestedURL.getOpenidCode = 'http://shzj.demo.hotgz.com/wx/Handler.ashx';
-    RequestedURL.getApointment = `http://ycpdapi.hotgz.com/Apointment/GetDatas`;
+    RequestedURL.getHeadImageUrl = 'http://store.demo.ichebaoyang.com/GetOpenID.aspx';
+    RequestedURL.getOpenidCode = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
+    RequestedURL.getApointment = 'http://ycpdapi.hotgz.com/Apointment/GetDatas';
 }
 
 export default RequestedURL
