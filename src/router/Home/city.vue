@@ -42,51 +42,27 @@
                 <div class="main-recommend">
                     <div class="main-recommend-lable">国内热门城市</div>
                     <div class="main-recommend-list">
-                        <div class="main-recommend-item">
+                        <div class="main-recommend-item"
+                            v-for="(hotCity, key) in hotCityList" 
+                            :key="key"
+                        >
                             <div class="recommend-item-content">
-                                上海
-                            </div>
-                        </div>
-                        <div class="main-recommend-item">
-                            <div class="recommend-item-content">
-                                北京
-                            </div>
-                        </div>
-                        <div class="main-recommend-item">
-                            <div class="recommend-item-content">
-                                杭州
-                            </div>
-                        </div>
-                        <div class="main-recommend-item">
-                            <div class="recommend-item-content">
-                                广州
-                            </div>
-                        </div>
-                        <div class="main-recommend-item">
-                            <div class="recommend-item-content">
-                                成都
-                            </div>
-                        </div>
-                        <div class="main-recommend-item">
-                            <div class="recommend-item-content">
-                                苏州
+                                {{hotCity.Name}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="main-others">
-                    <div class="main-others-group">
-                        <div class="others-group-title">A</div>
+                    <div class="main-others-group"
+                        v-for="(city, cityKey) in cityList" 
+                        :key="cityKey"
+                    >
+                        <div class="others-group-title">{{city.Group}}</div>
                         <div class="others-group-list">
-                            <div class="main-others-item">南京</div>
-                            <div class="main-others-item">天津</div>
-                        </div>
-                    </div>
-                    <div class="main-others-group">
-                        <div class="others-group-title">B</div>
-                        <div class="others-group-list">
-                            <div class="main-others-item">重庆</div>
-                            <div class="main-others-item">西安</div>
+                            <div class="main-others-item"
+                                v-for="(item, itemKey) in city.List" 
+                                :key="itemKey"
+                            >{{item.Name}}</div>
                         </div>
                     </div>
                 </div>
@@ -104,6 +80,23 @@ export default {
 
     data () {
         return {
+            cityList: [ // 城市列表
+                // {
+                //     Group: 'A',
+                //     List: [
+                //         {
+                //             ID: '180613010000526126',
+                //             Name: '安庆'
+                //         }
+                //     ]
+                // }
+            ],
+            hotCityList: [ // 热门城市列表
+                // {
+                //     ID: '151215010000000015',
+                //     Name: '广州',
+                // }
+            ],
             sideBarList: [ // 侧边栏数据
                 {
                     name: '热门',
@@ -167,6 +160,19 @@ export default {
                 window.innerHeight
             )
         }
+    },
+
+    created: function () {
+        const _this = this;
+
+        Promise.all([ajaxs.getCity(), ajaxs.getCity(true)])
+        .then(val => {
+            _this.cityList = val[0];
+            _this.hotCityList = val[1];
+        }, error => {
+            console.error(error);
+            alert(error);
+        });
     },
   
     computed: {
