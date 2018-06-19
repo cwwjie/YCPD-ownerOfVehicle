@@ -28,6 +28,7 @@
                     v-for="(item, key) in sideBarList" 
                     :style="`height: ${getsideBarHeight}px; line-height: ${getsideBarHeight}px;`"
                     :key="key"
+                    @click="jumpToBy(item.name)"
                 >{{item.name}}</div>
             </div>
         </div>
@@ -40,7 +41,9 @@
                     </div>
                 </div>
                 <div class="main-recommend">
-                    <div class="main-recommend-lable">国内热门城市</div>
+                    <div class="main-recommend-lable"
+                        ref="hot"
+                    >国内热门城市</div>
                     <div class="main-recommend-list">
                         <div class="main-recommend-item"
                             v-for="(hotCity, key) in hotCityList" 
@@ -56,6 +59,7 @@
                     <div class="main-others-group"
                         v-for="(city, cityKey) in cityList" 
                         :key="cityKey"
+                        :ref="city.Group"
                     >
                         <div class="others-group-title">{{city.Group}}</div>
                         <div class="others-group-list">
@@ -154,6 +158,7 @@ export default {
                     name: 'Z',
                 },
             ],
+
             equipmentHeight: ( // 设备高端
                 document.body.offsetHeight || 
                 document.documentElement.clientHeight || 
@@ -178,6 +183,21 @@ export default {
     computed: {
         getsideBarHeight() { // 侧边栏 每个item 高度
             return (this.equipmentHeight - 50) / this.sideBarList.length
+        }
+    },
+
+    methods: {
+        jumpToBy(ref) {
+            let offsetTop = 0;
+            if (ref === '热门') {
+                let dom = this.$refs.hot;
+                offsetTop = dom.offsetTop;
+                console.dir(dom.offsetTop)
+            } else {
+                let dom = this.$refs[ref];
+                offsetTop = dom[0].offsetTop;
+            }
+            window.scrollTo(0, offsetTop);
         }
     },
 }
