@@ -5,7 +5,7 @@
   <div class="home">
     <!-- 轮播图 -->
     <div class="home-swiper">
-      <div class="home-swiper-operation">
+      <!-- <div class="home-swiper-operation">
         <div class="swiper-operation-content flex-start-center">
           <div class="home-swiper-area flex-start-center"
             @click="$router.push('/city');"
@@ -22,7 +22,7 @@
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="home-swiper-content">
         <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
           <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">
@@ -61,7 +61,7 @@
     <div class="home-entry-list">
       <div class="entry-list-content">
 
-        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=xiche`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/selectWashcar.html`)">
           <div class="entry-svg-content" style="background-color: #3eb7fc">
             <CARWASH color="#fff"/>
           </div>
@@ -92,7 +92,7 @@
           </div>
           <div class="item-name">放心保养</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=xiche`)">
+        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/selectMaintenance.html`)">
           <div class="entry-svg-content" style="background-color: #ec499c">
             <nurse color="#fff"/>
           </div>

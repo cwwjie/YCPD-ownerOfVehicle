@@ -192,7 +192,6 @@ export default {
             if (ref === '热门') {
                 let dom = this.$refs.hot;
                 offsetTop = dom.offsetTop;
-                console.dir(dom.offsetTop)
             } else {
                 let dom = this.$refs[ref];
                 offsetTop = dom[0].offsetTop;
