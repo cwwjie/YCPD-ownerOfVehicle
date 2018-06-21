@@ -5,7 +5,7 @@
   <div class="home">
     <!-- 轮播图 -->
     <div class="home-swiper">
-      <!-- <div class="home-swiper-operation">
+      <div class="home-swiper-operation">
         <div class="swiper-operation-content flex-start-center">
           <div class="home-swiper-area flex-start-center"
             @click="$router.push('/city');"
@@ -22,7 +22,7 @@
             </a>
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="home-swiper-content">
         <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
           <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">

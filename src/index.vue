@@ -4,27 +4,52 @@
 
 <script>
 
+import axios from 'axios';
+import RequestedURL from './config/RequestedURL.js';
 import loadPageVar from './utils/loadPageVar.js';
+
+const ajaxs = {
+  /**
+   * 获取权限验证配置信息
+   * @param {string} url 是否热门城市
+   * @return {Promise} resolve({) reject(error)
+   */
+  getWxConfig: url => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: `${RequestedURL.getWxConfig}?action=WxConfig&url=${url}`
+      })
+      .then(function (response) {
+        resolve(response.data)
+      })
+      .catch(function (error) {
+        reject(`向服务器获取权限验证配置信息发生错误!, 原因: ${error}`);
+      });
+    });
+  },
+}
 
 export default {
   name: 'Index',
 
-  // 仅执行一次
+  // Vue 成功加载
   mounted() {
-    this.destroyBackups(); // 当 Vue 成功加载, 删除备份策略
+    this.destroyBackups(); // 删除备份策略
+    this.initLocation();   // 位置定位
     
     if (process.env.NODE_ENV === 'development') { // 测试环境
 
-      this.initDevelopment();
+      this.initDevOpenid();
     } else { // 生产环境
     
-      this.initProduction();
+      this.initProOpenid();
     }
   },
 
   methods: {
     /**
-     * 删除备份策略的方法
+     * 删除备份策略, 防止 Vue 加载失败导致
      */
     destroyBackups() {
       document.getElementById('backups').innerHTML = '';
@@ -32,9 +57,89 @@ export default {
     },
 
     /**
-     * 测试环境 模拟请求
+     * 初始化位置定位
      */
-    initDevelopment() {
+    initLocation() {
+      /**
+       * 初始化微信JS-SDK
+       */
+      let initJSSDK = () => new Promise((resolve, reject) => {
+        
+        ajaxs.getWxConfig(window.location.href) // 获取权限验证配置信息
+        .then(
+          wxConfig => {
+
+						wx.ready(function () { // 注册 配置成功的事件
+							resolve(true);
+						});
+
+						wx.error(function (res) {	// 注册 配置失败的事件
+							reject('向服务器发起请求获取权限验证配置信息成功, 但是初始化配置信息失败, 原因: ' + JSON.stringify(res));
+						});
+
+						wx.config({ // 初始化配置信息
+							debug: false,
+							appId: wxConfig.appId,
+							timestamp: wxConfig.timestamp,
+							nonceStr: wxConfig.nonceStr,
+							signature: wxConfig.signature,
+							jsApiList: [ 'getLocation','openLocation' ]
+						});
+          }, 
+          error => reject(error)
+        );
+        resolve()
+      });
+
+      /**
+       * H5 定位
+       */
+      let getHtml5Location = () => new Promise((resolve, reject) => {
+        resolve()
+      });
+
+      /**
+       * 微信 定位
+       */
+      let getWxLocation = () => new Promise((resolve, reject) => {
+        initJSSDK()
+        resolve()
+      });
+
+      /**
+       * 存储定位
+       */
+      let saveLocation = () => {
+
+      };
+
+      getWxLocation()
+
+      // if (window.location.hostname === 'localhost') { // 本地环境
+      //   getHtml5Location() // H5 定位
+      //   .then(
+      //     succeed => saveLocation(), 
+      //     error => {}
+      //   );
+      // } else { // 线上环境
+      //   getWxLocation() // 微信定位
+      //   .then(
+      //     succeed => saveLocation(),  
+      //     error => {
+      //       getHtml5Location() // H5 定位
+      //       .then(
+      //         succeed => saveLocation(), 
+      //         error => {}
+      //       );
+      //     }
+      //   );
+      // }
+    },
+
+    /**
+     * 测试环境
+     */
+    initDevOpenid() {
       const _this = this;
       let loadPageOpenid = loadPageVar('openid');      // url 解析 openid
       let loadPageCode = loadPageVar('code');          // url 解析 code
@@ -89,7 +194,7 @@ export default {
     /**
      * 生产环境
      */
-    initProduction() {
+    initProOpenid() {
       const _this = this;
       let loadPageCode = loadPageVar('code');     // url 解析 code
       /**

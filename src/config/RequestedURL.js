@@ -40,6 +40,13 @@ let RequestedURL = {
      * @param {contentType} json application/json; charset=utf-8
      */
     getCity: 'http://picc.hotgz.com/wx/apiHandler.ashx',
+
+    /**
+     * 获取权限验证配置信息
+     * @param {methods} GET
+     * @param {contentType} json application/json; charset=utf-8
+     */
+    getWxConfig: 'http://picc.hotgz.com/wx/apiHandler.ashx',
 }
 
 /**
@@ -54,6 +61,7 @@ if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_EN
     RequestedURL.getOpenidCode = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
     RequestedURL.getApointment = 'http://ycpdapi.hotgz.com/Apointment/GetDatas';
     RequestedURL.getCity = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
+    RequestedURL.getWxConfig = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
 }
 
 export default RequestedURL
