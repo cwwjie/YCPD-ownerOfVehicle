@@ -6,6 +6,12 @@ let state = {
     openid: false, // 微信对应用户身份的 openid   默认为false
     info: false,   // 用户信息              未登录默认为false
 
+    location: {   // 定位
+        state: false,
+        latitude: 114,
+        longitude: 22.7,
+    },
+
     headImageUrl: false, // 用户头像        未获取默认为false
 
     points: 0, // 用户积分

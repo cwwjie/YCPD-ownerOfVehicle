@@ -11,14 +11,14 @@ import loadPageVar from './utils/loadPageVar.js';
 const ajaxs = {
   /**
    * 获取权限验证配置信息
-   * @param {string} url 是否热门城市
+   * @param {methods} GET
+   * @param {contentType} json application/json; charset=utf-8
    * @return {Promise} resolve({) reject(error)
    */
-  getWxConfig: url => {
-    return new Promise((resolve, reject) => {
+  getWxConfig: () => new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `${RequestedURL.getWxConfig}?action=WxConfig&url=${url}`
+        url: `${RequestedURL.getWxConfig}?action=WxConfig&url=${window.location.href}`
       })
       .then(function (response) {
         resolve(response.data)
@@ -26,8 +26,41 @@ const ajaxs = {
       .catch(function (error) {
         reject(`向服务器获取权限验证配置信息发生错误!, 原因: ${error}`);
       });
-    });
-  },
+  }),
+  /**
+   * 初始化微信JS-SDK
+   * @param {Array} jsApiList
+   * @return {Promise} resolve(ture) reject(error)
+   */
+  initJSSDK: function (jsApiList) {
+    const _this = this;
+    return new Promise((resolve, reject) => {
+      
+      _this.getWxConfig() // 获取权限验证配置信息
+      .then(
+        wxConfig => {
+
+          wx.ready(function () { // 注册 配置成功的事件
+            resolve(true);
+          });
+
+          wx.error(function (res) {	// 注册 配置失败的事件
+            reject('向服务器发起请求获取权限验证配置信息成功, 但是初始化配置信息失败, 原因: ' + JSON.stringify(res));
+          });
+
+          wx.config({ // 初始化配置信息
+            debug: false,
+            appId: wxConfig.appId,
+            timestamp: wxConfig.timestamp,
+            nonceStr: wxConfig.nonceStr,
+            signature: wxConfig.signature,
+            jsApiList: jsApiList
+          });
+        }, 
+        error => reject(error)
+      );
+    })
+  }
 }
 
 export default {
@@ -60,80 +93,96 @@ export default {
      * 初始化位置定位
      */
     initLocation() {
-      /**
-       * 初始化微信JS-SDK
-       */
-      let initJSSDK = () => new Promise((resolve, reject) => {
-        
-        ajaxs.getWxConfig(window.location.href) // 获取权限验证配置信息
-        .then(
-          wxConfig => {
-
-						wx.ready(function () { // 注册 配置成功的事件
-							resolve(true);
-						});
-
-						wx.error(function (res) {	// 注册 配置失败的事件
-							reject('向服务器发起请求获取权限验证配置信息成功, 但是初始化配置信息失败, 原因: ' + JSON.stringify(res));
-						});
-
-						wx.config({ // 初始化配置信息
-							debug: false,
-							appId: wxConfig.appId,
-							timestamp: wxConfig.timestamp,
-							nonceStr: wxConfig.nonceStr,
-							signature: wxConfig.signature,
-							jsApiList: [ 'getLocation','openLocation' ]
-						});
-          }, 
-          error => reject(error)
-        );
-        resolve()
-      });
+      const _this = this;
 
       /**
        * H5 定位
+       * @return {Promise} resolve({
+			 *   longitude: longitude,
+			 *   latitude: latitude,
+       * }) reject(error)
        */
       let getHtml5Location = () => new Promise((resolve, reject) => {
-        resolve()
+        window.navigator.geolocation.getCurrentPosition(
+
+					succeed => resolve({
+            longitude: succeed.coords.longitude,
+            latitude: succeed.coords.latitude,
+          }), 
+
+          error => reject("H5获取定位信息异常：" + JSON.stringify(error)), 
+
+          {
+						enableHighAccuracy: false,
+						timeout: 5000,
+						maximumAge: 60000
+          }
+        );
       });
 
       /**
        * 微信 定位
+       * @return {Promise} resolve({
+			 *   longitude: longitude,
+			 *   latitude: latitude,
+       * }) reject(error)
        */
       let getWxLocation = () => new Promise((resolve, reject) => {
-        initJSSDK()
-        resolve()
+        ajaxs.initJSSDK(['getLocation', 'openLocation'])
+        .then(
+          succeed => wx.getLocation({
+						type: 'wgs84',
+	
+						success(res) {
+							resolve({
+							  longitude: res.longitude,
+							  latitude: res.latitude,
+              });
+						},
+	
+						fail(res) {
+							reject("获取地理位置信息失败：" + res.errMsg);
+						},
+	
+						cancel() {
+							reject("获取地理位置信息被取消");
+						}
+					}), 
+          error => reject(error)
+        )
       });
 
       /**
        * 存储定位
+       * @param {Object} location longitude latitude
        */
-      let saveLocation = () => {
-
+      let saveLocation = location => {
+        _this.$store.commit('initLocation', { // 存储到 vuex
+          state: true,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        });
       };
 
-      getWxLocation()
-
-      // if (window.location.hostname === 'localhost') { // 本地环境
-      //   getHtml5Location() // H5 定位
-      //   .then(
-      //     succeed => saveLocation(), 
-      //     error => {}
-      //   );
-      // } else { // 线上环境
-      //   getWxLocation() // 微信定位
-      //   .then(
-      //     succeed => saveLocation(),  
-      //     error => {
-      //       getHtml5Location() // H5 定位
-      //       .then(
-      //         succeed => saveLocation(), 
-      //         error => {}
-      //       );
-      //     }
-      //   );
-      // }
+      if (window.location.hostname === 'localhost') { // 本地环境
+        getHtml5Location() // H5 定位
+        .then(
+          location => saveLocation(location), 
+          error => console.error(error)
+        );
+      } else { // 线上环境
+        getWxLocation() // 微信定位
+        .then(
+          position => saveLocation(position),  
+          error => {
+            getHtml5Location() // H5 定位
+            .then(
+              position => saveLocation(position), 
+              error => console.error(error)
+            );
+          }
+        );
+      }
     },
 
     /**

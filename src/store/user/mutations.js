@@ -6,6 +6,10 @@ export default {
         states.openid = openid;
     },
 
+    initLocation (states, location) { // location
+        states.location = location;
+    },
+
     initUserInfo (states, obj) { // 登录信息
         states.info = obj.userInfo;
     },
