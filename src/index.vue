@@ -27,6 +27,7 @@ const ajaxs = {
         reject(`向服务器获取权限验证配置信息发生错误!, 原因: ${error}`);
       });
   }),
+
   /**
    * 初始化微信JS-SDK
    * @param {Array} jsApiList
@@ -49,7 +50,7 @@ const ajaxs = {
           });
 
           wx.config({ // 初始化配置信息
-            debug: false,
+            debug: true,
             appId: wxConfig.appId,
             timestamp: wxConfig.timestamp,
             nonceStr: wxConfig.nonceStr,
@@ -153,34 +154,68 @@ export default {
       });
 
       /**
-       * 存储定位
-       * @param {Object} location longitude latitude
+       * 微信定位转换为百度定位
+       * @param {Object} position longitude latitude
+       * @return {Promise} resolve({
+			 *   longitude: longitude,
+			 *   latitude: latitude,
+       * }) reject(error)
        */
-      let saveLocation = location => {
+      let wxToBMapConver = position => new Promise((resolve, reject) => {
+        let ggPoint = new BMap.Point(position.longitude, position.latitude);
+        let convertor = new BMap.Convertor();
+        let pointArr = [];
+
+        pointArr.push(ggPoint);
+        convertor.translate(pointArr, 1, 5, result => {
+          if (result.status === 0) {
+            resolve({
+              longitude: result.points[0].lng,
+              latitude: result.points[0].lat,
+            });
+          }
+          else {
+            reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(error));
+          }
+        });
+      });
+
+      /**
+       * 存储定位
+       * @param {Object} position longitude latitude
+       */
+      let saveLocation = position => {
         _this.$store.commit('initLocation', { // 存储到 vuex
           state: true,
-          latitude: location.latitude,
-          longitude: location.longitude,
+          latitude: position.latitude,
+          longitude: position.longitude,
         });
       };
 
-      if (window.location.hostname === 'localhost') { // 本地环境
+      /**
+       * H5 定位 并且储存
+       */
+      let getSaveH5Handle = () => {
         getHtml5Location() // H5 定位
         .then(
-          location => saveLocation(location), 
+          position => saveLocation(position), 
           error => console.error(error)
         );
+      };
+
+      if (window.location.hostname === 'localhost') { // 本地环境
+        getSaveH5Handle() // H5 定位
       } else { // 线上环境
         getWxLocation() // 微信定位
         .then(
-          position => saveLocation(position),  
-          error => {
-            getHtml5Location() // H5 定位
+          wxPosition => {
+            wxToBMapConver(wxPosition)
             .then(
-              position => saveLocation(position), 
-              error => console.error(error)
-            );
-          }
+              position => saveLocation(position),
+              error => getSaveH5Handle()
+            )
+          },  
+          error => getSaveH5Handle()
         );
       }
     },
