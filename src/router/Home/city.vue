@@ -12,7 +12,7 @@
                 <div class="search-bar flex-start">
                     <i><img src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/city/search.png?x-oss-process=image/resize,m_fill,w_48,h_48,limit_0/auto-orient,0/quality,q_100"></i>
                     <div class="search-input">
-                        <input type="text" placeholder="城市名、拼音首字母...">
+                        <input type="text" v-model="searchInput" placeholder="城市名、拼音首字母..." />
                     </div>
                 </div>
                 <div class="search-submit">
@@ -22,7 +22,7 @@
         </div>
         
         <!-- 侧边栏 -->
-        <div class="side-bar">
+        <div class="side-bar" v-if="searchInput === ''">
             <div class="side-bar-list">
                 <div class="side-bar-item" 
                     v-for="(item, key) in sideBarList" 
@@ -32,6 +32,7 @@
                 >{{item.name}}</div>
             </div>
         </div>
+
         <!-- 内容 -->
         <div class="main">
             <div class="main-content">
@@ -40,7 +41,7 @@
                         深圳<span>GPS定位</span>
                     </div>
                 </div>
-                <div class="main-recommend">
+                <div class="main-recommend" v-if="searchInput === ''">
                     <div class="main-recommend-lable"
                         ref="hot"
                     >国内热门城市</div>
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main-others">
+                <div class="main-others" v-if="searchInput === ''">
                     <div class="main-others-group"
                         v-for="(city, cityKey) in cityList" 
                         :key="cityKey"
@@ -69,6 +70,18 @@
                             >{{item.Name}}</div>
                         </div>
                     </div>
+                </div>
+                <div class="main-searchResult" v-if="searchInput !== ''">
+                    <div v-if="searchFilter.length > 0">
+                        <div class="searchResult-title">搜索结果</div>
+                        <div class="searchResult-list">
+                            <div class="searchResult-item"
+                                v-for="(item, key) in searchFilter" 
+                                :key="key"
+                            >{{item.Name}}</div>
+                        </div>
+                    </div>
+                    <div class="searchResult-unavailable" v-else>暂无匹配信息</div>
                 </div>
             </div>
         </div>
@@ -84,6 +97,15 @@ export default {
 
     data () {
         return {
+            searchInput: '', // 搜索框
+            
+            searchFilter: [ // 搜索过滤
+                // {
+                //     ID: '180613010000526126',
+                //     Name: '安庆'
+                // }
+            ],
+
             cityList: [ // 城市列表
                 // {
                 //     Group: 'A',
@@ -194,10 +216,27 @@ export default {
                 offsetTop = dom.offsetTop;
             } else {
                 let dom = this.$refs[ref];
-                offsetTop = dom[0].offsetTop;
+                if (this.$refs[ref] && dom[0]) { // 兼容写法
+                    offsetTop = dom[0].offsetTop;
+                }
             }
             window.scrollTo(0, offsetTop);
         }
+    },
+
+    watch: {
+        searchInput: function (newSearchInput, oldSearchInput) {
+            let searchFilter = [];
+            this.cityList.map(group => group.List.map(
+                item => {
+                    if (item.Name.search(newSearchInput) !== -1) {
+                        searchFilter.push(item);
+                    }
+                    return item
+                }
+            ));
+            this.searchFilter = searchFilter;
+        },
     },
 }
 
@@ -425,6 +464,32 @@ export default {
                     color: @black1;
                 }
             }
+        }
+    }
+
+    .main-searchResult {
+        .searchResult-title {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            line-height: 26px;
+        }
+
+        .searchResult-list {
+            border-top: 1px solid #ddd;
+            background: #fff;
+
+            .searchResult-item {
+                border-bottom: 1px solid #ddd;
+                line-height: 50px;
+                padding: 0px 15px;
+                font-size: 16px;
+                color: @black1;
+            }
+        }
+
+        .searchResult-unavailable {
+            background: #f0f0f0;
+            padding: 15px;
         }
     }
 }
