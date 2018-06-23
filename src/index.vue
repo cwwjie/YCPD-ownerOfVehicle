@@ -68,17 +68,36 @@ const ajaxs = {
    * @return {Promise} resolve('城市名称') reject(error)
    */
   getCityName: position => new Promise((resolve, reject) => {
+    let target = '获取所在城市名称';
+
+    /**
+     * 删除掉市
+     * @param {String} cityString 城市名称
+     * @return {String} 城市名称
+     */
+    let cityTransverter = cityString => {
+      let indexOfCity = cityString.indexOf('市');
+      if (indexOfCity !== -1) { // 判断是否有市
+        return cityString.slice(0, indexOfCity);
+      } else {
+        return cityString
+      }
+    }
+
     $.ajax({
       url: `http://api.map.baidu.com/geocoder/v2/?ak=vA8jUBvkDTjv4dMk9u2CeDlw&callback=renderReverse&location=${position.latitude},${position.longitude}&output=json&pois=1`,
       type: "get",
       dataType: "jsonp",
       jsonp: "callback",
       success(data) {
-        resolve(data)
-          var cityname = (data.result.addressComponent.city);
+        if (data.status === 0) {
+          resolve(cityTransverter(data.result.addressComponent.city));
+        } else {
+          reject(`成功发起请求${target}, 但是请求数据有误. 原因: ${error}`);
+        }
       },
       error(error) {
-        reject(error);
+        reject(`请求${target}失败. 原因: ${error}`);
       }
     });
   })
@@ -206,23 +225,26 @@ export default {
       });
 
       /**
-       * 根据定位获取所在城市名称
-       * @param {Object} position longitude latitude
-       * @return {Promise} resolve('城市名称') reject(error)
-       */
-      let getCityName = position => new Promise((resolve, reject) => {
-      });
-
-      /**
        * 存储定位
        * @param {Object} position longitude latitude
        */
       let saveLocation = position => {
-        _this.$store.commit('initLocation', { // 存储到 vuex
-          state: true,
-          latitude: position.latitude,
-          longitude: position.longitude,
-        });
+        ajaxs.getCityName(position)
+        .then(cityName => { // 成功获取城市名称
+          _this.$store.commit('initLocation', { // 存储到 vuex
+            state: true,
+            latitude: position.latitude,
+            longitude: position.longitude,
+            cityname: cityName
+          });
+        }, error => {
+          _this.$store.commit('initLocation', {
+            state: true,
+            latitude: position.latitude,
+            longitude: position.longitude,
+            cityname: '深圳', // 失败默认传深圳
+          });
+        })
       };
 
       /**
