@@ -10,6 +10,7 @@ let state = {
         state: false,
         latitude: 114,
         longitude: 22.7,
+        cityname: '深圳',
     },
 
     headImageUrl: false, // 用户头像        未获取默认为false

@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import RequestedURL from './../../config/RequestedURL.js';
 
 const ajaxs = {
@@ -40,32 +38,34 @@ const ajaxs = {
         //     Msg: ""
         // } 
         return new Promise((resolve, reject) => {
-            axios({
-                method: 'post',
+            $.ajax({
                 url: `${RequestedURL.getApointment}?status=${status}`,
-                data: {
+                type: "post",
+                contentType : "application/json",  
+                dataType : "json", 
+                data: JSON.stringify({
                     PageSize: pageSize ? pageSize : 100,
                     PageIndex: pageIndex ? pageIndex : 1,
                     Obj: {
                         OpenID: openid,
                         Status: status
                     }
+                }),
+                success(response) {
+                    if (
+                        response && 
+                        response.Code && 
+                        response.Code === 200 && 
+                        response.Data
+                    ) {
+                        resolve(response.Data)
+                    } else {
+                        reject(`向服务器获预约记录发生错误!, 原因: ${JSON.stringify(response)}`);
+                    }
+                },
+                error(error) {
+                    reject(`向服务器获预约记录发生错误!, 原因: ${error}`);
                 }
-            })
-            .then(function (response) {
-                if (
-                    response.data && 
-                    response.data.Code && 
-                    response.data.Code === 200 && 
-                    response.data.Data
-                ) {
-                    resolve(response.data.Data)
-                } else {
-                    reject(`向服务器获预约记录发生错误!, 原因: ${JSON.stringify(response)}`);
-                }
-            })
-            .catch(function (error) {
-                reject(`向服务器获预约记录发生错误!, 原因: ${error}`);
             });
         });
     },

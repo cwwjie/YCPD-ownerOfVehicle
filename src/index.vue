@@ -4,7 +4,6 @@
 
 <script>
 
-import axios from 'axios';
 import RequestedURL from './config/RequestedURL.js';
 import loadPageVar from './utils/loadPageVar.js';
 
@@ -16,16 +15,16 @@ const ajaxs = {
    * @return {Promise} resolve({) reject(error)
    */
   getWxConfig: () => new Promise((resolve, reject) => {
-      axios({
-        method: 'get',
-        url: `${RequestedURL.getWxConfig}?action=WxConfig&url=${window.location.href}`
-      })
-      .then(function (response) {
-        resolve(response.data)
-      })
-      .catch(function (error) {
+    $.ajax({
+      url: `${RequestedURL.getWxConfig}?action=WxConfig&url=${encodeURIComponent(window.location.href)}`,
+      type: "get",
+      success(wxConfig) {
+        resolve(wxConfig)
+      },
+      error(error) {
         reject(`向服务器获取权限验证配置信息发生错误!, 原因: ${error}`);
-      });
+      }
+    });
   }),
 
   /**
@@ -61,7 +60,28 @@ const ajaxs = {
         error => reject(error)
       );
     })
-  }
+  },
+
+  /**
+   * 根据定位获取所在城市名称
+   * @param {Object} position longitude latitude
+   * @return {Promise} resolve('城市名称') reject(error)
+   */
+  getCityName: position => new Promise((resolve, reject) => {
+    $.ajax({
+      url: `http://api.map.baidu.com/geocoder/v2/?ak=vA8jUBvkDTjv4dMk9u2CeDlw&callback=renderReverse&location=${position.latitude},${position.longitude}&output=json&pois=1`,
+      type: "get",
+      dataType: "jsonp",
+      jsonp: "callback",
+      success(data) {
+        resolve(data)
+          var cityname = (data.result.addressComponent.city);
+      },
+      error(error) {
+        reject(error);
+      }
+    });
+  })
 }
 
 export default {
@@ -69,6 +89,11 @@ export default {
 
   // Vue 成功加载
   mounted() {
+    ajaxs.getCityName({latitude: 22.71991, longitude: 114.24779}).then(val => {
+      console.log(val)
+    }, error => {
+      console.log(error)
+    })
     this.destroyBackups(); // 删除备份策略
     this.initLocation();   // 位置定位
     
@@ -178,6 +203,14 @@ export default {
             reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(error));
           }
         });
+      });
+
+      /**
+       * 根据定位获取所在城市名称
+       * @param {Object} position longitude latitude
+       * @return {Promise} resolve('城市名称') reject(error)
+       */
+      let getCityName = position => new Promise((resolve, reject) => {
       });
 
       /**

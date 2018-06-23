@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import RequestedURL from './../../config/RequestedURL.js';
 
 const ajaxs = {
@@ -23,15 +21,15 @@ const ajaxs = {
     getCity: isHot => {
         let cityAction = isHot ? 'GetHotCity' : 'GetCity';
         return new Promise((resolve, reject) => {
-            axios({
-                method: 'get',
-                url: `${RequestedURL.getCity}?action=${cityAction}`
-            })
-            .then(function (response) {
-                resolve(response.data)
-            })
-            .catch(function (error) {
-                reject(`向服务器获取城市发生错误!, 原因: ${error}`);
+            $.ajax({
+                url: `${RequestedURL.getCity}?action=${cityAction}`,
+                type: "get",
+                success(data) {
+                    resolve(data)
+                },
+                error(error) {
+                    reject(`向服务器获取城市发生错误!, 原因: ${error}`);
+                }
             });
         });
     },
