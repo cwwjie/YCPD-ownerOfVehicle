@@ -28,19 +28,24 @@
                     v-for="(item, key) in sideBarList" 
                     :style="`height: ${getsideBarHeight}px; line-height: ${getsideBarHeight}px;`"
                     :key="key"
-                    @click="jumpToBy(item.name)"
+                    @touchstart="jumpToBy(item.name)"
                 >{{item.name}}</div>
             </div>
         </div>
 
         <!-- 内容 -->
-        <div class="main">
+        <div class="main" ref="main" id="main">
             <div class="main-content">
                 <div class="main-location">
-                    <div class="main-location-content" v-if="position.state">
+                    <div class="main-location-content" 
+                        v-if="position.state"
+                    >
                         {{position.cityname}}<span>GPS定位</span>
                     </div>
-                    <div class="main-location-content" v-else>
+                    <div class="main-location-content" 
+                        v-else
+                        @click="initLocation"
+                    >
                         <span>正在GPS定位</span>
                     </div>
                 </div>
@@ -96,10 +101,14 @@
 
 <script>
 
+import { Toast, Indicator } from 'mint-ui';
+import 'mint-ui/lib/style.min.css';
 import ajaxs from './ajaxs.js';
 
 export default {
     name: 'city',
+
+    components: { Toast, Indicator },
 
     data () {
         return {
@@ -191,6 +200,12 @@ export default {
                 document.body.offsetHeight || 
                 document.documentElement.clientHeight || 
                 window.innerHeight
+            ),
+
+            mainHeight: ( // 内容高度
+                document.body.offsetHeight || 
+                document.documentElement.clientHeight || 
+                window.innerHeight
             )
         }
     },
@@ -198,7 +213,9 @@ export default {
     created: function () {
         const _this = this;
 
-        Promise.all([ajaxs.getCity(), ajaxs.getCity(true)])
+        // this.initLocation();   // 位置定位
+
+        Promise.all([ajaxs.getCity(), ajaxs.getCity(true)]) // 获取城市
         .then(val => {
             _this.cityList = val[0];
             _this.hotCityList = val[1];
@@ -207,7 +224,7 @@ export default {
             alert(error);
         });
     },
-  
+
     computed: {
         getsideBarHeight() { // 侧边栏 每个item 高度
             return (this.equipmentHeight - 50) / this.sideBarList.length
@@ -225,18 +242,189 @@ export default {
     },
 
     methods: {
+        /**
+         * 初始化位置定位
+         */
+        initLocation() {
+            const _this = this;
+
+            /**
+             * H5 定位
+             * @return {Promise} resolve({
+             *   longitude: longitude,
+             *   latitude: latitude,
+             * }) reject(error)
+             */
+            let getHtml5Location = () => new Promise((resolve, reject) => {
+                window.navigator.geolocation.getCurrentPosition(
+
+                    succeed => resolve({
+                        longitude: succeed.coords.longitude,
+                        latitude: succeed.coords.latitude,
+                    }), 
+
+                    error => reject("H5获取定位信息异常, 原因：" + JSON.stringify(error)), 
+
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 5000,
+                        maximumAge: 60000
+                    }
+                );
+            });
+
+            /**
+             * 微信 定位
+             * @return {Promise} resolve({
+             *   longitude: longitude,
+             *   latitude: latitude,
+             * }) reject(error)
+             */
+            let getWxLocation = () => new Promise((resolve, reject) => {
+                ajaxs.initJSSDK(['getLocation', 'openLocation'])
+                .then(
+                    succeed => wx.getLocation({
+                        type: 'wgs84',
+                
+                        success(res) {
+                            resolve({
+                                longitude: res.longitude,
+                                latitude: res.latitude,
+                            });
+                        },
+    
+                        fail(res) {
+                            reject("获取地理位置信息失败：" + res.errMsg);
+                        },
+    
+                        cancel() {
+                            reject("获取地理位置信息被取消");
+                        }
+                    }), 
+                    error => reject(error)
+                )
+            });
+
+            /**
+             * 微信定位转换为百度定位
+             * @param {Object} position longitude latitude
+             * @return {Promise} resolve({
+             *   longitude: longitude,
+             *   latitude: latitude,
+             * }) reject(error)
+             */
+            let wxToBMapConver = position => new Promise((resolve, reject) => {
+                let ggPoint = new BMap.Point(position.longitude, position.latitude);
+                let convertor = new BMap.Convertor();
+                let pointArr = [];
+
+                pointArr.push(ggPoint);
+                convertor.translate(pointArr, 1, 5, result => {
+                    if (result.status === 0) {
+                        resolve({
+                            longitude: result.points[0].lng,
+                            latitude: result.points[0].lat,
+                        });
+                    }
+                    else {
+                        reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(error));
+                    }
+                });
+            });
+
+            /**
+             * H5 定位 并且储存
+             */
+            let getSaveH5Handle = () => {
+                getHtml5Location() // H5 定位
+                .then(
+                    position => saveLocation(position), 
+                    error => {
+                        Indicator.close();
+                        console.error(error)
+                        Toast({
+                            message: error,
+                            duration: 5000
+                        });
+                    }
+                );
+            };
+
+            /**
+             * 存储定位
+             * @param {Object} position longitude latitude
+             */
+            let saveLocation = position => {
+                ajaxs.getCityName(position) // 获取城市名称
+                .then(cityName => { // 成功
+                    Indicator.close();
+                    _this.$store.commit('initLocation', { // 存储到 vuex
+                        state: true,
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        cityname: cityName
+                    });
+                }, error => {
+                    Indicator.close();
+                    Toast({
+                        message: error,
+                        duration: 5000
+                    });
+                    _this.$store.commit('initLocation', {
+                        state: true,
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        cityname: '深圳', // 失败默认深圳
+                    });
+                })
+            };
+
+            Indicator.open('正在获取定位...');
+            if (window.location.hostname === 'localhost') { // 本地环境
+                getSaveH5Handle() // H5 定位
+                
+            } else { // 线上环境
+                getWxLocation() // 微信定位
+                .then( // 微信成功
+                    wxPosition => {
+                        wxToBMapConver(wxPosition) // 微信定位转换为百度定位
+                        .then(
+                            position => saveLocation(position), // 转换成功
+                            error => getSaveH5Handle() // 转换失败
+                        )
+                    },  
+                    error => getSaveH5Handle() // 微信失败
+                );
+            }
+        },
+
         jumpToBy(ref) {
             let offsetTop = 0;
             if (ref === '热门') {
                 let dom = this.$refs.hot;
-                offsetTop = dom.offsetTop;
+                offsetTop = dom.offsetTop - 52;
             } else {
                 let dom = this.$refs[ref];
                 if (this.$refs[ref] && dom[0]) { // 兼容写法
-                    offsetTop = dom[0].offsetTop;
+                    offsetTop = dom[0].offsetTop - 52;
                 }
             }
-            window.scrollTo(0, offsetTop);
+
+            this.mainHeight = this.$refs.main.childNodes[0].clientHeight;
+            this.$refs.main.scrollTop = offsetTop;
+
+            window.addEventListener('touchmove', this.handleTouchMove);
+            window.addEventListener('touchend', this.handleTouchEnd);
+        },
+
+        handleTouchMove(e) {
+            e.preventDefault();
+            this.$refs.main.scrollTop = (e.changedTouches[0].clientY - 52) / (this.equipmentHeight - 52) * (this.mainHeight - 52);
+        },
+
+        handleTouchEnd() {
+            window.removeEventListener('touchmove', this.handleTouchMove);
+            window.removeEventListener('touchend', this.handleTouchEnd);
         },
 
         /**
@@ -274,12 +462,17 @@ export default {
 @black4: #C0C4CC;
 
 .city {
-    min-height: 100%;
+    height: 100%;
     background: #efefef;
 }
 
 // 顶部搜索栏
 .city .search-bar {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    left: 0px;
+    z-index: 3;
     background: #fff;
     border-bottom: 1px solid #ddd;
 
@@ -404,7 +597,7 @@ export default {
     position: fixed;
     top: 50px;
     right: 0px;
-    padding: 0px 2.5px;
+    width: 8%;
     // background: rgba(255, 255, 255, 0.42);
 
     .side-bar-list {
@@ -418,7 +611,12 @@ export default {
 
 // 顶部搜索栏
 .city .main {
-    padding-bottom: 15px;
+    position: fixed;
+    top: 0px;
+    padding-top: 52px;
+    width: 92%;
+    height: 100%;
+    overflow-y: scroll;
     
     .main-content {
         background: #fff;
@@ -442,7 +640,7 @@ export default {
 
     .main-recommend {
         background: #f0f0f0;
-        padding: 15px 20px 0px 15px;
+        padding: 15px 0px 0px 15px;
 
         .main-recommend-lable {
             padding-bottom: 10px;

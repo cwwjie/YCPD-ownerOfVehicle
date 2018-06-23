@@ -5,12 +5,15 @@
   <div class="home">
     <!-- 轮播图 -->
     <div class="home-swiper">
-      <div class="home-swiper-operation">
+      <!-- 城市部分 如果已登录 则显示 -->
+      <div class="home-swiper-operation"
+        v-if="loginIofor"
+      >
         <div class="swiper-operation-content flex-start-center">
           <div class="home-swiper-area flex-start-center"
             @click="$router.push('/city');"
           >
-            <span>{{position.cityname}}</span>
+            <span>{{cityname}}</span>
             <i><img src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/dowm.png?x-oss-process=image/resize,m_fill,w_48,h_48,limit_0/auto-orient,0/quality,q_100" /></i>
           </div>
           <div class="home-swiper-title flex-rest">
@@ -231,6 +234,7 @@ import headphones from './../../assets/headphones.vue'; // 耳机
 import tabbar from './../../components/TabBar.vue';
 
 import convertDate from './../../utils/convertDate';
+import stringConver from './../../utils/stringConver';
 import ajaxs from './ajaxs.js';
 
 export default {
@@ -280,19 +284,17 @@ export default {
       return this.$store.getters.getLoginIofor // 如果未登录 返回 false
     },
 
+    cityname() { // 获取城市
+      if (this.$store.getters.getLoginIofor && this.$store.getters.getLoginIofor.City) { // 如果存在则显示, 并且去掉市
+        return stringConver.sliceLastIndexOfBy(this.$store.getters.getLoginIofor.City, '市');
+      } else {
+        return '深圳'
+      }
+    },
+
     openid() { // 分开获取 (因为默认是false 传值容易出问题)
       return this.$store.state.user.openid
     },
-
-    position() { // 定位
-      // {
-      //   state: false,
-      //   latitude: 114,
-      //   longitude: 22.7,
-      //   cityname: '深圳111',
-      // }
-      return this.$store.state.user.position
-    }
   },
 
   methods: {
