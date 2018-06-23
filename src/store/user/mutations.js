@@ -6,8 +6,14 @@ export default {
         states.openid = openid;
     },
 
-    initLocation (states, location) { // location
-        states.location = location;
+    initLocation (states, position) { // 初始化定位
+        states.position = position;
+    },
+
+    updateCityname (states, cityname) { // 更新所在城市
+        let newPosition = JSON.parse(JSON.stringify(states.position));
+        newPosition.cityname = cityname;
+        states.position = newPosition;
     },
 
     initUserInfo (states, obj) { // 登录信息

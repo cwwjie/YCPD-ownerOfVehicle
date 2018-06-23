@@ -108,11 +108,6 @@ export default {
 
   // Vue 成功加载
   mounted() {
-    ajaxs.getCityName({latitude: 22.71991, longitude: 114.24779}).then(val => {
-      console.log(val)
-    }, error => {
-      console.log(error)
-    })
     this.destroyBackups(); // 删除备份策略
     this.initLocation();   // 位置定位
     
@@ -229,8 +224,8 @@ export default {
        * @param {Object} position longitude latitude
        */
       let saveLocation = position => {
-        ajaxs.getCityName(position)
-        .then(cityName => { // 成功获取城市名称
+        ajaxs.getCityName(position) // 获取城市名称
+        .then(cityName => { // 成功
           _this.$store.commit('initLocation', { // 存储到 vuex
             state: true,
             latitude: position.latitude,
@@ -242,7 +237,7 @@ export default {
             state: true,
             latitude: position.latitude,
             longitude: position.longitude,
-            cityname: '深圳', // 失败默认传深圳
+            cityname: '深圳', // 失败默认深圳
           });
         })
       };
@@ -260,17 +255,18 @@ export default {
 
       if (window.location.hostname === 'localhost') { // 本地环境
         getSaveH5Handle() // H5 定位
+        
       } else { // 线上环境
         getWxLocation() // 微信定位
-        .then(
+        .then( // 微信成功
           wxPosition => {
-            wxToBMapConver(wxPosition)
+            wxToBMapConver(wxPosition) // 微信定位转换为百度定位
             .then(
-              position => saveLocation(position),
-              error => getSaveH5Handle()
+              position => saveLocation(position), // 转换成功
+              error => getSaveH5Handle() // 转换失败
             )
           },  
-          error => getSaveH5Handle()
+          error => getSaveH5Handle() // 微信失败
         );
       }
     },

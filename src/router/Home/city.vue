@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- 侧边栏 -->
         <div class="side-bar" v-if="searchInput === ''">
             <div class="side-bar-list">
@@ -37,8 +37,11 @@
         <div class="main">
             <div class="main-content">
                 <div class="main-location">
-                    <div class="main-location-content">
-                        深圳<span>GPS定位</span>
+                    <div class="main-location-content" v-if="position.state">
+                        {{position.cityname}}<span>GPS定位</span>
+                    </div>
+                    <div class="main-location-content" v-else>
+                        <span>正在GPS定位</span>
                     </div>
                 </div>
                 <div class="main-recommend" v-if="searchInput === ''">
@@ -49,6 +52,7 @@
                         <div class="main-recommend-item"
                             v-for="(hotCity, key) in hotCityList" 
                             :key="key"
+                            @click="selectCityName(hotCity.Name)"
                         >
                             <div class="recommend-item-content">
                                 {{hotCity.Name}}
@@ -67,6 +71,7 @@
                             <div class="main-others-item"
                                 v-for="(item, itemKey) in city.List" 
                                 :key="itemKey"
+                                @click="selectCityName(item.Name)"
                             >{{item.Name}}</div>
                         </div>
                     </div>
@@ -78,6 +83,7 @@
                             <div class="searchResult-item"
                                 v-for="(item, key) in searchFilter" 
                                 :key="key"
+                                @click="selectCityName(item.Name)"
                             >{{item.Name}}</div>
                         </div>
                     </div>
@@ -205,6 +211,16 @@ export default {
     computed: {
         getsideBarHeight() { // 侧边栏 每个item 高度
             return (this.equipmentHeight - 50) / this.sideBarList.length
+        },
+
+        position() { // 定位
+            // {
+            //   state: false,
+            //   latitude: 114,
+            //   longitude: 22.7,
+            //   cityname: '深圳',
+            // }
+            return this.$store.state.user.position
         }
     },
 
@@ -221,6 +237,15 @@ export default {
                 }
             }
             window.scrollTo(0, offsetTop);
+        },
+
+        /**
+         * 更新城市定位到 vuex
+         * @param {String} cityname 城市名称
+         */
+        selectCityName(cityname) {
+            this.$store.commit('updateCityname', cityname);
+            this.$router.push('/index');
         }
     },
 

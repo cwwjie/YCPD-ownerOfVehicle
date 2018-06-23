@@ -10,7 +10,7 @@
           <div class="home-swiper-area flex-start-center"
             @click="$router.push('/city');"
           >
-            <span>深圳</span>
+            <span>{{position.cityname}}</span>
             <i><img src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/dowm.png?x-oss-process=image/resize,m_fill,w_48,h_48,limit_0/auto-orient,0/quality,q_100" /></i>
           </div>
           <div class="home-swiper-title flex-rest">
@@ -280,8 +280,18 @@ export default {
       return this.$store.getters.getLoginIofor // 如果未登录 返回 false
     },
 
-    openid() {
+    openid() { // 分开获取 (因为默认是false 传值容易出问题)
       return this.$store.state.user.openid
+    },
+
+    position() { // 定位
+      // {
+      //   state: false,
+      //   latitude: 114,
+      //   longitude: 22.7,
+      //   cityname: '深圳111',
+      // }
+      return this.$store.state.user.position
     }
   },
 
