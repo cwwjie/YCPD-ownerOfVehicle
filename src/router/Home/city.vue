@@ -213,7 +213,7 @@ export default {
     created: function () {
         const _this = this;
 
-        // this.initLocation();   // 位置定位
+        this.initLocation();   // 位置定位
 
         Promise.all([ajaxs.getCity(), ajaxs.getCity(true)]) // 获取城市
         .then(val => {

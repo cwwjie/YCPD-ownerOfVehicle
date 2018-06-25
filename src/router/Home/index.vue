@@ -101,7 +101,14 @@
           </div>
           <div class="item-name">紧急救援</div>
         </div>
-        <div class="entry-item" v-on:click="showNotCompleted">
+        <div class="entry-item"  v-on:click="jumpToUrlWhetherLogin(
+          `http://gzh.stc.gov.cn/h5/#/newqueryLawless?type=nologin&openId=${
+            openid
+          }&headimgurl=${
+            encodeURIComponent(loginIofor.headImageUrl)
+          }&nickname=${
+            loginIofor.ContactName
+          }`)">
           <div class="entry-svg-content" style="background-color: #0ccaca">
             <violation color="#fff"/>
           </div>
