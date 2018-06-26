@@ -1,5 +1,5 @@
 <!-- 
-  - 购买券列表 
+  - 我的券列表 
   -->
 <template>
   <div class="ticket-list">
@@ -45,7 +45,7 @@
                         </div>
                         <div class="item-left-bottom">核销码: 201710171YZVNlgYV</div>
                     </div>
-                    <div class="ticket-item-right">
+                    <div class="ticket-item-right" @click="qrCodeVisible = true;">
                         <div class="item-right-content">
                             <div class="item-right-code">核销码</div>
                             <div class="item-right-time">2018-6-26前有效</div>
@@ -71,6 +71,19 @@
     
     </mt-tab-container>
 
+    <!-- 显示二维码 -->
+    <el-dialog
+        title="出示店员核销"
+        :modal="true"
+        :fullscreen="true"
+        :visible.sync="qrCodeVisible"
+    >
+        <div class="dialog-qrcode">
+            <img src="http://p6ygud9kn.bkt.clouddn.com/YCPD/wx20/qrcode.png" />
+
+            <div class="close-qrcode" @click="qrCodeVisible = false;">确认</div>
+        </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -99,21 +112,26 @@ Vue.component('mt-tab-item', TabItem);
 Vue.component('mt-tab-container', TabContainer);
 Vue.component('mt-tab-container-item', TabContainerItem);
 
+// element-ui
+import { Dialog } from 'element-ui';
+Vue.use(Dialog);
+
 export default {
-  name: 'myTicketList',
+    name: 'myTicketList',
 
-  data () {
-    return {
-      // 顶部选项卡
-      navbarSelected: "unused", // 未使用:unused 已使用:used 已过期:expired
+    data () {
+        return {
+            // 顶部选项卡
+            navbarSelected: "unused", // 未使用:unused 已使用:used 已过期:expired
+            qrCodeVisible: false,
+        }
+    },
+
+    mounted() {
+    },
+
+    methods: {
     }
-  },
-
-  mounted() {
-  },
-  
-  methods: {
-  }
 }
 
 </script>
@@ -127,32 +145,32 @@ export default {
 
 // 初始化样式
 .ticket-list {
-  width: 100%;
-  min-height: 100%;
-  background: #efefef;
-  overflow: hidden;
+    width: 100%;
+    min-height: 100%;
+    background: #efefef;
+    overflow: hidden;
 }
 
 // 头部导航栏
 .ticket-list .mint-header {
-  background: #d00;
-  margin-bottom: 15px;
+    background: #d00;
+    margin-bottom: 15px;
 }
 
 // 顶部选项卡
 .ticket-list .mint-navbar {
-  position: relative;
-  z-index: 2;
+    position: relative;
+    z-index: 2;
 
-  .mint-tab-item-label {
-    font-size: 16px;
-  }
+    .mint-tab-item-label {
+        font-size: 16px;
+    }
 
-  .is-selected {
-    border-bottom: 3px solid #F56C6C;
-    color: #F56C6C;
-    text-decoration: none;
-  }
+    .is-selected {
+        border-bottom: 3px solid #F56C6C;
+        color: #F56C6C;
+        text-decoration: none;
+    }
 }
 
 // 查看网店
