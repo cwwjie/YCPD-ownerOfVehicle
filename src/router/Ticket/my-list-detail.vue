@@ -3,47 +3,6 @@
   -->
 <template>
   <div class="ticket-list">
-    <!-- 头部导航栏 -->
-    <mt-header title="我的优惠券">
-        <router-link to="/user/index" slot="left">
-            <mt-button icon="back"></mt-button>
-        </router-link>
-    </mt-header>
-    
-    <!-- 查看网店 -->
-    <div class="ticket-service">
-        <div class="ticket-service-content">查看网店(任意网店均可, 无需预约)</div>
-    </div>
-
-    <!-- 顶部选项卡 -->
-    <mt-navbar v-model="navbarSelected">
-        <mt-tab-item id="unused">未使用</mt-tab-item>
-        <mt-tab-item id="used">已使用</mt-tab-item>
-        <mt-tab-item id="expired">已过期</mt-tab-item>
-    </mt-navbar>
-
-    <!-- 显示面板 -->
-    <mt-tab-container v-model="navbarSelected">
-
-      <!-- 未使用 -->
-      <mt-tab-container-item id="unused">
-        <div class="order-list">
-
-        </div>
-      </mt-tab-container-item>
-
-      <!-- 已使用 -->
-      <mt-tab-container-item id="used">
-        <div class="order-none">暂无券</div>
-      </mt-tab-container-item>
-
-      <!-- 已过期 -->
-      <mt-tab-container-item id="expired">
-        <div class="order-none">暂无券</div>
-      </mt-tab-container-item>
-    
-    </mt-tab-container>
-
   </div>
 </template>
 
@@ -51,34 +10,11 @@
 
 import ajaxs from './ajaxs';
 
-// mint-ui 框架
-import Vue from 'vue';
-import { 
-  Header, Button, Navbar, 
-  TabItem, TabContainer, TabContainerItem,
-} from 'mint-ui';
-import 'mint-ui/lib/font/style.css';
-import 'mint-ui/lib/header/style.css';
-import 'mint-ui/lib/button/style.css';
-import 'mint-ui/lib/navbar/style.css';
-import 'mint-ui/lib/tab-item/style.css';
-import 'mint-ui/lib/tab-container/style.css';
-import 'mint-ui/lib/tab-container-item/style.css';
-
-Vue.component('mt-header', Header);
-Vue.component('mt-button', Button);
-Vue.component('mt-navbar', Navbar);
-Vue.component('mt-tab-item', TabItem);
-Vue.component('mt-tab-container', TabContainer);
-Vue.component('mt-tab-container-item', TabContainerItem);
-
 export default {
-  name: 'myTicketList',
+  name: 'myTicketListDetail',
 
   data () {
     return {
-      // 顶部选项卡
-      navbarSelected: "unused", // 未使用:unused 已使用:used 已过期:expired
     }
   },
 
@@ -92,11 +28,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-@black1: #303133;
-@black2: #606266;
-@black3: #909399;
-@black4: #C0C4CC;
-
 
 // 初始化样式
 .ticket-list {
@@ -126,20 +57,6 @@ export default {
     color: #F56C6C;
     text-decoration: none;
   }
-}
-
-// 查看网店
-.ticket-service {
-    padding: 0px 15px 15px 15px;
-
-    .ticket-service-content {
-        line-height: 45px;
-        text-align: center;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        color: @black3;
-        background: #fff;
-    }
 }
 
 // 显示面板

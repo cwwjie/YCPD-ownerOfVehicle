@@ -31,6 +31,11 @@ const routes = [
     component: () => import('@/router/User/order'), // 订单页面
     meta: { title: '订单信息' },
   }, {
+    path: '/user/ticket/list',
+    name: 'myTicketList',
+    component: () => import('@/router/Ticket/my-list'), // 我的优惠券
+    meta: { title: '我的优惠券' },
+  }, {
     path: '/ticket/list/index',
     alias: ['/ticket/list/', '/ticket/list'],
     name: 'ticketList',
@@ -39,8 +44,8 @@ const routes = [
   }, {
     path: '/ticket/list/detail',
     name: 'ticketListDetail',
-    component: () => import('@/router/Ticket/list-detail'), // 购买券列表
-    meta: { title: '购买券列表' },
+    component: () => import('@/router/Ticket/list-detail'), // 购买券详情
+    meta: { title: '购买券详情' },
   },
 ];
 
