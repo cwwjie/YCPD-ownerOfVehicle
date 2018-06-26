@@ -27,19 +27,46 @@
 
       <!-- 未使用 -->
       <mt-tab-container-item id="unused">
-        <div class="order-list">
-
+        <div class="ticket-list">
+            <div class="ticket-item">
+                <div class="ticket-item-content">
+                    <div class="ticket-item-left">
+                        <div class="item-left-title flex-start">
+                            <div class="item-left-main flex-rest">
+                                上门保养
+                            </div>
+                            <div class="item-left-sub">
+                                详情 >
+                            </div>
+                        </div>
+                        <div class="item-left-details">
+                            <div>粵B3H97T</div>
+                            <div>在线预约，技师上门，足不出户，享受VIP服务</div>
+                        </div>
+                        <div class="item-left-bottom">核销码: 201710171YZVNlgYV</div>
+                    </div>
+                    <div class="ticket-item-right">
+                        <div class="item-right-content">
+                            <div class="item-right-code">核销码</div>
+                            <div class="item-right-time">2018-6-26前有效</div>
+                        </div>
+                    </div>
+                    <div class="ticket-item-background">
+                        <img src="https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/user/ticket/arrive_bg.png" />
+                    </div>
+                </div>
+            </div>
         </div>
       </mt-tab-container-item>
 
       <!-- 已使用 -->
       <mt-tab-container-item id="used">
-        <div class="order-none">暂无券</div>
+        <div class="ticket-none">暂无券</div>
       </mt-tab-container-item>
 
       <!-- 已过期 -->
       <mt-tab-container-item id="expired">
-        <div class="order-none">暂无券</div>
+        <div class="ticket-none">暂无券</div>
       </mt-tab-container-item>
     
     </mt-tab-container>
@@ -147,84 +174,85 @@ export default {
   position: relative;
   top: 1px;
 
-  .order-list {
+  .ticket-list {
     background: #fff;
     padding-top: 15px;
 
-    .order-item {
+    .ticket-item {
         padding: 0px 15px 15px 15px;
-        font-size: 14px;
-        color: #fff;
 
-        .item-content {
+        .ticket-item-content {
             position: relative;
         }
-        
-        .item-backgroud img {
-            width: 100%;
-            height: 100%;
-        }
 
-        .item-top {
+        .ticket-item-left {
             position: absolute;
             top: 0px;
-            width: 100%;
+            left: 0px;
+            width: 69%;
+            height: 100%;
+            z-index: 1;
 
-            .item-title {
-                position: relative;
-                display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
-                display: -moz-box;     /* 老版本语法: Firefox (buggy) */
-                display: -ms-flexbox;  /* 混合版本语法: IE 10 */
-                display: -webkit-flex; /* 新版本语法: Chrome 21+ */
-                display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
-                justify-content: start;
-                align-items: center;
-                padding: 5px 15px;
+            .item-left-title {
+                padding: 10px 10px 10px 15px;
+                color: #fff;
+                font-size: 14px;
 
-                .title-left {
-                    font-size: 16px;
-                }
-
-                .title-right {
-                    -webkit-box-flex: 1;
-                    -ms-flex: 1;
-                    flex: 1;
-                    text-align: right;
+                .item-left-sub {
+                    font-size: 12px;
+                    color: @black1;
                 }
             }
-            
-            .item-describe {
-                padding: 0px 15px;
+
+            .item-left-details {
+                font-size: 12px;
+                line-height: 16px;
+                padding: 0px 10px 0px 15px;
+                color: @black1;
+            }
+
+            .item-left-bottom {
+                position: absolute;
+                padding: 10px 10px 10px 15px;
+                bottom: 0px;
+                left: 0px;
+                font-size: 12px;
+                color: #fff;
             }
         }
 
-        .item-bottom {
+        .ticket-item-right {
             position: absolute;
-            bottom: 0px;
+            top: 0px;
+            right: 0px;
+            width: 31%;
+            height: 100%;
+            text-align: center;
+            font-size: 12px;
+            z-index: 1;
+
+            .item-right-content {
+                position: absolute;
+                top: 55%;
+                width: 100%;
+                color: @black1;
+            }
+        }
+
+        .ticket-item-background {
             width: 100%;
+            height: 100%;
 
-            .bottom-content {
-                display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
-                display: -moz-box;     /* 老版本语法: Firefox (buggy) */
-                display: -ms-flexbox;  /* 混合版本语法: IE 10 */
-                display: -webkit-flex; /* 新版本语法: Chrome 21+ */
-                display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
-                justify-content: start;
-                align-items: center;
-                padding: 15px 15px;
-
-                .bottom-submit {
-                    -webkit-box-flex: 1;
-                    -ms-flex: 1;
-                    flex: 1;
-                    text-align: right;
-                }
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
             }
         }
     }
   }
 
-  .order-none {
+  .ticket-none {
     padding: 15px;
     text-align: center;
     font-size: 14px;
