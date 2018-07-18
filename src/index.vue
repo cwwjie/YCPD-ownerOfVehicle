@@ -6,6 +6,7 @@
 
 import RequestedURL from './config/RequestedURL.js';
 import loadPageVar from './utils/loadPageVar.js';
+import initLocation from './components/initLocation.js';
 
 export default {
   name: 'Index',
@@ -13,6 +14,8 @@ export default {
   // Vue 成功加载
   mounted() {
     this.destroyBackups(); // 删除备份策略
+
+    initLocation(this);
     
     if (process.env.NODE_ENV === 'development') { // 测试环境
 

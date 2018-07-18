@@ -103,6 +103,8 @@
 
 import { Toast, Indicator } from 'mint-ui';
 import 'mint-ui/lib/style.min.css';
+
+import initLocation from './../../components/initLocation';
 import ajaxs from './ajaxs.js';
 
 export default {
@@ -213,7 +215,7 @@ export default {
     created: function () {
         const _this = this;
 
-        this.initLocation();   // 位置定位
+        // this.initLocation();   // 位置定位
 
         Promise.all([ajaxs.getCity(), ajaxs.getCity(true)]) // 获取城市
         .then(val => {
@@ -246,6 +248,7 @@ export default {
          * 初始化位置定位
          */
         initLocation() {
+            return initLocation(this);
             const _this = this;
 
             /**

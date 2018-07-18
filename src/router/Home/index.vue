@@ -64,7 +64,7 @@
           </div>
           <div class="item-name">洗车美容</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/picc/GasStation/GasStationList.aspx`)">
+        <div class="entry-item" v-on:click="jumpToGasStation()">
           <div class="entry-svg-content" style="background-color: #41b287">
             <GAS2 color="#fff"/>
           </div>
@@ -310,6 +310,13 @@ export default {
       }
 
       window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=http://${window.location.host}/wx20/index.html`;
+    },
+
+    /**
+     * 跳转到优惠加油
+     */
+    jumpToGasStation() {
+
     },
 
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发

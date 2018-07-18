@@ -103,4 +103,4 @@ const convertTime = {
   }
 }
 
-module.exports = convertTime;
+export default convertTime;

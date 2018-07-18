@@ -113,6 +113,17 @@ const ajaxs = {
                 reject(`请求${target}失败. 原因: ${error}`);
             }
         });
+    }),
+
+    /**
+     * 根据定位获取所在城市名称
+     * @param {Object} param openid longitude latitude
+     * @return {Promise} resolve({
+     * 
+     * }) reject(error)
+     */
+    getStationHandler: param => new Promise((resolve, reject) => {
+
     })
 }
 
