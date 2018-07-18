@@ -116,14 +116,41 @@ const ajaxs = {
     }),
 
     /**
-     * 根据定位获取所在城市名称
+     * 通过 openid 与位置信息 获取 优惠加油链接
      * @param {Object} param openid longitude latitude
      * @return {Promise} resolve({
      * 
      * }) reject(error)
      */
     getStationHandler: param => new Promise((resolve, reject) => {
-
+        console.log(`${RequestedURL.getStationHandler}?action=GetStation&OpenID=${
+            param.openid
+        }&lattude=${
+            param.latitude
+        }&lontude=${
+            param.longitude
+        }`)
+        $.ajax({
+            url: `${RequestedURL.getStationHandler}?action=GetStation&OpenID=${
+                param.openid
+            }&lattude=${
+                param.latitude
+            }&lontude=${
+                param.longitude
+            }`,
+            type: "get",
+            success(data) {
+                if (data && data.Msg === '') {
+                    resolve(data.Url);
+                } else {
+                    reject(`通过 openid 与位置信息 获取 优惠加油链接发生错误!, 原因: ${JSON.stringify(data)}`);
+                }
+            },
+            error(error) {
+                console.log(error)
+                reject(`通过 openid 与位置信息 获取 优惠加油链接发生错误!, 原因: ${error.statusText}`);
+            }
+        });
     })
 }
 

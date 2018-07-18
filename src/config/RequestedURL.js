@@ -47,6 +47,13 @@ let RequestedURL = {
      * @param {contentType} json application/json; charset=utf-8
      */
     getWxConfig: 'http://picc.hotgz.com/wx/apiHandler.ashx',
+
+    /**
+     * 通过 openid 与位置信息 获取 优惠加油链接
+     * @param {methods} GET
+     * @param {contentType} json application/json; charset=utf-8
+     */
+    getStationHandler: `http://${window.location.host}/wx/Handler.ashx`,
 }
 
 /**
@@ -62,6 +69,7 @@ if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_EN
     RequestedURL.getApointment = 'http://api.demo.hotgz.com/Apointment/GetDatas';
     RequestedURL.getCity = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getWxConfig = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
+    RequestedURL.getStationHandler = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
 }
 
 export default RequestedURL

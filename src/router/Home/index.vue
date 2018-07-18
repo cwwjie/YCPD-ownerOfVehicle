@@ -232,6 +232,7 @@ import headphones from './../../assets/headphones.vue'; // 耳机
 
 // 自己封装的组件
 import tabbar from './../../components/TabBar.vue';
+import initLocation from './../../components/initLocation';
 
 import convertDate from './../../utils/convertDate';
 import stringConver from './../../utils/stringConver';
@@ -278,7 +279,7 @@ export default {
       locationhost: window.location.host
     }
   },
-  
+
   computed: {
     loginIofor() { // 用户信息 
       return this.$store.getters.getLoginIofor // 如果未登录 返回 false
@@ -316,7 +317,53 @@ export default {
      * 跳转到优惠加油
      */
     jumpToGasStation() {
+      let openid = this.$store.state.user.openid;
+      
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
 
+      let gasStationHandler = (position) => {
+        ajaxs.getStationHandler({
+          openid: openid,
+          longitude: position.longitude,
+          latitude: position.latitude,
+        }).then(
+          url => {
+            
+            Window.location.href = url;
+          },
+          error => {
+            alert(error)
+          }
+        )
+      }
+
+      Toast({
+        message: '正在加载...',
+        duration: 1000
+      });
+      if (this.$store.state.user.position && this.$store.state.user.position.state === true) {
+        gasStationHandler({
+          latitude: this.$store.state.user.position.latitude,
+          longitude: this.$store.state.user.position.longitude
+        });
+      } else {
+        if (
+          window.localStorage && 
+          window.localStorage.longitude &&
+          window.localStorage.latitude
+        ) {
+          gasStationHandler({
+            latitude: window.localStorage.latitude,
+            longitude: window.localStorage.longitude
+          });
+        } else {
+          initLocation(this);
+          alert('位置信息加载失败, 请稍后再试');
+        }
+      }
     },
 
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发
