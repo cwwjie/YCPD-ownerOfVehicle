@@ -32,7 +32,7 @@ let RequestedURL = {
      * @param {methods} POST
      * @param {contentType} json application/json; charset=utf-8
      */
-    getApointment: 'http://api.demo.hotgz.com/Apointment/GetDatas',
+    getApointment: 'http://ycpdapi.hotgz.com/Apointment/GetDatas',
 
     /**
      * 获取城市
@@ -59,7 +59,7 @@ if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_EN
     RequestedURL.getUserInfor = 'http://api.demo.hotgz.com/Customer/GetCustomerInfoByOpenID';
     RequestedURL.getHeadImageUrl = 'http://store.demo.ichebaoyang.com/GetOpenID.aspx';
     RequestedURL.getOpenidCode = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
-    RequestedURL.getApointment = 'http://ycpdapi.hotgz.com/Apointment/GetDatas';
+    RequestedURL.getApointment = 'http://api.demo.hotgz.com/Apointment/GetDatas';
     RequestedURL.getCity = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getWxConfig = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
 }

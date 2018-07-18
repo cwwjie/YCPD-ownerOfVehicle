@@ -98,10 +98,11 @@ export default {
        */
       let initOpenid = openid => {
 
+        _this.saveOpenid(openid);    // 存储
+
         _this.$store.dispatch('getUserInfor', openid)
         .then(val => {
 
-          _this.saveOpenid(openid);    // 存储
           _this.initHeadImage(openid); // 获取 用户头像
         }, 
           error => console.error(error)

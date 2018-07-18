@@ -42,7 +42,7 @@
         <!-- 未登录 头像 -->
         <div 
           v-else 
-          v-on:click="jumpToUrl(`http://${locationhost}/wx/selectmobile.aspx?openid=${openid}&history=http://${locationhost}/wx20/index.html`)"
+          v-on:click="jumpToLogin()"
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
@@ -308,6 +308,20 @@ export default {
   },
 
   methods: {
+    /**
+     * 跳转到登录页面
+     */
+    jumpToLogin() {
+      let openid = this.$store.state.user.openid;
+      
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
+
+      window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=http://${window.location.host}/wx20/index.html`;
+    },
+
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发
       if (selectIndex === 'home') { // 如果 标识为 home 则跳转到 主页
         this.$router.push('/home');

@@ -53,7 +53,7 @@ const ajaxs = {
             }
         });
     }),
-  
+
     /**
      * 初始化微信JS-SDK
      * @param {Array} jsApiList
@@ -76,7 +76,7 @@ const ajaxs = {
                     });
 
                     wx.config({ // 初始化配置信息
-                        debug: true,
+                        debug: false,
                         appId: wxConfig.appId,
                         timestamp: wxConfig.timestamp,
                         nonceStr: wxConfig.nonceStr,

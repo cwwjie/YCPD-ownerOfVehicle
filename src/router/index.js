@@ -39,7 +39,7 @@ const routes = [
     path: '/user/ticket/detail',
     name: 'myTicketDetail',
     component: () => import('@/router/Ticket/my-list-detail'), // 我的优惠券详情
-    meta: { title: '我的优惠券' },
+    meta: { title: '我的优惠券详情' },
   }, {
     path: '/ticket/list/index',
     alias: ['/ticket/list/', '/ticket/list'],

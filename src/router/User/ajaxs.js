@@ -38,19 +38,19 @@ const ajaxs = {
         //     Msg: ""
         // } 
         return new Promise((resolve, reject) => {
+            var model = new Object();
+                model.PageIndex = 1;
+                model.PageSize = 100;
+                model.Obj = new Object();
+                model.Obj.Status = status;
+                model.Obj.OpenID = openid;
+
             $.ajax({
-                url: `${RequestedURL.getApointment}?status=${status}`,
+                url: `${RequestedURL.getApointment}`,
                 type: "post",
                 contentType : "application/json",  
                 dataType : "json", 
-                data: JSON.stringify({
-                    PageSize: pageSize ? pageSize : 100,
-                    PageIndex: pageIndex ? pageIndex : 1,
-                    Obj: {
-                        OpenID: openid,
-                        Status: status
-                    }
-                }),
+                data: JSON.stringify(model),
                 success(response) {
                     if (
                         response && 

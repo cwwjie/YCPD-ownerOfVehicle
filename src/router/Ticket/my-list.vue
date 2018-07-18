@@ -9,11 +9,6 @@
             <mt-button icon="back"></mt-button>
         </router-link>
     </mt-header>
-    
-    <!-- 查看网店 -->
-    <div class="ticket-service">
-        <div class="ticket-service-content">查看网店(任意网店均可, 无需预约)</div>
-    </div>
 
     <!-- 顶部选项卡 -->
     <mt-navbar v-model="navbarSelected">
@@ -173,20 +168,6 @@ export default {
     }
 }
 
-// 查看网店
-.ticket-service {
-    padding: 0px 15px 15px 15px;
-
-    .ticket-service-content {
-        line-height: 45px;
-        text-align: center;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        color: @black3;
-        background: #fff;
-    }
-}
-
 // 显示面板
 .ticket-list .mint-tab-container {
   position: relative;
@@ -275,6 +256,36 @@ export default {
     text-align: center;
     font-size: 14px;
     color: #606266;
+  }
+}
+
+// 二维码核销
+.ticket-list .el-dialog {
+  .dialog-qrcode {
+    img {
+      display: block;
+      padding-bottom: 15px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .close-qrcode {
+      position: relative;
+      display: block;
+      color: #FFFFFF;
+      background-color: #1AAD19;
+      padding-left: 14px;
+      padding-right: 14px;
+      box-sizing: border-box;
+      font-size: 18px;
+      text-align: center;
+      text-decoration: none;
+      color: #FFFFFF;
+      line-height: 2.55555556;
+      border-radius: 5px;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      overflow: hidden;
+    }
   }
 }
 

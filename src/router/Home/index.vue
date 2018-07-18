@@ -6,7 +6,7 @@
     <!-- 轮播图 -->
     <div class="home-swiper">
       <!-- 城市部分 如果已登录 则显示 -->
-      <div class="home-swiper-operation"
+      <!-- <div class="home-swiper-operation"
         v-if="loginIofor"
       >
         <div class="swiper-operation-content flex-start-center">
@@ -25,7 +25,7 @@
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="home-swiper-content">
         <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
           <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">
@@ -39,7 +39,7 @@
     <div  
       v-if="!loginIofor"
       class="home-login" 
-      v-on:click="jumpToUrl(`http://${locationhost}/wx/selectmobile.aspx?openid=${openid}&history=http://${locationhost}/wx20/index.html`)"
+      v-on:click="jumpToLogin()"
     >
       <div class="login-content">
         <div class="login-img">
@@ -101,14 +101,7 @@
           </div>
           <div class="item-name">紧急救援</div>
         </div>
-        <div class="entry-item"  v-on:click="jumpToUrlWhetherLogin(
-          `http://gzh.stc.gov.cn/h5/#/newqueryLawless?type=nologin&openId=${
-            openid
-          }&headimgurl=${
-            encodeURIComponent(loginIofor.headImageUrl)
-          }&nickname=${
-            loginIofor.ContactName
-          }`)">
+        <div class="entry-item"  v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/weizhangfiner.html`)">
           <div class="entry-svg-content" style="background-color: #0ccaca">
             <violation color="#fff"/>
           </div>
@@ -305,6 +298,20 @@ export default {
   },
 
   methods: {
+    /**
+     * 跳转到登录页面
+     */
+    jumpToLogin() {
+      let openid = this.$store.state.user.openid;
+      
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
+
+      window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=http://${window.location.host}/wx20/index.html`;
+    },
+
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发
       if (selectIndex === 'my') { // 如果 标识为 my 则跳转到个人中心
         this.$router.push('/user');
@@ -327,7 +334,7 @@ export default {
         window.location.href = url;
 
       } else { // 登录页面
-        window.location.href = `http://${this.locationhost}/wx/selectmobile.aspx?openid=${this.openid}&history=http://${this.locationhost}/wx20/index.html`;
+        this.jumpToLogin();
       }
     }
   },

@@ -327,7 +327,7 @@ export default {
                         });
                     }
                     else {
-                        reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(error));
+                        reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(result));
                     }
                 });
             });
@@ -399,6 +399,7 @@ export default {
         },
 
         jumpToBy(ref) {
+            // 滚动距离 转换
             let offsetTop = 0;
             if (ref === '热门') {
                 let dom = this.$refs.hot;
@@ -411,7 +412,7 @@ export default {
             }
 
             this.mainHeight = this.$refs.main.childNodes[0].clientHeight;
-            this.$refs.main.scrollTop = offsetTop;
+            this.$refs.main.scrollTop = offsetTop; // 设置 滚动距离
 
             window.addEventListener('touchmove', this.handleTouchMove);
             window.addEventListener('touchend', this.handleTouchEnd);
