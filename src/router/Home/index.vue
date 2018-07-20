@@ -317,7 +317,15 @@ export default {
      * 跳转到优惠加油
      */
     jumpToGasStation() {
+      let info = this.$store.state.user.info;
       let openid = this.$store.state.user.openid;
+
+      if (!info) { // 表示没有用户信息
+        return Toast({
+          message: '请先注册会员',
+          duration: 1000
+        });
+      }
       
       // 判断顶部是否存在 openid
       if (!openid) {
@@ -331,8 +339,7 @@ export default {
           latitude: position.latitude,
         }).then(
           url => {
-            
-            Window.location.href = url;
+            window.location.href = url;
           },
           error => {
             alert(error)

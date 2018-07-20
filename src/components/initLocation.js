@@ -1,6 +1,6 @@
 import RequestedURL from './../config/RequestedURL.js';
 import stringConver from './../utils/stringConver';
-import { Indicator } from 'mint-ui';
+import { Toast, Indicator } from 'mint-ui';
 
 const ajaxs = {
     /**
@@ -87,165 +87,203 @@ const ajaxs = {
  * 初始化位置定位
  */
 let initLocation = function (self) {
-    /**
-     * H5 定位
-     * @return {Promise} resolve({
-     *   longitude: longitude,
-     *   latitude: latitude,
-     * }) reject(error)
-     */
-    let getHtml5Location = () => new Promise((resolve, reject) => {
-        window.navigator.geolocation.getCurrentPosition(
-
-            succeed => resolve({
-                longitude: succeed.coords.longitude,
-                latitude: succeed.coords.latitude,
-            }), 
-
-            error => reject("H5获取定位信息异常, 原因：" + JSON.stringify(error)), 
-
-            {
-                enableHighAccuracy: false,
-                timeout: 5000,
-                maximumAge: 60000
-            }
-        );
-    });
-
-    /**
-     * 微信 定位
-     * @return {Promise} resolve({
-     *   longitude: longitude,
-     *   latitude: latitude,
-     * }) reject(error)
-     */
-    let getWxLocation = () => new Promise((resolve, reject) => {
-        ajaxs.initJSSDK(['getLocation', 'openLocation'])
-        .then(
-            succeed => wx.getLocation({
-                type: 'wgs84',
-        
-                success(res) {
-                    resolve({
-                        longitude: res.longitude,
-                        latitude: res.latitude,
-                    });
-                },
-
-                fail(res) {
-                    reject("获取地理位置信息失败：" + res.errMsg);
-                },
-
-                cancel() {
-                    reject("获取地理位置信息被取消");
+    return new Promise(function (resolve, reject) {
+        /**
+         * H5 定位
+         * @return {Promise} resolve({
+         *   longitude: longitude,
+         *   latitude: latitude,
+         * }) reject(error)
+         */
+        let getHtml5Location = () => new Promise((resolve, reject) => {
+            window.navigator.geolocation.getCurrentPosition(
+    
+                succeed => resolve({
+                    longitude: succeed.coords.longitude,
+                    latitude: succeed.coords.latitude,
+                }), 
+    
+                error => reject("H5获取定位信息异常, 原因：" + JSON.stringify(error)), 
+    
+                {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 60000
                 }
-            }), 
-            error => reject(error)
-        )
-    });
-
-    /**
-     * 微信定位转换为百度定位
-     * @param {Object} position longitude latitude
-     * @return {Promise} resolve({
-     *   longitude: longitude,
-     *   latitude: latitude,
-     * }) reject(error)
-     */
-    let wxToBMapConver = position => new Promise((resolve, reject) => {
-        let ggPoint = new BMap.Point(position.longitude, position.latitude);
-        let convertor = new BMap.Convertor();
-        let pointArr = [];
-
-        pointArr.push(ggPoint);
-        convertor.translate(pointArr, 1, 5, result => {
-            if (result.status === 0) {
-                resolve({
-                    longitude: result.points[0].lng,
-                    latitude: result.points[0].lat,
-                });
-            }
-            else {
-                reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(result));
-            }
+            );
         });
-    });
+    
+        /**
+         * 微信 定位
+         * @return {Promise} resolve({
+         *   longitude: longitude,
+         *   latitude: latitude,
+         * }) reject(error)
+         */
+        let getWxLocation = () => new Promise((resolve, reject) => {
+            ajaxs.initJSSDK(['getLocation', 'openLocation'])
+            .then(
+                succeed => wx.getLocation({
+                    type: 'wgs84',
+            
+                    success(res) {
+                        resolve({
+                            longitude: res.longitude,
+                            latitude: res.latitude,
+                        });
+                    },
+    
+                    fail(res) {
+                        reject("获取地理位置信息失败：" + res.errMsg);
+                    },
+    
+                    cancel() {
+                        reject("获取地理位置信息被取消");
+                    }
+                }), 
+                error => reject(error)
+            )
+        });
+    
+        /**
+         * 微信定位转换为百度定位
+         * @param {Object} position longitude latitude
+         * @return {Promise} resolve({
+         *   longitude: longitude,
+         *   latitude: latitude,
+         * }) reject(error)
+         */
+        let wxToBMapConver = position => new Promise((resolve, reject) => {
+            let ggPoint = new BMap.Point(position.longitude, position.latitude);
+            let convertor = new BMap.Convertor();
+            let pointArr = [];
+    
+            pointArr.push(ggPoint);
+            convertor.translate(pointArr, 1, 5, result => {
+                if (result.status === 0) {
+                    resolve({
+                        longitude: result.points[0].lng,
+                        latitude: result.points[0].lat,
+                    });
+                }
+                else {
+                    reject('微信定位坐标转换为百度定位坐标失败, 原因: ' + JSON.stringify(result));
+                }
+            });
+        });
 
-    /**
-     * H5 定位 并且储存
-     */
-    let getSaveH5Handle = () => {
-        getHtml5Location() // H5 定位
-        .then(
-            position => saveLocation(position), 
-            error => {
+        /**
+         * H5 定位 并且储存
+         */
+        let getSaveH5Handle = () => {
+            getHtml5Location() // H5 定位
+            .then(
+                position => {
+                    saveLocation(position);
+                    getCityName(position);
+                    resolve(position);
+                }, 
+                error => {
+                    Indicator.close();
+                    console.error(error)
+                    Toast({
+                        message: error,
+                        duration: 5000
+                    });
+                    reject(error);
+                }
+            );
+        };
+
+        /**
+         * 根据定位换取城市名称
+         * @param {Object} position longitude latitude
+         */
+        let getCityName = position => {
+            ajaxs.getCityName(position) // 获取城市名称
+            .then(cityName => { // 成功
                 Indicator.close();
-                console.error(error)
+                self.$store.commit('initLocation', { // 存储到 vuex
+                    state: true,
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    cityname: cityName
+                });
+            }, error => {
+                Indicator.close();
                 Toast({
                     message: error,
                     duration: 5000
                 });
-            }
-        );
-    };
+                self.$store.commit('initLocation', {
+                    state: true,
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    cityname: '深圳', // 失败默认深圳
+                });
+            });
+        }
 
-    /**
-     * 存储定位
-     * @param {Object} position longitude latitude
-     */
-    let saveLocation = position => {
-        localStorage.setItem('longitude', position.longitude);
-        localStorage.setItem('latitude', position.latitude);
-        self.$store.commit('initLocation', { // 存储到 vuex
-            state: true,
-            latitude: position.latitude,
-            longitude: position.longitude,
-            cityname: '深圳' // 默认深圳
-        });
-        ajaxs.getCityName(position) // 获取城市名称
-        .then(cityName => { // 成功
-            Indicator.close();
+        /**
+         * 存储定位
+         * @param {Object} position longitude latitude
+         */
+        let saveLocation = position => {
+            localStorage.setItem('getPositionTime', new Date().getTime());
+            localStorage.setItem('longitude', position.longitude);
+            localStorage.setItem('latitude', position.latitude);
             self.$store.commit('initLocation', { // 存储到 vuex
                 state: true,
                 latitude: position.latitude,
                 longitude: position.longitude,
-                cityname: cityName
+                cityname: '深圳' // 默认深圳
             });
-        }, error => {
-            Indicator.close();
-            Toast({
-                message: error,
-                duration: 5000
-            });
-            self.$store.commit('initLocation', {
+        };
+
+        if ( // 如果离线缓存了位置信息
+            window.localStorage &&
+            window.localStorage.longitude &&
+            window.localStorage.latitude
+        ) {
+
+            let myposition = { longitude: window.localStorage.longitude, latitude: window.localStorage.latitude }
+            self.$store.commit('initLocation', { // 存储到 vuex
                 state: true,
-                latitude: position.latitude,
-                longitude: position.longitude,
-                cityname: '深圳', // 失败默认深圳
+                latitude: myposition.latitude,
+                longitude: myposition.longitude,
+                cityname: '深圳' // 默认深圳
             });
-        });
-    };
-
-    Indicator.open('正在获取定位...');
-    if (window.location.hostname === 'localhost') { // 本地环境
-        getSaveH5Handle() // H5 定位
-        
-    } else { // 线上环境
-        getWxLocation() // 微信定位
-        .then( // 微信成功
-            wxPosition => {
-                localStorage.setItem('longitude', wxPosition.longitude);
-                localStorage.setItem('latitude', wxPosition.latitude);
-
-                wxToBMapConver(wxPosition) // 微信定位转换为百度定位
-                .then(
-                    position => saveLocation(position), // 转换成功
-                    error => getSaveH5Handle() // 转换失败
-                )
-            },  
-            error => getSaveH5Handle() // 微信失败
-        );
-    }
+            getCityName(myposition); // 每次都会换取城市信息
+            if (parseInt(localStorage.getPositionTime) < (new Date().getTime() + 7200000)) { // 2小时失效
+                return resolve(myposition);
+            }
+        }
+    
+        Indicator.open('正在获取定位...');
+        if (window.location.hostname === 'localhost') { // 本地环境
+            getSaveH5Handle() // H5 定位
+            
+        } else { // 线上环境
+            getWxLocation() // 微信定位
+            .then( // 微信成功
+                wxPosition => {
+                    saveLocation(position); // 微信定位成功 存储一次
+                    getCityName(position);
+                    
+                    wxToBMapConver(wxPosition) // 微信定位转换为百度定位
+                    .then(
+                        position => {
+                            saveLocation(position);
+                            getCityName(position);
+                            resolve(position);
+                        }, // 转换成功
+                        error => getSaveH5Handle() // 转换失败
+                    )
+                },  
+                error => getSaveH5Handle() // 微信失败
+            );
+        }
+    });
 }
 
 export default initLocation;
