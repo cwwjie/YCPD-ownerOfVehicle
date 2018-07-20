@@ -194,16 +194,15 @@ let initLocation = function (self, isRefresh) {
                 position => {
                     saveLocation(position);
                     getCityName(position);
-                    resolveLocation(position);
+                    resolveLocation(position); // 整个项目 返回成功
                 }, 
                 error => {
-                    Indicator.close();
                     console.error(error);
                     Toast({
                         message: error,
                         duration: 5000
                     });
-                    rejectLocation(error);
+                    rejectLocation(error); // 整个项目 返回失败
                 }
             );
         };
@@ -274,26 +273,52 @@ let initLocation = function (self, isRefresh) {
 
         Indicator.open('正在获取定位...');
         if (window.location.hostname === 'localhost') { // 本地环境
-            getSaveH5Handle() // H5 定位
+            getHtml5Location() // H5 定位
+            .then(
+                position => {
+                    Indicator.close();
+                    saveLocation(position);
+                    getCityName(position); // 转换一下城市
+                    resolveLocation(position); // 整个项目 返回成功
+                }, 
+                error => {
+                    Indicator.close();
+                    console.error(error);
+                    Toast({
+                        message: error,
+                        duration: 5000
+                    });
+                    rejectLocation(error);
+                }
+            );
             
         } else { // 线上环境
             getWxLocation() // 微信定位
-            .then( // 微信成功
-                wxPosition => {
-                    saveLocation(position); // 微信定位成功 存储一次
-                    getCityName(position);
+            .then(
+                wxPosition => { // 微信定位成功
+
+                    saveLocation(wxPosition); // 微信定位成功 存储一次
+                    getCityName(wxPosition); // 转换一下城市
                     
                     wxToBMapConver(wxPosition) // 微信定位转换为百度定位
                     .then(
-                        position => {
-                            saveLocation(position);
-                            getCityName(position);
-                            resolveLocation(position);
+                        baiMapPosition => {
+                            Indicator.close();
+                            
+                            saveLocation(baiMapPosition); // 百度定位成功 存储一次
+                            getCityName(baiMapPosition); // 转换一下城市
+                            resolveLocation(baiMapPosition); // 整个项目 返回成功
                         }, // 转换成功
-                        error => getSaveH5Handle() // 转换失败
+                        error => {
+                            Indicator.close();
+                            getSaveH5Handle()
+                        } // 转换失败
                     )
                 },  
-                error => getSaveH5Handle() // 微信失败
+                error => { // 微信定位失败, 使用H5
+                    Indicator.close();
+                    getSaveH5Handle();
+                } // 微信失败
             );
         }
     });
