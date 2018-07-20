@@ -208,8 +208,7 @@ import Vue from 'vue';
 import { 
   Swipe, SwipeItem, Toast
 } from 'mint-ui';
-import 'mint-ui/lib/swipe/style.css';
-import 'mint-ui/lib/toast/style.css';
+import 'mint-ui/lib/style.min.css';
 Vue.component('mt-swipe', Swipe);
 Vue.component('mt-swipe-item', SwipeItem);
 
@@ -317,6 +316,7 @@ export default {
      * 跳转到优惠加油
      */
     jumpToGasStation() {
+      const _this = this;
       let info = this.$store.state.user.info;
       let openid = this.$store.state.user.openid;
 
@@ -346,31 +346,35 @@ export default {
           }
         )
       }
-
-      Toast({
-        message: '正在加载...',
-        duration: 1000
-      });
-      if (this.$store.state.user.position && this.$store.state.user.position.state === true) {
-        gasStationHandler({
-          latitude: this.$store.state.user.position.latitude,
-          longitude: this.$store.state.user.position.longitude
-        });
-      } else {
-        if (
-          window.localStorage && 
-          window.localStorage.longitude &&
-          window.localStorage.latitude
-        ) {
+      
+      initLocation(this, true)
+      .then(
+        position => {
           gasStationHandler({
-            latitude: window.localStorage.latitude,
-            longitude: window.localStorage.longitude
+            latitude: position.latitude,
+            longitude: position.longitude
+          });
+      }, error => {
+        if (_this.$store.state.user.position && _this.$store.state.user.position.state === true) {
+          gasStationHandler({
+            latitude: _this.$store.state.user.position.latitude,
+            longitude: _this.$store.state.user.position.longitude
           });
         } else {
-          initLocation(this);
-          alert('位置信息加载失败, 请稍后再试');
+          if (
+            window.localStorage && 
+            window.localStorage.longitude &&
+            window.localStorage.latitude
+          ) {
+            gasStationHandler({
+              latitude: window.localStorage.latitude,
+              longitude: window.localStorage.longitude
+            });
+          } else {
+            alert('请打开养车频道公众号-设置-提供定位信息.');
+          }
         }
-      }
+      });
     },
 
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发

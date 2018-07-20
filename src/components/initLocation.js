@@ -76,6 +76,11 @@ const ajaxs = {
                         signature: wxConfig.signature,
                         jsApiList: jsApiList
                     });
+
+                    // 5秒超时
+                    setTimeout(function () {
+                        reject('获取权限验证配置信息超时!');
+                    }, 5000);
                 }, 
                 error => reject(error)
             );
@@ -85,9 +90,10 @@ const ajaxs = {
 
 /**
  * 初始化位置定位
+ * @param {boolean} isRefresh 是否刷新定位
  */
-let initLocation = function (self) {
-    return new Promise(function (resolve, reject) {
+let initLocation = function (self, isRefresh) {
+    return new Promise(function (resolveLocation, rejectLocation) {
         /**
          * H5 定位
          * @return {Promise} resolve({
@@ -123,24 +129,31 @@ let initLocation = function (self) {
         let getWxLocation = () => new Promise((resolve, reject) => {
             ajaxs.initJSSDK(['getLocation', 'openLocation'])
             .then(
-                succeed => wx.getLocation({
-                    type: 'wgs84',
-            
-                    success(res) {
-                        resolve({
-                            longitude: res.longitude,
-                            latitude: res.latitude,
-                        });
-                    },
-    
-                    fail(res) {
-                        reject("获取地理位置信息失败：" + res.errMsg);
-                    },
-    
-                    cancel() {
-                        reject("获取地理位置信息被取消");
-                    }
-                }), 
+                succeed => {
+                    wx.getLocation({
+                        type: 'wgs84',
+                
+                        success(res) {
+                            resolve({
+                                longitude: res.longitude,
+                                latitude: res.latitude,
+                            });
+                        },
+        
+                        fail(res) {
+                            reject("获取地理位置信息失败：" + res.errMsg);
+                        },
+        
+                        cancel() {
+                            reject("获取地理位置信息被取消");
+                        }
+                    });
+                    
+                    // 5秒超时
+                    setTimeout(function () {
+                        reject('获取地理位置信息超时!');
+                    }, 5000);
+                }, 
                 error => reject(error)
             )
         });
@@ -181,16 +194,16 @@ let initLocation = function (self) {
                 position => {
                     saveLocation(position);
                     getCityName(position);
-                    resolve(position);
+                    resolveLocation(position);
                 }, 
                 error => {
                     Indicator.close();
-                    console.error(error)
+                    console.error(error);
                     Toast({
                         message: error,
                         duration: 5000
                     });
-                    reject(error);
+                    rejectLocation(error);
                 }
             );
         };
@@ -202,7 +215,6 @@ let initLocation = function (self) {
         let getCityName = position => {
             ajaxs.getCityName(position) // 获取城市名称
             .then(cityName => { // 成功
-                Indicator.close();
                 self.$store.commit('initLocation', { // 存储到 vuex
                     state: true,
                     latitude: position.latitude,
@@ -210,7 +222,6 @@ let initLocation = function (self) {
                     cityname: cityName
                 });
             }, error => {
-                Indicator.close();
                 Toast({
                     message: error,
                     duration: 5000
@@ -255,10 +266,12 @@ let initLocation = function (self) {
             });
             getCityName(myposition); // 每次都会换取城市信息
             if (parseInt(localStorage.getPositionTime) < (new Date().getTime() + 7200000)) { // 2小时失效
-                return resolve(myposition);
+                if (!isRefresh) { // 如果刷新, 则不 resolve
+                    return resolveLocation(myposition);
+                }
             }
         }
-    
+
         Indicator.open('正在获取定位...');
         if (window.location.hostname === 'localhost') { // 本地环境
             getSaveH5Handle() // H5 定位
@@ -275,7 +288,7 @@ let initLocation = function (self) {
                         position => {
                             saveLocation(position);
                             getCityName(position);
-                            resolve(position);
+                            resolveLocation(position);
                         }, // 转换成功
                         error => getSaveH5Handle() // 转换失败
                     )
