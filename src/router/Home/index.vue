@@ -29,7 +29,7 @@
       <div class="home-swiper-content">
         <mt-swipe :auto="4000" :style="`height: ${bannerHeight}px; width: 100%`">
           <mt-swipe-item v-for="(value, key) in swiperlist" :key="key">
-            <img :alt="value.alt" :src="value.src"/>
+            <img @click="value.click" :alt="value.alt" :src="value.src"/>
           </mt-swipe-item>
         </mt-swipe>
       </div>
@@ -270,10 +270,17 @@ export default {
         window.innerWidth
       ) / 375 * 160,
 
-      swiperlist: [{ // 轮播图 每隔一个小时强制刷新一次
-        alt: "养车频道-banner",
-        src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
-      }],
+      swiperlist: [
+        { // 轮播图 每隔一个小时强制刷新一次
+          alt: "养车频道-banner",
+          src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
+          click: this.jumpToGasStation
+        },{ // 轮播图 每隔一个小时强制刷新一次
+          alt: "养车频道-banner",
+          src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner02.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
+          click: () => this.jumpToUrlWhetherLogin('http://picc.hotgz.com/Merchant/Merchanthome.html?id=180724010002017319')
+        }
+      ],
 
       locationhost: window.location.host
     }
@@ -389,7 +396,7 @@ export default {
 
     showNotCompleted() { // 弹出没有完成的提示
       Toast({
-        message: '即将上线',
+        message: '升级中',
         duration: 1000
       });
     },

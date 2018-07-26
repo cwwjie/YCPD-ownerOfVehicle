@@ -353,7 +353,7 @@ export default {
 
     showNotCompleted(message) { // 弹出提示
       Toast({
-        message: message ? message : '即将上线',
+        message: message ? message : '升级中',
         duration: 1000
       });
     }
