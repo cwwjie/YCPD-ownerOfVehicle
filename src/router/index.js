@@ -13,7 +13,13 @@ const routes = [
   }, {
     path: '/city',
     component: () => import('@/router/Home/city'), // 主页 首屏
+    name: 'city',
     meta: { title: '选择地区' },
+  }, {
+    path: '/redirect-gas',
+    component: () => import('@/router/Home/redirect-gas'), // 加油优惠 导航页面 
+    name: 'redirect-gas',
+    meta: { title: '养车频道' },
   }, {
     path: '/user/index',
     alias: ['/user/', '/user'],
