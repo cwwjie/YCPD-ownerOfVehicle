@@ -9,7 +9,7 @@ const routes = [
     alias: ['/home', '/'],
     name: 'home',
     component: () => import('@/router/Home/index'), // 主页 首屏
-    meta: { title: '车主入口' },
+    meta: { title: '养车频道' },
   }, {
     path: '/city',
     component: () => import('@/router/Home/city'), // 主页 首屏

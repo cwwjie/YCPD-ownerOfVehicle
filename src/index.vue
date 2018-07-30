@@ -13,7 +13,7 @@ export default {
 
   // Vue 成功加载
   mounted() {
-    this.destroyBackups(); // 删除备份策略
+    // this.destroyBackups(); // 删除备份策略
 
     initLocation(this);
     

@@ -1,5 +1,6 @@
 // 真实环境请求的链接
 let RequestedURL = {
+    ichebaoyang: 'http://wx.ichebaoyang.com',
     ycpdapi: 'http://ycpdapi.hotgz.com',
     picc: 'http://picc.hotgz.com',
 

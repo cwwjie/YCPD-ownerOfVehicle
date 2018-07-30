@@ -123,13 +123,6 @@ const ajaxs = {
      * }) reject(error)
      */
     getStationHandler: param => new Promise((resolve, reject) => {
-        console.log(`${RequestedURL.getStationHandler}?action=GetStation&OpenID=${
-            param.openid
-        }&lattude=${
-            param.latitude
-        }&lontude=${
-            param.longitude
-        }`)
         $.ajax({
             url: `${RequestedURL.getStationHandler}?action=GetStation&OpenID=${
                 param.openid
@@ -147,7 +140,6 @@ const ajaxs = {
                 }
             },
             error(error) {
-                console.log(error)
                 reject(`通过 openid 与位置信息 获取 优惠加油链接发生错误!, 原因: ${error.statusText}`);
             }
         });

@@ -59,7 +59,7 @@ export default {
             }
 
             if (!info) { // 表示没有用户信息 请先注册
-                window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${encodeURIComponent(`http://${window.location.host}/wx20/#/redirect-gas`)}`;
+                return window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${`http://${window.location.host}/wx20/#/redirect-gas`}`;
             }
 
             let gasStationHandler = position => {
@@ -119,7 +119,7 @@ export default {
             }
 
             if (!info) { // 表示没有用户信息 请先注册
-                window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${encodeURIComponent(`http://${window.location.host}/wx20/#/redirect-gas`)}`;
+                return window.location.href = `http://${window.location.host}/wx/selectmobile.aspx?openid=${openid}&history=${`http://${window.location.host}/wx20/#/redirect-gas`}`;
             }
 
             // 判断是否正式环境
@@ -151,6 +151,7 @@ export default {
 
     .redirect-gas-background {
         width: 100%;
+        background: #fcecd5;
 
         img {
             display: block;
