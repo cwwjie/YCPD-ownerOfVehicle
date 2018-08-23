@@ -81,7 +81,7 @@ const ajaxs = {
                         timestamp: wxConfig.timestamp,
                         nonceStr: wxConfig.nonceStr,
                         signature: wxConfig.signature,
-                        jsApiList: jsApiList
+                        jsApiList:jsApiList
                     });
                 }, 
                 error => reject(error)
@@ -124,17 +124,17 @@ const ajaxs = {
      */
     getStationHandler: param => new Promise((resolve, reject) => {
         $.ajax({
-            url: `${RequestedURL.getStationHandler}?action=GetStation&OpenID=${
-                param.openid
-            }&lattude=${
-                param.latitude
-            }&lontude=${
-                param.longitude
-            }`,
-            type: "get",
+            url: RequestedURL.getStationHandler,
+            type: "post",
+            data: {
+                action: "GetMembercard",
+                lattude: param.lattude,
+                lontude: param.lontude,
+                openid: param.openid
+            },
             success(data) {
-                if (data && data.Msg === '') {
-                    resolve(data.Url);
+                if(data.bot == true){
+                    resolve(data.url);
                 } else {
                     reject(`通过 openid 与位置信息 获取 优惠加油链接发生错误!, 原因: ${JSON.stringify(data)}`);
                 }

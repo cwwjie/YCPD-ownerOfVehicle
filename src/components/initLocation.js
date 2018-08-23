@@ -12,7 +12,7 @@ const ajaxs = {
         let target = '获取所在城市名称';
 
         $.ajax({
-            url: `http://api.map.baidu.com/geocoder/v2/?ak=vA8jUBvkDTjv4dMk9u2CeDlw&callback=renderReverse&location=${position.latitude},${position.longitude}&output=json&pois=1`,
+            url: `http://api.map.baidu.com/geocoder/v2/?ak=enYTT6LMF8UAQGe9xmiOKGsw&callback=renderReverse&location=${position.latitude},${position.longitude}&output=json&pois=1`,
             type: "get",
             dataType: "jsonp",
             jsonp: "callback",
