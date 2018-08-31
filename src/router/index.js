@@ -57,7 +57,13 @@ const routes = [
     name: 'ticketListDetail',
     component: () => import('@/router/Ticket/list-detail'), // 购买券详情
     meta: { title: '购买券详情' },
+  },{
+    path: '/jumpPage',
+    name: 'jumpPage',
+    component: () => import('@/router/Home/jumpPage'), // 跳转页
+    meta: { title: '正在跳转' },
   },
+
 ];
 
 let router = new Router({

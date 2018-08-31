@@ -324,7 +324,7 @@ export default {
 
     tabbarClick(selectIndex) { // 底部 tabbar 点击触发
       if (selectIndex === 'home') { // 如果 标识为 home 则跳转到 主页
-        this.$router.push('/home');
+        this.$router.push({path:'/home'});
       }
     },
 
