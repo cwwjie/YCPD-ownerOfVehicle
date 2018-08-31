@@ -796,8 +796,6 @@ export default {
        height:20px;
        line-height: 20px;
        position:relative;
-       span {
-       }
        img {
          width:12px;
          height:12px;
