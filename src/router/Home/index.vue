@@ -579,32 +579,19 @@ export default {
       window.location.href = url;
     },
 
-    showNotCompleted() {
+    showNotCompleted(ret) {
       // 弹出没有完成的提示
       // let info = this.$store.state.user.info;
-      //   let openid = this.$store.state.user.openid;
-      //   if(ret ==1){
-      //        $.ajax({
-      //             url:'http://store.demo.ichebaoyang.com/wx/Handler.ashx',
-      //             type: "post",
-      //             data: {
-      //                 action:"GetMembercard",
-      //                 lattude: this.latitude,
-      //                 lontude: this.longitude,
-      //                 openid:openid
-      //             },
-      //             success: function (datas) {
-      //               if(datas.bot == true){
-      //                   window.location.href = datas.url
-      //               }
-      //             },
-      //        })
-      //   }else  {
-      Toast({
-        message: "升级中",
-        duration: 1000
-      });
-      // }
+        // let openid = this.$store.state.user.openid;
+        if(ret ==1){
+            window.location.href = 'http://front.demo.hotgz.com/stopCar'
+            
+        }else  {
+          Toast({
+            message: "升级中",
+            duration: 1000
+          });
+      }
     },
 
     jumpToUrlWhetherLogin(url) {
