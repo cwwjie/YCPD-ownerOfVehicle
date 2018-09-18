@@ -55,6 +55,11 @@ let RequestedURL = {
      * @param {contentType} json application/json; charset=utf-8
      */
     getStationHandler: `http://${window.location.host}/wx/Handler.ashx`,
+
+    /**
+     * 停车场
+     */
+    stopCar: 'http://picc.hotgz.com/wx20',
 }
 
 /**
@@ -63,7 +68,7 @@ let RequestedURL = {
  * 测试环境有时候需要重写方法, 方便测试, 生产环境不会执行下面方法
  * 此方法可以随意改动，
  */
-if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_ENV === 'development') {
+if (window.location.host === 'store.demo.icheboayang.com' || process.env.NODE_ENV === 'development') {
     RequestedURL.getUserInfor = 'http://api.demo.hotgz.com/Customer/GetCustomerInfoByOpenID';
     RequestedURL.getHeadImageUrl = 'http://store.demo.ichebaoyang.com/GetOpenID.aspx';
     RequestedURL.getOpenidCode = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
@@ -71,6 +76,7 @@ if (window.location.host === 'store.demo.ichebaoyang.com' || process.env.NODE_EN
     RequestedURL.getCity = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getWxConfig = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getStationHandler = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
+    RequestedURL.stopCar = 'http://front.demo.hotgz.com'; // 停车场
 }
 
 export default RequestedURL

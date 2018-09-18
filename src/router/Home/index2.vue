@@ -59,58 +59,58 @@
 
         <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/selectWashcar.html`)">
           <div class="entry-svg-content" style="background-color: #3eb7fc">
-            <CARWASH color="#fff"/>
-             <!-- <img src="../../assets/img/洗车美容 copy@2x.png"/> -->
+            <!-- <CARWASH color="#fff"/> -->
+             <img src="../../assets/img/洗车美容 copy@2x.png"/>
           </div>
           <div class="item-name">洗车美容</div>
         </div>
         <div class="entry-item" v-on:click="jumpToGasStation()">
           <div class="entry-svg-content" style="background-color: #41b287">
-            <GAS2 color="#fff"/>
-            <!-- <img src="../../assets/img/优惠加油 copy@2x.png"/> -->
+            <!-- <GAS2 color="#fff"/> -->
+            <img src="../../assets/img/优惠加油 copy@2x.png"/>
           </div>
           <div class="item-name">优惠加油</div>
         </div>
         <div class="entry-item" v-on:click="showNotCompleted(1)">
           <div class="entry-svg-content" style="background-color: #ff6540">
-            <park color="#fff"/>
-            <!-- <img src="../../assets/img/停车服务 copy@2x.png"/> -->
+            <!-- <park color="#fff"/> -->
+            <img src="../../assets/img/停车服务 copy@2x.png"/>
           </div>
           <div class="item-name">停车服务</div>
         </div>
         <div class="entry-item" v-on:click="showNotCompleted">
           <div class="entry-svg-content" style="background-color: #f9a825">
-            <charge color="#fff"/>
-            <!-- <img src="../../assets/img/快速充电 copy@2x.png"/> -->
+            <!-- <charge color="#fff"/> -->
+            <img src="../../assets/img/快速充电 copy@2x.png"/>
           </div>
           <div class="item-name">快速充电</div>
         </div>
 
         <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=baoyang`)">
           <div class="entry-svg-content" style="background-color: #fadb14">
-            <Vehiclemaintenance color="#fff"/>
-            <!-- <img src="../../assets/img/放心保养 copy@2x.png"/> -->
+            <!-- <Vehiclemaintenance color="#fff"/> -->
+            <img src="../../assets/img/放心保养 copy@2x.png"/>
           </div>
           <div class="item-name">放心保养</div>
         </div>
         <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/selectMaintenance.html`)">
           <div class="entry-svg-content" style="background-color: #ec499c">
-            <nurse color="#fff"/>
-            <!-- <img src="../../assets/img/维修养护 copy@2x.png"/> -->
+            <!-- <nurse color="#fff"/> -->
+            <img src="../../assets/img/维修养护 copy@2x.png"/>
           </div>
           <div class="item-name">维修养护</div>
         </div>
         <div class="entry-item" v-on:click="showNotCompleted">
           <div class="entry-svg-content" style="background-color: #3eb6fc">
-            <rescue color="#fff"/>
-            <!-- <img src="../../assets/img/紧急救援 copy@2x.png"/> -->
+            <!-- <rescue color="#fff"/> -->
+            <img src="../../assets/img/紧急救援 copy@2x.png"/>
           </div>
           <div class="item-name">紧急救援</div>
         </div>
         <div class="entry-item"  v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/weizhangfiner.html`)">
           <div class="entry-svg-content" style="background-color: #0ccaca">
-            <violation color="#fff"/>
-             <!-- <img src="../../assets/img/违章查询 copy@2x.png"/> -->
+            <!-- <violation color="#fff"/> -->
+             <img src="../../assets/img/违章查询 copy@2x.png"/>
           </div>
           <div class="item-name">违章查询</div>
         </div>
@@ -119,7 +119,7 @@
     </div>
 
     <!-- 新增四个板块入口 -->
-    <div class="home-fourPlate">
+    <!-- <div class="home-fourPlate">
       <div class="fourPlate-top main-flex-start">
         <div class="fourPlate-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=pay`)">
           <div class="fourPlate-left">
@@ -148,9 +148,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 新增的两个保险入口 -->
-    <!-- <div id="home-twoPlate">
+    <div id="home-twoPlate">
       <div @click="tips">
         <img class="img" src="../../assets/img/PICC_logo@2x.png">
         <p>
@@ -171,10 +171,10 @@
       <img class="img1" src="../../assets/img/icon_info@2x.png">
       <span>您有1个订单未评价</span>
       <img class="img2" src="../../assets/img/Path 2@2x.png" alt="">
-    </div> -->
+    </div>
 
     <!-- 服务流程 -->
-    <div class="home-process">
+    <!-- <div class="home-process">
       <div class="process-title">
         <div class="title-main">服务流程</div>
         <div class="title-subtitle" v-on:click="jumpToUrl('http://picc.hotgz.com/wx/piccin.aspx?type=baoyang')">
@@ -221,7 +221,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 底部 TabBar -->
     <tabbar 
@@ -358,7 +358,8 @@ export default {
         RequestedURL.getWxConfig
       }?action=WxConfig&url=${encodeURIComponent(window.location.href)}`,
       type: "get",
-      success: function(datas) {}
+      success: function(datas) {
+      }
       // error(error) {
       //     reject(`向服务器获取权限验证配置信息发生错误!, 原因: ${error}`);
       // }
@@ -395,8 +396,8 @@ export default {
 
   methods: {
     //新增功能的点击提示升级中
-    tips() {
-      Toast({
+    tips(){
+       Toast({
         message: "升级中",
         duration: 1000
       });
@@ -567,7 +568,7 @@ export default {
       if (selectIndex === "my") {
         // 如果 标识为 my 则跳转到个人中心
         this.$router.push({
-          path: "/user"
+          path:'/user'
         });
       }
     },
@@ -580,25 +581,22 @@ export default {
     showNotCompleted(ret) {
       // 弹出没有完成的提示
       // let info = this.$store.state.user.info;
-      // let openid = this.$store.state.user.openid;
-      if (ret == 1) {
-        if (this.loginIofor == false) {
-          // 登录页面
-          this.jumpToLogin();
-        } else {
-          initLocation(this, true).then(position => {
-            window.location.href = `${
-              RequestedURL.stopCar
-            }/stopCar/index.html#/?tel=${this.loginIofor.Mobile}&lat=${
-              position.latitude
-            }&lng=${position.longitude}`;
+        // let openid = this.$store.state.user.openid;
+        if(ret ==1){
+         if(this.loginIofor==false){
+             // 登录页面
+           this.jumpToLogin();
+         }else {
+             initLocation(this, true).then(position => {
+                   window.location.href = `${RequestedURL.stopCar}/stopCar/#/?tel=${this.loginIofor.Mobile}&lat=${position.latitude}&lng=${position.longitude}`
+              })
+          
+         }  
+        }else  {
+          Toast({
+            message: "升级中",
+            duration: 1000
           });
-        }
-      } else {
-        Toast({
-          message: "升级中",
-          duration: 1000
-        });
       }
     },
 
@@ -764,12 +762,12 @@ export default {
         width: 44px;
         height: 44px;
         border-radius: 20px;
-        background: #fff;
-
+         background: #fff;
+        
         img {
-          width: 46px;
-          height: 46px;
-          border: none;
+          width:46px;
+          height:46px;
+          border:none;
         }
       }
 
@@ -784,39 +782,39 @@ export default {
 }
 //预约模块
 #home-twoPlate {
-  width: 100%;
-  height: 100px;
-  margin-top: 15px;
+  width:100%;
+  height:100px;
+  margin-top:15px;
   div {
-    width: 49%;
-    height: 100%;
-    background-color: #fff;
-    text-align: center;
-    padding: 10px 0px 16px 0px;
-    box-sizing: border-box;
-    font-size: 14px;
-    color: #666;
-    .img {
-      width: 100px;
-      height: 50px;
-    }
-    p {
-      height: 20px;
-      line-height: 20px;
-      position: relative;
-      img {
-        width: 12px;
-        height: 12px;
-        position: absolute;
-        top: 4px;
-      }
-    }
+     width:49%;
+     height:100%;
+     background-color: #fff;
+     text-align: center;
+     padding:10px 0px 16px 0px;
+     box-sizing: border-box;
+     font-size:14px;
+     color:#666;
+     .img {
+       width:100px;
+       height:50px;
+     }
+     p {
+       height:20px;
+       line-height: 20px;
+       position:relative;
+       img {
+         width:12px;
+         height:12px;
+         position:absolute;
+         top:4px;
+       }
+     }
   }
   div:nth-child(1) {
-    float: left;
+    float:left;
   }
   div:nth-child(2) {
-    float: right;
+    float:right;
   }
 }
 
@@ -826,183 +824,183 @@ export default {
   left: 2%;
   height: 36px;
   width: 96%;
-  background-color: #ffeaae;
+  background-color: #FFEAAE;
   border-radius: 10px;
-  border: 1px solid rgba(255, 234, 174, 1);
+  border: 1px solid rgba(255,234,174,1);
   margin-top: 30px;
   text-align: left;
   line-height: 36px;
   font-size: 14px;
 
   img {
-    width: 20px;
-    height: 20px;
+    width:20px;
+    height:20px;
   }
-
+  
   .img1 {
     position: absolute;
     top: 8px;
     left: 40px;
   }
-
+  
   span {
     margin-left: 80px;
-    color: #ff1616;
+    color: #FF1616;
   }
-
+  
   .img2 {
-    position: absolute;
-    right: 20px;
-    top: 8px;
+     position: absolute;
+     right: 20px;
+     top: 8px;
   }
 }
 
 // 新增四个板块入口
-.home-fourPlate {
-  margin-top: 15px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+// .home-fourPlate {
+//   margin-top: 15px;
+//   border-top: 1px solid #ddd;
+//   border-bottom: 1px solid #ddd;
+//   background: #fff;
 
-  .fourPlate-top,
-  .fourPlate-bottom {
-    .fourPlate-item {
-      position: relative;
-      width: 50%;
+//   .fourPlate-top,
+//   .fourPlate-bottom {
+//     .fourPlate-item {
+//       position: relative;
+//       width: 50%;
 
-      .item-depict {
-        padding: 10px;
+//       .item-depict {
+//         padding: 10px;
 
-        img {
-          display: block;
-          margin: 0px;
-          padding: 0px;
-          width: 100%;
-          height: 100%;
-          border-radius: 2px;
-          // 这个加上去也挺好看
-          // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-          // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-        }
-      }
-    }
-  }
+//         img {
+//           display: block;
+//           margin: 0px;
+//           padding: 0px;
+//           width: 100%;
+//           height: 100%;
+//           border-radius: 2px;
+//           // 这个加上去也挺好看
+//           // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+//           // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+//         }
+//       }
+//     }
+//   }
 
-  .fourPlate-top {
-    border-bottom: 1px solid #ddd;
-  }
+//   .fourPlate-top {
+//     border-bottom: 1px solid #ddd;
+//   }
 
-  .fourPlate-left {
-    width: 100%;
-    height: 100%;
-    border-right: 1px solid #ddd;
-  }
-}
+//   .fourPlate-left {
+//     width: 100%;
+//     height: 100%;
+//     border-right: 1px solid #ddd;
+//   }
+// }
 
 // 服务流程
-.home-process {
-  margin-top: 15px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+// .home-process {
+//   margin-top: 15px;
+//   border-top: 1px solid #ddd;
+//   border-bottom: 1px solid #ddd;
+//   background: #fff;
 
-  .process-title {
-    position: relative;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #ddd;
+//   .process-title {
+//     position: relative;
+//     height: 40px;
+//     line-height: 40px;
+//     border-bottom: 1px solid #ddd;
 
-    .title-main {
-      padding-left: 15px;
-    }
+//     .title-main {
+//       padding-left: 15px;
+//     }
 
-    .title-subtitle {
-      position: absolute;
-      top: 0px;
-      right: 15px;
+//     .title-subtitle {
+//       position: absolute;
+//       top: 0px;
+//       right: 15px;
 
-      span {
-        font-size: 14px;
-        color: #606266;
-        padding-right: 5px;
-      }
+//       span {
+//         font-size: 14px;
+//         color: #606266;
+//         padding-right: 5px;
+//       }
 
-      svg {
-        position: relative;
-        top: 4.5px;
-        color: #606266;
-      }
-    }
-  }
+//       svg {
+//         position: relative;
+//         top: 4.5px;
+//         color: #606266;
+//       }
+//     }
+//   }
 
-  .process-main {
-    position: relative;
+//   .process-main {
+//     position: relative;
 
-    .main-description {
-      overflow: hidden;
-      padding-top: 15px;
+//     .main-description {
+//       overflow: hidden;
+//       padding-top: 15px;
 
-      > div {
-        float: left;
-        width: 25%;
-        font-size: 12px;
-        text-align: center;
-      }
-    }
+//       > div {
+//         float: left;
+//         width: 25%;
+//         font-size: 12px;
+//         text-align: center;
+//       }
+//     }
 
-    .main-dot-line {
-      position: relative;
-      padding-top: 15px;
-      padding-bottom: 25px;
-      border-bottom: 1px solid #ddd;
+//     .main-dot-line {
+//       position: relative;
+//       padding-top: 15px;
+//       padding-bottom: 25px;
+//       border-bottom: 1px solid #ddd;
 
-      .dot-content {
-        position: relative;
-        top: -4px;
-        float: left;
-        width: 25%;
-        z-index: 1;
+//       .dot-content {
+//         position: relative;
+//         top: -4px;
+//         float: left;
+//         width: 25%;
+//         z-index: 1;
 
-        .dot {
-          margin: auto;
-          width: 6px;
-          height: 6px;
-          border-radius: 6px;
-          background: #fff;
-          border: 2px solid #f44336;
-        }
-      }
+//         .dot {
+//           margin: auto;
+//           width: 6px;
+//           height: 6px;
+//           border-radius: 6px;
+//           background: #fff;
+//           border: 2px solid #f44336;
+//         }
+//       }
 
-      .line {
-        position: absolute;
-        width: 95%;
-        left: 50%;
-        margin-left: -47.5%;
-        height: 2px;
-        background: #f44336;
-      }
-    }
+//       .line {
+//         position: absolute;
+//         width: 95%;
+//         left: 50%;
+//         margin-left: -47.5%;
+//         height: 2px;
+//         background: #f44336;
+//       }
+//     }
 
-    .process-points {
-      padding: 15px;
+//     .process-points {
+//       padding: 15px;
 
-      .points-item {
-        padding-bottom: 5px;
-        font-size: 12px;
-        line-height: 20px;
-        color: #909399;
+//       .points-item {
+//         padding-bottom: 5px;
+//         font-size: 12px;
+//         line-height: 20px;
+//         color: #909399;
 
-        > svg {
-          position: relative;
-          top: 1.5px;
-          padding-right: 5px;
-        }
+//         > svg {
+//           position: relative;
+//           top: 1.5px;
+//           padding-right: 5px;
+//         }
 
-        a {
-          color: #409eff;
-        }
-      }
-    }
-  }
-}
+//         a {
+//           color: #409eff;
+//         }
+//       }
+//     }
+//   }
+// }
 </style>
