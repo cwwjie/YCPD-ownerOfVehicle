@@ -6,7 +6,7 @@
 
 import RequestedURL from './config/RequestedURL.js';
 import loadPageVar from './utils/loadPageVar.js';
-import initLocation from './components/initLocation.js';
+import html5WxBMapLocation from './components/html5WxBMapLocation.js';
 
 export default {
   name: 'Index',
@@ -15,7 +15,7 @@ export default {
   mounted() {
     // this.destroyBackups(); // 删除备份策略
 
-    initLocation(this);
+    html5WxBMapLocation(this);
     
     if (process.env.NODE_ENV === 'development') { // 测试环境
 

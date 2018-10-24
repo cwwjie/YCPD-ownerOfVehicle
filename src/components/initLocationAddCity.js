@@ -109,7 +109,7 @@ let initLocation = function (self, isRefresh) {
                     latitude: succeed.coords.latitude,
                 }), 
     
-                error => reject("定位信息异常, 原因：H5获取失败" + JSON.stringify(error)), 
+                error => reject("H5获取定位信息异常, 原因：" + JSON.stringify(error)), 
     
                 {
                     enableHighAccuracy: false,
@@ -193,6 +193,7 @@ let initLocation = function (self, isRefresh) {
             .then(
                 position => {
                     saveLocation(position);
+                    getCityName(position);
                     resolveLocation(position); // 整个项目 返回成功
                 }, 
                 error => {
@@ -249,22 +250,20 @@ let initLocation = function (self, isRefresh) {
             });
         };
 
-        // 判断是否 离线缓存了位置信息
-        if (
+        if ( // 如果离线缓存了位置信息
             window.localStorage &&
             window.localStorage.longitude &&
             window.localStorage.latitude
         ) {
-            // 如果缓冲位置信息 存储到 vuex
+
             let myposition = { longitude: window.localStorage.longitude, latitude: window.localStorage.latitude }
-            self.$store.commit('initLocation', { 
+            self.$store.commit('initLocation', { // 存储到 vuex
                 state: true,
                 latitude: myposition.latitude,
                 longitude: myposition.longitude,
                 cityname: '深圳' // 默认深圳
             });
-
-            // 判断是否失效
+            getCityName(myposition); // 每次都会换取城市信息
             if (parseInt(localStorage.getPositionTime) < (new Date().getTime() + 7200000)) { // 2小时失效
                 if (!isRefresh) { // 如果刷新, 则不 resolve
                     return resolveLocation(myposition);
@@ -272,16 +271,14 @@ let initLocation = function (self, isRefresh) {
             }
         }
 
-        // 表示失效的情况下
         Indicator.open('正在获取定位...');
-
-        // 判断是否本地坏境
         if (window.location.hostname === 'localhost') { // 本地环境
             getHtml5Location() // H5 定位
             .then(
                 position => {
                     Indicator.close();
                     saveLocation(position);
+                    getCityName(position); // 转换一下城市
                     resolveLocation(position); // 整个项目 返回成功
                 }, 
                 error => {
@@ -295,21 +292,33 @@ let initLocation = function (self, isRefresh) {
                 }
             );
             
-        } else { 
-            // 线上环境情况
-
+        } else { // 线上环境
             getWxLocation() // 微信定位
             .then(
                 wxPosition => { // 微信定位成功
-                    Indicator.close();
+
                     saveLocation(wxPosition); // 微信定位成功 存储一次
-                    resolveLocation(wxPosition); // 整个项目 返回成功
+                    getCityName(wxPosition); // 转换一下城市
+                    
+                    wxToBMapConver(wxPosition) // 微信定位转换为百度定位
+                    .then(
+                        baiMapPosition => {
+                            Indicator.close();
+                            
+                            saveLocation(baiMapPosition); // 百度定位成功 存储一次
+                            getCityName(baiMapPosition); // 转换一下城市
+                            resolveLocation(baiMapPosition); // 整个项目 返回成功
+                        }, // 转换成功
+                        error => {
+                            Indicator.close();
+                            getSaveH5Handle()
+                        } // 转换失败
+                    )
                 },  
-                error => { 
-                    // 微信定位失败, 使用H5
+                error => { // 微信定位失败, 使用H5
                     Indicator.close();
                     getSaveH5Handle();
-                }
+                } // 微信失败
             );
         }
     });

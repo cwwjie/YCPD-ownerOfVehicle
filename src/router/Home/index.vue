@@ -71,14 +71,14 @@
           </div>
           <div class="item-name">优惠加油</div>
         </div>
-        <div class="entry-item" v-on:click="showNotCompleted(1)">
+        <div class="entry-item" v-on:click="parkService">
           <div class="entry-svg-content" style="background-color: #ff6540">
             <park color="#fff"/>
             <!-- <img src="../../assets/img/停车服务 copy@2x.png"/> -->
           </div>
           <div class="item-name">停车服务</div>
         </div>
-        <div class="entry-item" v-on:click="showNotCompleted">
+        <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx20/Web_Charge/index.html`)">
           <div class="entry-svg-content" style="background-color: #f9a825">
             <charge color="#fff"/>
             <!-- <img src="../../assets/img/快速充电 copy@2x.png"/> -->
@@ -258,7 +258,7 @@ import headphones from "./../../assets/headphones.vue"; // 耳机
 
 // 自己封装的组件
 import tabbar from "./../../components/TabBar.vue";
-import initLocation from "./../../components/initLocation";
+import html5WxBMapLocation from "./../../components/html5WxBMapLocation";
 
 import convertDate from "./../../utils/convertDate";
 import stringConver from "./../../utils/stringConver";
@@ -426,7 +426,7 @@ export default {
       var openid = window.localStorage.openid;
 
       if (this.loginIofor == false) {
-        initLocation(this, true).then(position => {
+        html5WxBMapLocation(this, true).then(position => {
           $.ajax({
             url: RequestedURL.getStationHandler,
             type: "post",
@@ -493,7 +493,8 @@ export default {
             }
           };
       } else {
-        initLocation(this, true).then(position => {
+        html5WxBMapLocation(this, true)
+        .then(position => {
           $.ajax({
             url: RequestedURL.getStationHandler,
             type: "post",
@@ -507,23 +508,45 @@ export default {
               window.location.href = datas.Url;
             }
           });
-        }),
-          error => {
-            // 获取失败的情况下
-            // 判断Vuex 顶层组件 是否存在 position
+        }, error => {
+          // 获取失败的情况下
+          // 判断Vuex 顶层组件 是否存在 position
+          if (
+            _this.$store.state.user.position &&
+            _this.$store.state.user.position.state === true
+          ) {
+            // Vuex 顶层组件 存在 position 直接使用 Vuex 顶层组件 的位置信息
+
+            $.ajax({
+              url: RequestedURL.getStationHandler,
+              type: "post",
+              data: {
+                action: "GetStation",
+                lattude: _this.$store.state.user.position.latitude,
+                lontude: _this.$store.state.user.position.longitude,
+                openid: openid
+              },
+              success: function(datas) {
+                window.location.href = datas.Url;
+              }
+            });
+          } else {
+            // Vuex 顶层组件 不存在 position
+            //  判断有没有本地缓存 position
             if (
-              _this.$store.state.user.position &&
-              _this.$store.state.user.position.state === true
+              window.localStorage &&
+              window.localStorage.longitude &&
+              window.localStorage.latitude
             ) {
-              // Vuex 顶层组件 存在 position 直接使用 Vuex 顶层组件 的位置信息
+              // 使用本地缓存 position
 
               $.ajax({
                 url: RequestedURL.getStationHandler,
                 type: "post",
                 data: {
                   action: "GetStation",
-                  lattude: _this.$store.state.user.position.latitude,
-                  lontude: _this.$store.state.user.position.longitude,
+                  lattude: window.localStorage.latitude,
+                  lontude: window.localStorage.longitude,
                   openid: openid
                 },
                 success: function(datas) {
@@ -531,34 +554,11 @@ export default {
                 }
               });
             } else {
-              // Vuex 顶层组件 不存在 position
-              //  判断有没有本地缓存 position
-              if (
-                window.localStorage &&
-                window.localStorage.longitude &&
-                window.localStorage.latitude
-              ) {
-                // 使用本地缓存 position
-
-                $.ajax({
-                  url: RequestedURL.getStationHandler,
-                  type: "post",
-                  data: {
-                    action: "GetStation",
-                    lattude: window.localStorage.latitude,
-                    lontude: window.localStorage.longitude,
-                    openid: openid
-                  },
-                  success: function(datas) {
-                    window.location.href = datas.Url;
-                  }
-                });
-              } else {
-                // 都没有的情况下 弹出提示
-                alert("请打开养车频道公众号-设置-提供定位信息.");
-              }
+              // 都没有的情况下 弹出提示
+              alert("请打开养车频道公众号-设置-提供定位信息.");
             }
-          };
+          }
+        });
       }
     },
 
@@ -577,29 +577,29 @@ export default {
       window.location.href = url;
     },
 
-    showNotCompleted(ret) {
-      // 弹出没有完成的提示
-      // let info = this.$store.state.user.info;
-      // let openid = this.$store.state.user.openid;
-      if (ret == 1) {
-        if (this.loginIofor == false) {
-          // 登录页面
-          this.jumpToLogin();
-        } else {
-          initLocation(this, true).then(position => {
-            window.location.href = `${
-              RequestedURL.stopCar
-            }/stopCar/index.html#/?tel=${this.loginIofor.Mobile}&lat=${
-              position.latitude
-            }&lng=${position.longitude}`;
-          });
-        }
+    /**
+     * 停车服务
+     */
+    parkService() {
+      // 判断是否登录
+      if (this.loginIofor == false) {
+        this.jumpToLogin();
       } else {
-        Toast({
-          message: "升级中",
-          duration: 1000
+        html5WxBMapLocation(this, true)
+        .then(position => {
+          window.location.href = `${RequestedURL.stopCar}/stopCar/index.html#/?tel=${this.loginIofor.Mobile}&lat=${position.latitude}&lng=${position.longitude}`;
         });
       }
+    },
+
+    /**
+     * 弹出没有完成的提示
+     */
+    showNotCompleted() {
+      Toast({
+        message: "升级中",
+        duration: 1000
+      });
     },
 
     jumpToUrlWhetherLogin(url) {
