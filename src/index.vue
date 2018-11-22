@@ -13,10 +13,11 @@ export default {
 
   // Vue 成功加载
   mounted() {
-    // 如果 rul 下 包含 redirect (重定向) 这个字符串的话
-    if (window.location.href.indexOf('redirect') !== -1) {
+    // 如果 rul 下 包含 /redirect/ (重定向) 这个字符串的话
+    // 暂时只有一个页面，就是
+    if (window.location.href.indexOf('/redirect/') !== -1) {
       // 是不需要获取openid 和定位这些操作的
-      // 因为 这样会导致后台的code 被重复使用的问题发生
+      // 因为 这样会导致后台请求 code 被重复使用的报错发生
       return false;
     }
 

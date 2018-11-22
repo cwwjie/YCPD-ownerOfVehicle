@@ -1,4 +1,4 @@
-<!-- 跳转到优惠加油 -->
+<!-- 分润系统 跳转到优惠加油 -->
 <template>
 <div class="goto-gasstation">
 </div>
@@ -30,10 +30,12 @@ export default {
          * 跳转到优惠加油的链接
          */
         jumpRedirectUrl: function jumpRedirectUrl() {
+            const _this = this;
             let openid = window.localStorage.openid;
 
+
             /**
-             * 【第三步】 获取优惠加油的链接
+             * 【第四步】 获取优惠加油的链接
              */
             let getStationHandler = position => {
                 $.ajax({
@@ -56,25 +58,40 @@ export default {
             }
 
             /**
+             * 【第二步】 通过 openid 获取用户信息
+             */
+            let getUserInfor = openid => {
+                _this.$store.dispatch('getUserInfor', openid)
+                .then(val => {
+                    // 如果有用户信息 表示用户已经注册
+
+                    /**
+                     * 【第三步】 获取定位
+                     */
+                    html5WxBMapLocation(_this, true)
+                    .then(position => {
+                        getStationHandler(position);
+                    }, error => {
+                        // 使用缓存的位置信息
+                        getStationHandler({
+                            lattude: window.localStorage.latitude ? window.localStorage.latitude : 114,
+                            lontude: window.localStorage.longitude ? window.localStorage.longitude : 22.7,
+                        });
+                    });
+                }, error => {
+                    // 如果如果没有用户信息，表示用户未注册，跳转到养车频道注册页面
+                    window.location.href = `http://${ window.location.host }/wx20/register/index.html#/index/${ window.localStorage.openid }/`;
+                });
+            }
+
+            /**
              * 【第一步】 获取 openid
              */
             getOpenid(this)
             .then(res => {
                 openid = res;
 
-                /**
-                 * 【第二步】 获取定位
-                 */
-                html5WxBMapLocation(this, true)
-                .then(position => {
-                    getStationHandler(position);
-                }, error => {
-                    // 使用缓存的位置信息
-                    getStationHandler({
-                        lattude: window.localStorage.latitude ? window.localStorage.latitude : 114,
-                        lontude: window.localStorage.longitude ? window.localStorage.longitude : 22.7,
-                    });
-                });
+                getUserInfor(openid); // 通过 openid 获取用户信息
             }, error => {
                 alert('不存在openid');
                 window.history.back(-1);

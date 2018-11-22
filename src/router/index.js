@@ -16,12 +16,6 @@ const routes = [
 		name: 'city',
 		meta: { title: '选择地区' },
 	}, {
-		path: '/redirect-gas',
-		component: () => import('@/router/Home/redirect-gas'), // 加油优惠 导航页面 
-		name: 'redirect-gas',
-		meta: { title: '养车频道' },
-	},
-	{
 		path: '/user/index',
 		alias: ['/user/', '/user'],
 		name: 'user',
@@ -165,6 +159,11 @@ const routes = [
 		name: 'goto-gasstation',
 		component: () => import('@/router/redirect/goto-gasstation'), // 优惠加油
 		meta: { title: '优惠加油' },
+	}, {
+		path: '/redirect-gas',
+		component: () => import('@/router/redirect/gasstation-preview'), // 加油优惠 导航页面 
+		name: 'redirect-gasstation',
+		meta: { title: '养车频道' },
 	},
 ];
 
