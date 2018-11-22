@@ -57,60 +57,60 @@
     <div class="home-entry-list">
       <div class="entry-list-content">
 
-        <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/selectWashcar.html`)">
-          <div class="entry-svg-content" style="background-color: #3eb7fc">
-            <CARWASH color="#fff"/>
-             <!-- <img src="../../assets/img/洗车美容 copy@2x.png"/> -->
+        <div class="entry-item" v-on:click="goStoreList(1)">
+          <div class="entry-svg-content" >
+            <!-- <CARWASH color="#fff"/>style="background-color: #3eb7fc" -->
+             <img src="../../assets/img/洗车美容 copy@2x.png"/>
           </div>
           <div class="item-name">洗车美容</div>
         </div>
         <div class="entry-item" v-on:click="jumpToGasStation()">
-          <div class="entry-svg-content" style="background-color: #41b287">
-            <GAS2 color="#fff"/>
-            <!-- <img src="../../assets/img/优惠加油 copy@2x.png"/> -->
+          <div class="entry-svg-content">
+            <!-- <GAS2 color="#fff"/>  style="background-color: #41b287"-->
+            <img src="../../assets/img/优惠加油 copy@2x.png"/>
           </div>
           <div class="item-name">优惠加油</div>
         </div>
         <div class="entry-item" v-on:click="parkService">
-          <div class="entry-svg-content" style="background-color: #ff6540">
-            <park color="#fff"/>
-            <!-- <img src="../../assets/img/停车服务 copy@2x.png"/> -->
+          <div class="entry-svg-content" >
+            <!-- <park color="#fff"/> style="background-color: #ff6540"-->
+            <img src="../../assets/img/停车服务 copy@2x.png"/>
           </div>
           <div class="item-name">停车服务</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx20/Web_Charge/index.html`)">
-          <div class="entry-svg-content" style="background-color: #f9a825">
-            <charge color="#fff"/>
-            <!-- <img src="../../assets/img/快速充电 copy@2x.png"/> -->
+        <div class="entry-item" v-on:click="jumpToCharge">
+          <div class="entry-svg-content">
+            <!-- <charge color="#fff"/>  style="background-color: #f9a825"-->
+            <img src="../../assets/img/快速充电 copy@2x.png"/>
           </div>
           <div class="item-name">快速充电</div>
         </div>
 
-        <div class="entry-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=baoyang`)">
-          <div class="entry-svg-content" style="background-color: #fadb14">
-            <Vehiclemaintenance color="#fff"/>
-            <!-- <img src="../../assets/img/放心保养 copy@2x.png"/> -->
+        <div class="entry-item" v-on:click="goStoreList(2)">
+          <div class="entry-svg-content" >
+            <!-- <Vehiclemaintenance color="#fff"/> style="background-color: #fadb14"-->
+            <img src="../../assets/img/放心保养 copy@2x.png"/>
           </div>
           <div class="item-name">放心保养</div>
         </div>
-        <div class="entry-item" v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/selectMaintenance.html`)">
-          <div class="entry-svg-content" style="background-color: #ec499c">
-            <nurse color="#fff"/>
-            <!-- <img src="../../assets/img/维修养护 copy@2x.png"/> -->
+        <div class="entry-item" v-on:click="goStoreList(3)">
+          <div class="entry-svg-content" >
+            <!-- <nurse color="#fff"/> style="background-color: #ec499c"-->
+            <img src="../../assets/img/维修养护 copy@2x.png"/>
           </div>
           <div class="item-name">维修养护</div>
         </div>
         <div class="entry-item" v-on:click="showNotCompleted">
-          <div class="entry-svg-content" style="background-color: #3eb6fc">
-            <rescue color="#fff"/>
-            <!-- <img src="../../assets/img/紧急救援 copy@2x.png"/> -->
+          <div class="entry-svg-content" >
+            <!-- <rescue color="#fff"/> style="background-color: #3eb6fc"-->
+            <img src="../../assets/img/紧急救援 copy@2x.png"/>
           </div>
           <div class="item-name">紧急救援</div>
         </div>
         <div class="entry-item"  v-on:click="jumpToUrlWhetherLogin(`http://${locationhost}/wx/weizhangfiner.html`)">
-          <div class="entry-svg-content" style="background-color: #0ccaca">
-            <violation color="#fff"/>
-             <!-- <img src="../../assets/img/违章查询 copy@2x.png"/> -->
+          <div class="entry-svg-content">
+            <!-- <violation color="#fff"/>  style="background-color: #0ccaca"-->
+             <img src="../../assets/img/违章查询 copy@2x.png"/>
           </div>
           <div class="item-name">违章查询</div>
         </div>
@@ -119,12 +119,13 @@
     </div>
 
     <!-- 新增四个板块入口 -->
-    <div class="home-fourPlate">
+    <!-- <div class="home-fourPlate">
       <div class="fourPlate-top main-flex-start">
         <div class="fourPlate-item" v-on:click="jumpToUrl(`http://${locationhost}/wx/piccin.aspx?type=pay`)">
           <div class="fourPlate-left">
             <div class="item-depict">
-              <img alt="门店支付" :src="pictures.fourPlate[0]" />
+              <img alt="延期服务" :src="pictures.fourPlate[0]" />
+               <img alt="门店支付" :src="pictures.fourPlate[0]" />
             </div>
           </div>
         </div>
@@ -148,17 +149,17 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 新增的两个保险入口 -->
-    <!-- <div id="home-twoPlate">
-      <div @click="tips">
+    <div id="home-twoPlate">
+      <div @click="appointment('人保')">
         <img class="img" src="../../assets/img/PICC_logo@2x.png">
         <p>
             <span>服务预约</span>
             <img src="../../assets/img/icon_arrow@2x.png" alt="">
         </p>
       </div>
-      <div @click="tips">
+      <div @click="appointment('平安')">
         <img class="img" src="../../assets/img/pingan_logo@2x.png">
         <p>
            <span>服务预约</span>
@@ -167,14 +168,14 @@
       </div>
     </div>
 
-    <div @click="tips" id="msg">
+    <!-- <div @click="tips" id="msg">
       <img class="img1" src="../../assets/img/icon_info@2x.png">
       <span>您有1个订单未评价</span>
       <img class="img2" src="../../assets/img/Path 2@2x.png" alt="">
     </div> -->
 
     <!-- 服务流程 -->
-    <div class="home-process">
+    <!-- <div class="home-process">
       <div class="process-title">
         <div class="title-main">服务流程</div>
         <div class="title-subtitle" v-on:click="jumpToUrl('http://picc.hotgz.com/wx/piccin.aspx?type=baoyang')">
@@ -221,7 +222,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 底部 TabBar -->
     <tabbar 
@@ -264,6 +265,7 @@ import convertDate from "./../../utils/convertDate";
 import stringConver from "./../../utils/stringConver";
 import ajaxs from "./ajaxs.js";
 import RequestedURL from "./../../config/RequestedURL.js"; //导入链接
+import { ifError } from "assert";
 
 export default {
   name: "home",
@@ -294,6 +296,9 @@ export default {
         logo: require("./../../assets/YCPD.png"),
         fourPlate: [
           // 四板块入口 一个小时强制刷新一次
+          //  `https://ycpd-assets.oss-cn-shenzhen.aliyuncs.com/ycpd/customer/ycpd-carDelay/yanqi.png?${convertDate.dateToYYYYmmDDhhMM00(
+          //     new Date()
+          //   )}`,
           `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/fourPlate1.png?${convertDate.dateToYYYYmmDDhhMM00(
             new Date()
           )}`,
@@ -318,6 +323,15 @@ export default {
         160,
 
       swiperlist: [
+        //卡券延期活动
+        // {
+        //   // 轮播图 每隔一个小时强制刷新一次
+        //   alt: "养车频道-banner",
+        //   src: `https://ycpd-assets.oss-cn-shenzhen.aliyuncs.com/ycpd/customer/ycpd-carDelay/banner_BG%402x.png?${convertDate.dateToYYYYmmDDhhMM00(
+        //     new Date()
+        //   )}`, // 放置在阿里云储存里, 方便替换
+        //   click: this.goCardDelay
+        // },
         {
           // 轮播图 每隔一个小时强制刷新一次
           alt: "养车频道-banner",
@@ -327,16 +341,20 @@ export default {
           click: this.jumpToGasStation
         },
         {
-          // 轮播图 每隔一个小时强制刷新一次
           alt: "养车频道-banner",
           src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner02.jpg?${convertDate.dateToYYYYmmDDhhMM00(
             new Date()
-          )}`, // 放置在阿里云储存里, 方便替换
+          )}`,
           click: () =>
             this.jumpToUrlWhetherLogin(
               "http://picc.hotgz.com/Merchant/Merchanthome.html?id=180724010002017319"
             )
         }
+        //  {
+        //   alt: "养车频道-banner",
+        //   src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner03.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
+        //   click: () => this.jumpToUrlWhetherLogin("http://picc.hotgz.com/Merchant/Merchanthome.html?id=181022010003342698")
+        // }
       ],
 
       locationhost: window.location.host,
@@ -345,11 +363,11 @@ export default {
     };
   },
   mounted() {
-    let myCity = new BMap.LocalCity();
-    myCity.get(result => {
-      this.latitude = result.center.lat;
-      this.longitude = result.center.lng;
-    });
+    // let myCity = new BMap.LocalCity();
+    // myCity.get(result => {
+    //   this.latitude = result.center.lat;
+    //   this.longitude = result.center.lng;
+    // });
     //获取坐标点
   },
   created() {
@@ -394,16 +412,27 @@ export default {
   },
 
   methods: {
-    //新增功能的点击提示升级中
-    tips() {
-      Toast({
-        message: "升级中",
-        duration: 1000
-      });
+    // 前往预约服务
+    appointment(ret) {
+      let openid = this.$store.state.user.openid;
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
+      console.log(openid);
+      if (this.loginIofor == false) {
+        window.location.href = `http://${
+          window.location.host
+        }/wx20/register/index.html#/index/${openid}?pageType=${ret}`;
+      } else {
+        let openid = this.$store.state.user.openid;
+        window.location.href = `http://${
+          window.location.host
+        }/wx20/carReservation/index.html#/?name=${ret}&openId=${openid}`;
+      }
     },
-    /**
-     * 跳转到登录页面
-     */
+
+    // 跳转到登录页面
     jumpToLogin() {
       let openid = this.$store.state.user.openid;
 
@@ -414,24 +443,28 @@ export default {
 
       window.location.href = `http://${
         window.location.host
-      }/wx/selectmobile.aspx?openid=${openid}&history=http://${
-        window.location.host
-      }/wx20/index.html`;
+      }/wx20/register/index.html#/index/${openid}/`;
     },
-    /**
-     * 跳转到优惠加油
-     */
+
+    // 跳转到优惠加油
     jumpToGasStation() {
       let info = this.$store.state.user.info;
-      var openid = window.localStorage.openid;
+      let openid = this.$store.state.user.openid;
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
 
       if (this.loginIofor == false) {
+        window.location.href = `http://${
+        window.location.host
+        }/wx20/register/index.html#/index/${openid}?pageType=gasStation`
+      } else {
         html5WxBMapLocation(this, true).then(position => {
           $.ajax({
             url: RequestedURL.getStationHandler,
             type: "post",
             data: {
-              action: "GetMembercard",
+              action: "GetStation",
               lattude: position.latitude,
               lontude: position.longitude,
               openid: openid
@@ -454,7 +487,7 @@ export default {
                 url: RequestedURL.getStationHandler,
                 type: "post",
                 data: {
-                  action: "GetMembercard",
+                  action: "GetStation",
                   lattude: _this.$store.state.user.position.latitude,
                   lontude: _this.$store.state.user.position.longitude,
                   openid: openid
@@ -477,7 +510,7 @@ export default {
                   url: RequestedURL.getStationHandler,
                   type: "post",
                   data: {
-                    action: "GetMembercard",
+                    action: "GetStation",
                     lattude: window.localStorage.latitude,
                     lontude: window.localStorage.longitude,
                     openid: openid
@@ -492,74 +525,27 @@ export default {
               }
             }
           };
-      } else {
-        html5WxBMapLocation(this, true)
-        .then(position => {
-          $.ajax({
-            url: RequestedURL.getStationHandler,
-            type: "post",
-            data: {
-              action: "GetStation",
-              lattude: position.latitude,
-              lontude: position.longitude,
-              openid: openid
-            },
-            success: function(datas) {
-              window.location.href = datas.Url;
-            }
-          });
-        }, error => {
-          // 获取失败的情况下
-          // 判断Vuex 顶层组件 是否存在 position
-          if (
-            _this.$store.state.user.position &&
-            _this.$store.state.user.position.state === true
-          ) {
-            // Vuex 顶层组件 存在 position 直接使用 Vuex 顶层组件 的位置信息
-
-            $.ajax({
-              url: RequestedURL.getStationHandler,
-              type: "post",
-              data: {
-                action: "GetStation",
-                lattude: _this.$store.state.user.position.latitude,
-                lontude: _this.$store.state.user.position.longitude,
-                openid: openid
-              },
-              success: function(datas) {
-                window.location.href = datas.Url;
-              }
-            });
-          } else {
-            // Vuex 顶层组件 不存在 position
-            //  判断有没有本地缓存 position
-            if (
-              window.localStorage &&
-              window.localStorage.longitude &&
-              window.localStorage.latitude
-            ) {
-              // 使用本地缓存 position
-
-              $.ajax({
-                url: RequestedURL.getStationHandler,
-                type: "post",
-                data: {
-                  action: "GetStation",
-                  lattude: window.localStorage.latitude,
-                  lontude: window.localStorage.longitude,
-                  openid: openid
-                },
-                success: function(datas) {
-                  window.location.href = datas.Url;
-                }
-              });
-            } else {
-              // 都没有的情况下 弹出提示
-              alert("请打开养车频道公众号-设置-提供定位信息.");
-            }
-          }
-        });
       }
+    },
+
+    // 跳转到 充电桩项目
+    jumpToCharge() {
+      // 判断是否登录
+      if (this.loginIofor == false) {
+        return this.jumpToLogin();
+      }
+      let openid = this.$store.state.user.openid;
+
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
+
+      window.location.href = `http://${
+        window.location.host
+      }/wx20/Web_Charge/index.html#/index?openid=${openid}&CarNo=${
+        this.loginIofor.CarNo
+      }&CustomerID=${this.loginIofor.CustomerID}`;
     },
 
     tabbarClick(selectIndex) {
@@ -573,28 +559,39 @@ export default {
     },
 
     jumpToUrl(url) {
-      // 页面的跳转 根据 url 进行跳转
-      window.location.href = url;
+      if (url == 1) {
+        if (this.loginIofor) {
+          this.$router.push({
+            path: "/cardDelay/cardDelay"
+          });
+        } else {
+          // 登录页面
+          this.jumpToLogin();
+        }
+      } else {
+        // 页面的跳转 根据 url 进行跳转
+        window.location.href = url;
+      }
     },
 
-    /**
-     * 停车服务
-     */
+    // 停车服务
     parkService() {
       // 判断是否登录
+      console.log(this.loginIofor);
       if (this.loginIofor == false) {
         this.jumpToLogin();
       } else {
-        html5WxBMapLocation(this, true)
-        .then(position => {
-          window.location.href = `${RequestedURL.stopCar}/stopCar/index.html#/?tel=${this.loginIofor.Mobile}&lat=${position.latitude}&lng=${position.longitude}`;
+        html5WxBMapLocation(this, true).then(position => {
+          window.location.href = `${
+            RequestedURL.stopCar
+          }/stopCar/index.html#/?tel=${this.loginIofor.Mobile}&lat=${
+            position.latitude
+          }&lng=${position.longitude}&CustomerID=${this.loginIofor.CustomerID}`;
         });
       }
     },
 
-    /**
-     * 弹出没有完成的提示
-     */
+    // 弹出没有完成的提示
     showNotCompleted() {
       Toast({
         message: "升级中",
@@ -609,6 +606,36 @@ export default {
       } else {
         // 登录页面
         this.jumpToLogin();
+      }
+    },
+
+    //前往卡券延期活动
+    goCardDelay() {
+      // 页面行跳转 判断登录
+      if (this.loginIofor) {
+        this.$router.push({
+          path: "/cardDelay/cardDelay"
+        });
+      } else {
+        //登录页面
+        this.jumpToLogin();
+      }
+    },
+
+    // 前往新的商家列表
+    goStoreList(ret) {
+      let openid = this.$store.state.user.openid;
+      // 判断顶部是否存在 openid
+      if (!openid) {
+        openid = window.localStorage.openid;
+      }
+      // 判断是否登陆
+      if (this.loginIofor == false) {
+        this.jumpToLogin();
+      } else {
+            window.location.href = `http://${
+              window.location.host
+            }/wx20/storeList/index.html#/?productTypeId=''&openId=${openid}`;
       }
     }
   }
@@ -761,8 +788,8 @@ export default {
         align-items: center;
         justify-content: center;
         margin: 0 auto;
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         border-radius: 20px;
         background: #fff;
 
@@ -786,9 +813,9 @@ export default {
 #home-twoPlate {
   width: 100%;
   height: 100px;
-  margin-top: 15px;
+  margin-top: 10px;
   div {
-    width: 49%;
+    width: 49.5%;
     height: 100%;
     background-color: #fff;
     text-align: center;

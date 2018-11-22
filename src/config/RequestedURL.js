@@ -56,10 +56,25 @@ let RequestedURL = {
      */
     getStationHandler: `http://${window.location.host}/wx/Handler.ashx`,
 
+    //卡券延期
+    getStationHandler1 : `http://${window.location.host}/store/Handler.ashx`,
+    
     /**
      * 停车场
      */
     stopCar: 'http://picc.hotgz.com/wx20',
+
+    // 预约服务
+    appointment:'http://ycpdapi.hotgz.com',
+
+    // 预约列表
+    reservationList:'http://ycpdapi.hotgz.com',
+
+    // 修改预约记录
+    upDataReservation:'http://ycpdapi.hotgz.com',
+
+    // 获取商家列表服务项目id
+    getStoreProductId:'http://ycpdapi.hotgz.com',
 }
 
 /**
@@ -76,7 +91,12 @@ if (window.location.host === 'store.demo.icheboayang.com' || process.env.NODE_EN
     RequestedURL.getCity = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getWxConfig = 'http://store.demo.ichebaoyang.com/wx/apiHandler.ashx';
     RequestedURL.getStationHandler = 'http://store.demo.ichebaoyang.com/wx/Handler.ashx';
+    RequestedURL.getStationHandler1 = 'http://store.demo.ichebaoyang.com/store/Handler.ashx'; //卡券延期
     RequestedURL.stopCar = 'http://front.demo.hotgz.com'; // 停车场
+    RequestedURL.appointment = 'http://store.demo.ichebaoyang.com'; // 预约服务
+    RequestedURL.reservationList = 'http://api.demo.hotgz.com'; // 预约列表
+    RequestedURL.upDataReservation = 'http://api.demo.hotgz.com'; // 修改预约记录
+    RequestedURL.getStoreProductId = 'http://api.demo.hotgz.com'; // 获取商家列表服务项目id
 }
 
 export default RequestedURL

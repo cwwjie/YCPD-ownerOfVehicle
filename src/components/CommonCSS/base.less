@@ -31,6 +31,7 @@ body {
 html, body {
   width: 100%;
   height: 100%;
+
 }
 
 a {
@@ -41,10 +42,35 @@ a {
 a:hover, a:active, a:focus {
   text-decoration: underline;
 }
+a:visited{
+	text-decoration:none;
+}/*指已经访问过的链接*/
+
+a:link{text-decoration: none!important;  }
+a:visited{text-decoration: none!important;  }
+a:hover{text-decoration: none!important;  }
+a:active{text-decoration: none!important;  }
+a:focus{text-decoration: none!important;  }
 ol, ul {
   list-style: none;
 } 
 
 li {
   list-style: none;
+}
+
+#isdefalute {
+  .mint-switch-core {
+    width: 51px;
+    height: 28px;
+  }
+  .mint-switch-core::after {
+    width: 30px;
+    height: 26px;
+  }
+  .mint-switch-input:checked + .mint-switch-core {
+    border-color: #4BD964;
+    background-color: #4BD964;
+}
+
 }

@@ -72,25 +72,31 @@
             <div v-if="!this.$route.query.type" id="comment">
                 <p>评分</p>
                 <p>
-                  <img v-for="(item,index) in imgData" :key="index" @click="redStar(index)" :src="item.active?require('../../assets/img/icon_star03@2x.png'):item.src">
+                  <img v-for="(item,index) in imgData" :key="index" @click="item.active=!item.active,redStar(index)" :src="item.active?require('../../assets/img/icon_star03@2x.png'):item.src">
                 </p>
                 <p>
                   <span v-for="(item,index) in comment" :key="index" @click="item.active=!item.active,change(index)"  :class="[item.active?'bgcColor':'']">{{item.name}}</span>
                 </p>
                 <textarea v-model="commentTxt" name="commentTxt" maxlength="300" id="" cols="10" rows="10" placeholder="请输入评价内容,300字以内"></textarea>
                 <p  v-show="commentTxt==''&&!isChange">确定</p>
-                <p v-show="commentTxt!==''||isChange==true">确定</p>
+                <p v-show="commentTxt!==''||isChange==true" @click="success()">确定</p>
             </div>
         </div>
     </div>
 </template>
 <script>
+import Vue from "vue";
+import { Toast } from "mint-ui";
+import "mint-ui/lib/style.min.css";
 export default {
+  components:{
+    Toast,
+  },
   data() {
     return {
       isShow: false,
       imgData: [
-        { src: require("../../assets/img/icon_star04@2x.png"), active: true },
+        { src: require("../../assets/img/icon_star04@2x.png"), active: false },
         { src: require("../../assets/img/icon_star04@2x.png"), active: false },
         { src: require("../../assets/img/icon_star04@2x.png"), active: false },
         { src: require("../../assets/img/icon_star04@2x.png"), active: false },
@@ -112,12 +118,11 @@ export default {
         path: "/card/shopList"
       });
     },
+    //点击星星
     redStar(index) {
       let data = this.imgData;
       for (let i = 0; i < data.length; i++) {
-        if (i == index) {
-          data[i].active = true;
-          if (data[4].active == true) {
+        if (data[4].active == true) {
             data[0].active = true;
             data[1].active = true;
             data[2].active = true;
@@ -135,12 +140,9 @@ export default {
           if (data[1].active == true) {
             data[0].active = true;
           }
-        } else {
-          data[i].active = false;
         }
-      }
     },
-     change(index) {
+    change(index) {
       let data = this.comment;
       for (let i = 0; i < data.length; i++) {
           console.log(data[i].active)
@@ -151,6 +153,26 @@ export default {
             this.isChange = false
           }
       }
+    },
+    success() {
+       Toast({
+        message: "评价完成",
+        duration: 1500
+      });
+      //清空输入框
+      this.commentTxt = ''
+      //清空选中的评论
+      let data = this.comment
+      for(let i=0;i<data.length;i++){
+        data[i].active = false
+      }
+      //把星星变回灰色
+      let data1 = this.imgData
+      for(let i=0;i<data1.length;i++){
+        data1[i].active = false
+      }
+      //把确定按钮变成灰色的
+      this.isChange = false
     }
   }
 };
@@ -409,7 +431,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       span {
-        width: 100px;
+        width: 30%;
         height: 35px;
         display: inline-block;
         text-align: center;

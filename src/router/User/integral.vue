@@ -14,7 +14,7 @@
                     <li v-for="(item,index) in listData" :key="index">
                         <p>{{item.name}}</p>
                         <p>{{item.time}}</p>
-                        <p class="green">{{item.number}}</p>
+                        <p :class="item.number>'0'?'red':'green'"><span v-show="item.number>'0'">+</span>{{item.number}}</p>
                     </li>
                 </ul>
             </div>
@@ -26,9 +26,9 @@
         data(){
             return {
                 listData:[
+                    {name:'活动兑换【上门/到店通用保养】',time:'2018-06-29 11:21',number:'10000.00'},
                     {name:'活动兑换【上门/到店通用保养】',time:'2018-06-29 11:21',number:'-10000.00'},
-                    {name:'活动兑换【上门/到店通用保养】',time:'2018-06-29 11:21',number:'-10000.00'},
-                    {name:'兑换【嘉实多极护保养套餐】',time:'2018-06-29 11:21',number:'-10000.00'},
+                    {name:'兑换【嘉实多极护保养套餐】',time:'2018-06-29 11:21',number:'10000.00'},
                     {name:'活动兑换【上门/到店通用保养】',time:'2018-06-29 11:21',number:'-10000.00'},
                     {name:'邀请好友奖励积分',time:'2018-06-29 11:21',number:'-10000.00'},
                     {name:'活动兑换【上门/到店通用保养】',time:'2018-06-29 11:21',number:'-10000.00'},
@@ -74,7 +74,8 @@
                 border-bottom:1px solid #ddd; 
             }
             ul {
-                padding:0px 15px;
+                box-sizing: border-box;
+               padding-left:15px;
                 width:100%;
                 li {
                     width:100%;
@@ -99,6 +100,9 @@
                     }
                     .green {
                         color:#00B90A;
+                    }
+                    .red {
+                        color:#E50012;
                     }
                 }
             }

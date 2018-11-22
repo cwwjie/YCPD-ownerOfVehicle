@@ -21,6 +21,7 @@
                 </li>
             </ul>
         </div>
+        <!-- 显示二维码模块 -->
         <div v-show="showCodeBox" id="codeBox">
             <div class="content">
                 <p>深圳市通用精洗套餐深</p>
@@ -90,7 +91,7 @@
                     })
                 }
                 
-                if(type=='预约') {
+                if(type=='预约'||type=='免预约') {
                     this.$router.push({
                         path:'/card/cardInfo'
                     })
@@ -156,7 +157,7 @@
                 padding:15px 15px 0px 15px;
                 position:relative;
                 margin-bottom:10px;
-                p:first-child {
+                p:nth-child(1) {
                     width:100%;
                     height:78px;
                     img {
@@ -187,9 +188,11 @@
                     width:100%;
                     font-size:13px;
                     color:#999;
+                    overflow: hidden;
+                    height:17px;
                 }
                 p:nth-child(3) {
-                    width:65px;
+                    width:20%;
                     height:28px;
                     border-radius:14px;
                     font-size:12px;

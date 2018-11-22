@@ -26,8 +26,7 @@
             <div id="shopInfo">
                 <p class="allShop">
                     <span>适用商家</span>
-                    <span @click="goShopList()">查看全部99家门店
-                         <img src="../../assets/img/Path 2@2x.png">
+                    <span @click="goShopList()">查看全部99家门店<img src="../../assets/img/Path 2@2x.png">
                     </span>
                 </p>
                 <div class="address">
@@ -35,7 +34,10 @@
                     <P>6.10km 离我最近</P>
                     <P>
                         <img src="../../assets/img/icon_position02@2x.png" alt="">
-                        <span>深圳市龙华新区清龙路原彬峰桂工业和深圳市龙华新区清</span>
+                        <a>
+                            <span>深圳市龙华新区清龙路原</span>
+                        </a>
+                        
                     </P>
                     <img class="call" src="../../assets/img/icon_call@3x.png">
                     <p class="solid"></p>
@@ -200,7 +202,7 @@
                     color:#fff;
                     text-align: center;
                     line-height: 45px;
-                    border-radius:20px;
+                    border-radius:25px;
                     margin:0 auto;
                     margin-top:30px;
                     img {
@@ -214,7 +216,7 @@
         }
         #shopInfo {
             width:100%;
-            margin-top:5px;
+            margin-top:10px;
             background-color: #fff;
             padding:0px 15px;
             box-sizing: border-box;
@@ -232,11 +234,11 @@
                           
                 }
                 img {
-                    width:14px;
-                    height:14px;
+                    width:10px;
+                    height:10px;
                     // float:right;
                      vertical-align: middle;
-                     margin-top:-2px;      
+                     margin-top:-1px;      
                 }
             }
             .address {
@@ -246,7 +248,7 @@
                 P:nth-child(1) {
                     height:25px;
                     font-size:14px;
-                    width:90%;
+                    width:77%;
                     overflow: hidden;
                 }
                 P:nth-child(2) {
@@ -260,6 +262,10 @@
                        float: left;
                        margin-top:10px;
                        margin-right:10px;
+                   }
+                   a {
+                       display: inline-block;
+                       width:70%;
                    }
                    span {
                        display: table-cell;

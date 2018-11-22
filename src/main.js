@@ -8,6 +8,7 @@ import router from './router';
 import Index from './index.vue';
 import axios from 'axios';
 Vue.prototype.$axios = axios
+import 'mint-ui/lib/style.css'
 
 import './components/WeUI/weui.min.css'; // weui 样式
 import './index.less'; // weui 样式
