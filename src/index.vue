@@ -66,13 +66,17 @@ export default {
         );
       }
 
-      if (loadPageOpenid) { // 解析 openid 存在 (权限最大)
+      // openid 的长度为 20 我们判断长度是否大于 15即可
+      // 因为有一次出现了 undefined 的情况 依然继续去 请求了，这个是不符合规范的
+      if (loadPageOpenid && loadPageOpenid.length > 15) { // 解析 openid 存在 (权限最大)
 
         this.$store.commit('initOpenid', loadPageOpenid); // 存储 vuex  因为getuserinfo 会失败, 可能不会被 commit 进去 所以在此初始化 openid
         initOpenid(loadPageOpenid);
       } else { // 无解析 openid
-        
-        if (window.localStorage && window.localStorage.openid) { // 本地openid
+
+        // openid 的长度为 20 我们判断长度是否大于 15即可
+        // 因为有一次出现了 undefined 的情况 依然继续去 请求了，这个明显是不符合规范的
+        if (window.localStorage && window.localStorage.openid && window.localStorage.openid.length > 15) { // 本地openid
 
           // localStorage 的 openid 是正确可用
           _this.$store.commit('initOpenid', window.localStorage.openid); // 存储 vuex
@@ -119,8 +123,13 @@ export default {
           error => console.error(error)
         );
       }
-
-      if (window.localStorage && window.localStorage.openid) { // 本地openid
+        
+      /**
+       * openid 的长度为 20 
+       * 我们判断长度是否大于 15即可
+       * 因为有一次出现了 undefined 的情况 依然继续去 请求了，这个明显是不符合规范的
+       */
+      if (window.localStorage && window.localStorage.openid && window.localStorage.openid.length > 15) { // 本地openid
 
         _this.$store.commit('initOpenid', window.localStorage.openid); // 存储 vuex
         initOpenid(window.localStorage.openid);
