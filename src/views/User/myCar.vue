@@ -20,24 +20,22 @@
 
 <script>
 export default {
-  name: '',
+    name: '',
 
-  data () {
-    return {
-        listData:[
-            {carNo:'粤B123456',carName:'兰博基尼全黄金版',default:'默认'},
-            {carNo:'粤B123456',carName:'兰博基尼全黄金版',defalute:''},
-        ]
+    data () {
+        return {
+            listData:[
+                {carNo: '粤B123456', carName: '兰博基尼全黄金版', default: '默认'}, 
+                {carNo: '粤B123456', carName: '兰博基尼全黄金版', defalute: ''}, 
+            ]
+        }
+    },
+
+    methods: {
+        goUpdataCarPage(){
+            this.$router.push({ path:'/user/updataCar' });
+        }
     }
-  },
-
-  methods: {
-      goUpdataCarPage(){
-          this.$router.push({
-              path:'/user/updataCar'
-          })
-      }
-  }
 }
 </script>
 
@@ -66,9 +64,6 @@ export default {
                     padding:10px 15px;
                     box-sizing: border-box;
                     margin-bottom:5px;
-                    p:nth-child(1){
-                        
-                    }
                     p:nth-child(2){
                         font-size:14px;
                         color:#999;

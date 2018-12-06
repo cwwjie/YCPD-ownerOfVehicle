@@ -61,7 +61,7 @@ Vue.component('mt-header', Header);
 Vue.component('mt-button', Button);
 
 // 自己封装 ICON
-import personnel from './../../assets/personnel.vue'; // 登录头像
+import personnel from '@/assets/personnel.vue'; // 登录头像
 
 export default {
   name: 'userInfor',

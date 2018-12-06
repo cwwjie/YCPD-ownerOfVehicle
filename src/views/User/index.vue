@@ -70,7 +70,7 @@
 </template>
 <script>
 // 底部tab栏
-import tabbar from './../../components/TabBar.vue';
+import tabbar from '@/components/TabBar.vue';
     export default {
         //导入底部切换栏组件
         components:{

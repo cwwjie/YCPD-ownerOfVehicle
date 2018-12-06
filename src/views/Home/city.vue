@@ -102,9 +102,8 @@
 <script>
 
 import { Toast, Indicator } from 'mint-ui';
-import 'mint-ui/lib/style.min.css';
 
-import initLocation from './../../components/initLocation';
+import initLocation from '@/components/initLocation';
 import ajaxs from './ajaxs.js';
 
 export default {

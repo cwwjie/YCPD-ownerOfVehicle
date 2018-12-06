@@ -33,52 +33,49 @@
 </template>
 
 <script>
-import RequestedURL from "./../../config/RequestedURL.js"; //导入链接
+
+import RequestedURL from "@/config/RequestedURL.js"; // 导入链接
+
 export default {
     name: '',
 
     data () {
         return {
-            openID:''
+            openID: ''
         }
     },
+
     created() {
         this.getCode()
-       
     },
 
     methods: {
-        service(){
+        service() {
             window.location.href = `tel:400-110-6558`
         },
 
         jumpToLogin() {
-            let openid = this.openID;
-
-            // 判断顶部是否存在 openid
-
-            window.location.href = `../wx20/register/index.html#/index/${openid}/`;
+            window.location.href = `http://${window.location.host}/wx20/register/index.html#/index/${window.localStorage.openid}/`;
         },
 
-        goAppointment(){
+        goAppointment() {
             let _this = this
             console.log(this.openID)
       
-           
             $.ajax({
                 url: `${RequestedURL.getUserInfor}?OpenID=`+window.localStorage.getItem('openid'),
                 type: "post",
                 success: function(datas) {
                     if (datas.Code === 200 && datas.Data) {
-                         window.location.href = `../wx20/carReservation/index.html#/?openId=${window.localStorage.getItem("openid")}&name=人保`;
-                    }else {
+                        window.location.href = `http://${window.location.host}/wx20/carReservation/index.html#/?openId=${window.localStorage.getItem("openid")}&name=人保`;
+                    } else {
                         _this.jumpToLogin();
                     }
                 }
             })
         },
 
-        getCode(){
+        getCode() {
             let _this = this
             // console.log(window.location.search)  
             function loadPageVar (sVar) {
@@ -100,20 +97,20 @@ export default {
                        window.location.href =datas.Data.url
                     }
                 })
-            }else {
-                 $.ajax({
+            } else {
+                $.ajax({
                     url:`${RequestedURL.getOpenID}/Customer/GetOpenId`,
                     type:'post',
                     data:JSON.stringify({
                         code:code
                     }),
-                    contentType: "application/json; charset=utf-8", 
-                    success:function(datas){
-                       if(datas.Code===200){
-                           console.log(datas.Data.openid)
-                           _this.openID = datas.Data.openid
-                           window.localStorage.setItem('openid',datas.Data.openid)
-                       }
+                    contentType: "application/json; charset=utf-8",  
+                    success: function (datas) {
+                        if ( datas.Code === 200 ) {
+                            console.log(datas.Data.openid)
+                            _this.openID = datas.Data.openid
+                            window.localStorage.setItem('openid',datas.Data.openid)
+                        }
                     }
                 })
             }

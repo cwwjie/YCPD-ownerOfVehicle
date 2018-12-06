@@ -1,105 +1,108 @@
 <template>
-    <div id="cardList">
-        <div id="header">
-            <ul>
-                <li v-for="(item,index) in tabList" :key="index" @click="tab(index)">
-                   <span  :class="[item.active?'active':'']">{{item.name}}</span>
-                </li>
-            </ul>
-        </div>
-        <!-- 数据列表 -->
-        <div id="list">
-            <ul>
-                <li v-for="(item,index) in listData" :key="index" :class="[item.type=='已过期'?'bgcGray':'']">
-                    <p  @click="goCardInfoPage(item.type)">
-                        <img src="../../assets/img/5.jpg" alt="">
-                        <span>{{item.name}}</span>
-                        <span>{{item.time}}</span>
-                    </p>
-                    <p @click="showCode(item.type)">核销码 : <span v-if="item.type=='预约'||item.type=='免预约'||item.type=='评价'||item.type=='已评价'">(点击查看二维码)</span> <span>{{item.code}}</span></p>
-                    <p  @click="goCardInfoPage(item.type)" :class="[item.type=='去使用'||item.type=='预约'?'red':item.type=='免预约'||item.type=='评价'?'blue':'gray']">{{item.type}}</p>
-                </li>
-            </ul>
-        </div>
-        <!-- 显示二维码模块 -->
-        <div v-show="showCodeBox" id="codeBox">
-            <div class="content">
-                <p>深圳市通用精洗套餐深</p>
-                <img src="../../assets/img/5.jpg" alt="">
-                <p>6661 2616 3322 1122</p>
-            </div>
-            <img @click="showCodeBox=false" class="close" src="../../assets/img/icon_close@2x.png" alt="">
-        </div>
+<div id="cardList">
+    <div id="header">
+        <ul>
+            <li v-for="(item,index) in tabList" :key="index" @click="tab(index)">
+                <span  :class="[item.active?'active':'']">{{item.name}}</span>
+            </li>
+        </ul>
     </div>
+    <!-- 数据列表 -->
+    <div id="list">
+        <ul>
+            <li v-for="(item,index) in listData" :key="index" :class="[item.type=='已过期'?'bgcGray':'']">
+                <p  @click="goCardInfoPage(item.type)">
+                    <img src="../../assets/img/5.jpg" alt="">
+                    <span>{{item.name}}</span>
+                    <span>{{item.time}}</span>
+                </p>
+                <p @click="showCode(item.type)">核销码 : <span v-if="item.type=='预约'||item.type=='免预约'||item.type=='评价'||item.type=='已评价'">(点击查看二维码)</span> <span>{{item.code}}</span></p>
+                <p  @click="goCardInfoPage(item.type)" :class="[item.type=='去使用'||item.type=='预约'?'red':item.type=='免预约'||item.type=='评价'?'blue':'gray']">{{item.type}}</p>
+            </li>
+        </ul>
+    </div>
+    <!-- 显示二维码模块 -->
+    <div v-show="showCodeBox" id="codeBox">
+        <div class="content">
+            <p>深圳市通用精洗套餐深</p>
+            <img src="../../assets/img/5.jpg" alt="">
+            <p>6661 2616 3322 1122</p>
+        </div>
+        <img @click="showCodeBox=false" class="close" src="../../assets/img/icon_close@2x.png" alt="">
+    </div>
+</div>
 </template>
+
 <script>
-    export default {
-        data() {
-            return {
-              tabList:[
-                  {name:'全部',active:true},
-                  {name:'可使用',active:false},
-                  {name:'待评价',active:false},
-                  {name:'已过期',active:false},
-              ],
-              listData:[
-                  {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'去使用'},
-                  {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已评价'},
-                  {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'预约'},
-                  {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'免预约'},
-                  {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
-                  {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
-                  {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已过期'},
-              ],
-              showCodeBox:false, 
+
+export default {
+    data() {
+        return {
+            tabList:[
+                {name:'全部',active:true},
+                {name:'可使用',active:false},
+                {name:'待评价',active:false},
+                {name:'已过期',active:false},
+            ],
+            listData:[
+                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'去使用'},
+                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已评价'},
+                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'预约'},
+                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'免预约'},
+                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
+                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
+                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已过期'},
+            ],
+            showCodeBox:false, 
+        }
+    },
+    methods:{
+        showCode(val){
+            if(val=='去使用'||val=='已过期'){
+                return
+            }else {
+                this.showCodeBox = true
             }
         },
-        methods:{
-            showCode(val){
-                if(val=='去使用'||val=='已过期'){
-                    return
+        //头部切换栏
+        tab(index){
+            let data = this.tabList
+            for(let i=0;i<data.length;i++){
+                if(i==index){
+                    data[i].active = true
                 }else {
-                   this.showCodeBox = true
+                    data[i].active = false
                 }
-            },
-            //头部切换栏
-            tab(index){
-                let data = this.tabList
-                for(let i=0;i<data.length;i++){
-                    if(i==index){
-                        data[i].active = true
-                    }else {
-                        data[i].active = false
-                    }
-                }
-            },
-            //前往详情页
-            goCardInfoPage(type){
-                if(type=='已评价'){
-                    this.$router.push({
-                        path:'/card/cardUsed',query:{type:1}
-                    })
-                }
-                if(type=='评价'){
-                    this.$router.push({
-                        path:'/card/cardUsed'
-                    })
-                }
-                if(type=='去使用') {
-                    this.$router.push({
-                        path:'/card/cardInfo',query:{type:1}
-                    })
-                }
-                
-                if(type=='预约'||type=='免预约') {
-                    this.$router.push({
-                        path:'/card/cardInfo'
-                    })
-                }
-                
             }
+        },
+        //前往详情页
+        goCardInfoPage(type){
+            if(type=='已评价'){
+                this.$router.push({
+                    path:'/card/cardUsed',query:{type:1}
+                })
+            }
+            if(type=='评价'){
+                this.$router.push({
+                    path:'/card/cardUsed'
+                })
+            }
+            if(type=='去使用') {
+                this.$router.push({
+                    path:'/card/cardInfo',query:{type:1}
+                })
+            }
+            
+            if(type=='预约'||type=='免预约') {
+                this.$router.push({
+                    path:'/card/cardInfo'
+                })
+            }
+            
         }
     }
+}
+
 </script>
 <style lang="less" scoped>
     #cardList {
@@ -266,4 +269,3 @@
         }
     }
 </style>
-

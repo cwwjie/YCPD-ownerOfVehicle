@@ -233,23 +233,23 @@ import 'vue-awesome/icons/circle-o';
 import 'vue-awesome/icons/check-square';
 
 // 自己封装 ICON
-import headphones from './../../assets/headphones.vue'; // 耳机
-import integration from './../../assets/integration.vue'; // 积分
-import coupon2 from './../../assets/coupon2.vue'; // 优惠券
-import VIP from './../../assets/VIP.vue'; // 会员
-import personnel from './../../assets/personnel.vue'; // 登录人员
-import add from './../../assets/add.vue'; // 新增按钮
-import alreadyReserved from './../../assets/alreadyReserved.vue'; // 已预约
-import payment2 from './../../assets/payment2.vue'; // 待付款
-import addedServices from './../../assets/addedServices.vue'; // 待服务
-import evaluate2 from './../../assets/evaluate2.vue'; // 待评价
-import financialRecords from './../../assets/financialRecords.vue'; // 消费记录
-import evaluate from './../../assets/evaluate.vue'; // 我的评价
-import invoice from './../../assets/invoice.vue'; // 我的发票
-import collection from './../../assets/collection.vue'; // 我的收藏
+import headphones from '@/assets/headphones.vue'; // 耳机
+import integration from '@/assets/integration.vue'; // 积分
+import coupon2 from '@/assets/coupon2.vue'; // 优惠券
+import VIP from '@/assets/VIP.vue'; // 会员
+import personnel from '@/assets/personnel.vue'; // 登录人员
+import add from '@/assets/add.vue'; // 新增按钮
+import alreadyReserved from '@/assets/alreadyReserved.vue'; // 已预约
+import payment2 from '@/assets/payment2.vue'; // 待付款
+import addedServices from '@/assets/addedServices.vue'; // 待服务
+import evaluate2 from '@/assets/evaluate2.vue'; // 待评价
+import financialRecords from '@/assets/financialRecords.vue'; // 消费记录
+import evaluate from '@/assets/evaluate.vue'; // 我的评价
+import invoice from '@/assets/invoice.vue'; // 我的发票
+import collection from '@/assets/collection.vue'; // 我的收藏
 
 // 自己封装的组件
-import tabbar from './../../components/TabBar.vue';
+import tabbar from '@/components/TabBar.vue';
 
 import ajaxs from './ajaxs.js';
 

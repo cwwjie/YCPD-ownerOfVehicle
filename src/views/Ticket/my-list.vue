@@ -88,17 +88,7 @@ import ajaxs from './ajaxs';
 
 // mint-ui 框架
 import Vue from 'vue';
-import { 
-  Header, Button, Navbar, 
-  TabItem, TabContainer, TabContainerItem,
-} from 'mint-ui';
-import 'mint-ui/lib/font/style.css';
-import 'mint-ui/lib/header/style.css';
-import 'mint-ui/lib/button/style.css';
-import 'mint-ui/lib/navbar/style.css';
-import 'mint-ui/lib/tab-item/style.css';
-import 'mint-ui/lib/tab-container/style.css';
-import 'mint-ui/lib/tab-container-item/style.css';
+import { Header, Button, Navbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui';
 
 Vue.component('mt-header', Header);
 Vue.component('mt-button', Button);

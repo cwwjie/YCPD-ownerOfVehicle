@@ -91,85 +91,80 @@
 import Vue from 'vue';
 import { Switch,Toast } from 'mint-ui';
 Vue.component(Switch.name, Switch);
-import 'mint-ui/lib/style.css'
+
 export default {
 	components:{
 		Toast,
 	},
-  name: "",
 
-  data() {
-    return {
-		frameNo:'', //车架号
-		haha:[
-			'1111','2222','3333'
-		],
-		//车子数据详情
-		infoData:{
-			brand:'',  //品牌
-			carSystem:'', //车系
-			year:'',       //年份
-			carModel:'', //车型
+	name: "updataCar",
+
+	data() {
+		return {
+			frameNo:'', //车架号
+			haha:[
+				'1111','2222','3333'
+			],
+			//车子数据详情
+			infoData:{
+				brand:'',  //品牌
+				carSystem:'', //车系
+				year:'',       //年份
+				carModel:'', //车型
+			},
+			isdefalutCar:false,  //控制文字是 '是'还是'否'
+			changeTxt:'否',
+			keyboard:[
+				'粤', '京', '冀', '沪', '津', '晋', '蒙', '辽', '吉',
+				'黑','苏', '浙', '皖', '闽', '赣', '鲁', '豫', '鄂', '湘', '桂',
+				'琼', '渝', '川', '贵', '云', '藏', '陕', '甘', '青', '宁'
+			],
+			keyboard1:['1', '2', '3', '4', '5', '6', '7', '8', '9', '0','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I','J', 'K', 'L', 'M', 'N', 'O','P', 'Q', 'R', 'S', 'T', 'U', 'V','W','X','Y','Z' ],
+			city:'粤',   //选择省区
+			showCityKeyBoard:false,  //控制键盘的显示与隐藏
+			carNo:'',   //车牌号
+			number:'0',  
+			selectShow:true,  //控制select是否可以点击  true为禁用 false为可用
+		};
+	},
+
+	methods: {
+		//点击获取对应的值
+		changeCity(val){
+			this.showCityKeyBoard = false //选中后隐藏键盘
+			this.city = val   //赋值选中的值
 		},
-		isdefalutCar:false,  //控制文字是 '是'还是'否'
-		changeTxt:'否',
-		keyboard:[
-			'粤', '京', '冀', '沪', '津', '晋', '蒙', '辽', '吉',
-		 	'黑','苏', '浙', '皖', '闽', '赣', '鲁', '豫', '鄂', '湘', '桂',
-			'琼', '渝', '川', '贵', '云', '藏', '陕', '甘', '青', '宁'
-		],
-		keyboard1:[
-			'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-　　　　　	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I','J', 'K',
-　　　　　　 'L', 'M', 'N', 'O','P', 'Q', 'R', 'S', 'T', 'U', 'V','W','X','Y','Z'
-		],
-		city:'粤',   //选择省区
-		showCityKeyBoard:false,  //控制键盘的显示与隐藏
-		carNo:'',   //车牌号
-		number:'0',  
-		selectShow:true,  //控制select是否可以点击  true为禁用 false为可用
 
+		//   changeCarNo(val){
+		// 	   if(this.carNo.length<7){
+		// 		    this.carNo =this.carNo += val   //赋值选中的值
+		// 	   }else {
+		// 		     Toast({
+		// 				message: "车牌号不可超过7位数",
+		// 				duration: 1500
+		// 			});
+		// 	   }
+		//   },
+		//   empty(){
+		// 	  this.carNo =this.carNo.substr(0, this.carNo.length - 1);
+		//   }
 
-	};
-  },
+		//输入框失去焦点时
+		checkValue(val){
+			if(!/^[0-9a-zA-Z]+$/.test(val)){  //正则判断是否是数字和英文
+				Toast({
+					message: "格式错误请重新输入",
+					duration: 1000
+				});
+				this.carNo = ''       //把输入框清空
+			}
+		},
 
-  methods: {
-	  //点击获取对应的值
-	  changeCity(val){
-		   this.showCityKeyBoard = false //选中后隐藏键盘
-		   this.city = val   //赋值选中的值
-	  },
-
-	//   changeCarNo(val){
-	// 	   if(this.carNo.length<7){
-	// 		    this.carNo =this.carNo += val   //赋值选中的值
-	// 	   }else {
-	// 		     Toast({
-	// 				message: "车牌号不可超过7位数",
-	// 				duration: 1500
-	// 			});
-	// 	   }
-	//   },
-	//   empty(){
-	// 	  this.carNo =this.carNo.substr(0, this.carNo.length - 1);
-	//   }
-
-	//输入框失去焦点时
-	checkValue(val){
-		if(!/^[0-9a-zA-Z]+$/.test(val)){  //正则判断是否是数字和英文
-			Toast({
-				message: "格式错误请重新输入",
-				duration: 1000
-			});
-			this.carNo = ''       //把输入框清空
-        }
-	},
-
-	//关闭键盘
-	hideKeyboard(){
-		this.showCityKeyBoard = false
-	},
-  }
+		//关闭键盘
+		hideKeyboard(){
+			this.showCityKeyBoard = false
+		},
+	}
 };
 </script>
 

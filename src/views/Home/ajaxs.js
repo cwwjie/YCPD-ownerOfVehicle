@@ -1,5 +1,5 @@
-import RequestedURL from './../../config/RequestedURL.js';
-import stringConver from './../../utils/stringConver';
+import RequestedURL from '@/config/RequestedURL.js';
+import stringConver from '@/utils/stringConver';
 
 const ajaxs = {
     /**

@@ -52,133 +52,134 @@
 </template>
 
 <script>
-import scanQRCode from "../../components/scanQRCode"; 
-import RequestedURL from './../../config/RequestedURL.js'; //导入链接
 import Vue from "vue";
 import { Swipe, SwipeItem, Toast } from "mint-ui";
-import "mint-ui/lib/style.min.css";
-import { setTimeout } from 'timers';
-    export default {
-        components: {
-            // mint-ui
-            Toast
-        },
-        data () {
-            return {
-                tokens:'',  //token值
-                verificationCode:'',
-                showMsg:false,
-                msg:'',
-            }
-        },
 
-        created(){
-            this.getToken()
-        },
+import scanQRCode from "@/components/scanQRCode"; 
+import RequestedURL from '@/config/RequestedURL.js'; //导入链接
 
-        methods: {
-            //获取token
-            getToken() {
-                let _this = this
-                $.ajax({
+export default {
+    components: {
+        // mint-ui
+        Toast
+    },
+    data () {
+        return {
+            tokens:'',  //token值
+            verificationCode:'',
+            showMsg:false,
+            msg:'',
+        }
+    },
+
+    created(){
+        this.getToken()
+    },
+
+    methods: {
+        //获取token
+        getToken() {
+            let _this = this
+            $.ajax({
+                url: RequestedURL.getStationHandler1,
+                type: "post",
+                data: {
+                    action:"PICC_GetToekn",
+                    phoneNumber :_this.$route.query.phoneName,
+                    storeID:_this.$route.query.storeID
+                },
+                dataType:'json',
+                success: function (datas) {
+                    console.log(datas)
+                    if(datas.message=='请求成功'){
+                        _this.tokens = datas.data.token
+                    }else {
+                            Toast({
+                            message: "请求出现未知异常",
+                            duration: 1000
+                        });
+                    }
+                
+                },
+            })
+        },
+        //前往卡券查询结果
+        goQueryResulte(){
+            let _this = this
+            if(_this.verificationCode==''){
+                Toast({
+                    message: "请输入核销码",
+                    duration: 1000
+                });
+            } else {
+                    $.ajax({
                     url: RequestedURL.getStationHandler1,
                     type: "post",
                     data: {
-                        action:"PICC_GetToekn",
-                        phoneNumber :_this.$route.query.phoneName,
-                        storeID:_this.$route.query.storeID
+                        action:"PICC_VerificationFetch",
+                        storeID:_this.$route.query.storeID,
+                        token: _this.tokens,
+                        verificationCode:_this.verificationCode,
                     },
                     dataType:'json',
                     success: function (datas) {
-                        console.log(datas)
-                        if(datas.message=='请求成功'){
-                            _this.tokens = datas.data.token
-                        }else {
-                             Toast({
-                                message: "请求出现未知异常",
-                                duration: 1000
-                            });
+                        if(datas.code=='-1'||datas.code=='200'){
+                            // console.log(datas)
+                            _this.$router.push({
+                                path:'/cardDelay/queryResulte',query:{
+                                    storeID:_this.$route.query.storeID,
+                                    token: _this.tokens,
+                                    verificationCode:_this.verificationCode,
+                                }
+                            })
+                        }
+                        if(datas.code=='208'){
+                            _this.showMsg = true
+                            _this.msg = '无效的核销码'
+                            setTimeout(()=>{
+                                _this.showMsg = false
+                            },1500)
                         }
                     
                     },
                 })
-            },
-            //前往卡券查询结果
-            goQueryResulte(){
-                let _this = this
-                if(_this.verificationCode==''){
-                    Toast({
-                        message: "请输入核销码",
-                        duration: 1000
-                    });
-                } else {
-                      $.ajax({
-                        url: RequestedURL.getStationHandler1,
-                        type: "post",
-                        data: {
-                            action:"PICC_VerificationFetch",
-                            storeID:_this.$route.query.storeID,
-                            token: _this.tokens,
-                            verificationCode:_this.verificationCode,
-                        },
-                        dataType:'json',
-                        success: function (datas) {
-                            if(datas.code=='-1'||datas.code=='200'){
-                                // console.log(datas)
-                                _this.$router.push({
-                                    path:'/cardDelay/queryResulte',query:{
-                                        storeID:_this.$route.query.storeID,
-                                        token: _this.tokens,
-                                        verificationCode:_this.verificationCode,
-                                    }
-                                })
-                            }
-                            if(datas.code=='208'){
-                                _this.showMsg = true
-                                _this.msg = '无效的核销码'
-                                setTimeout(()=>{
-                                    _this.showMsg = false
-                                },1500)
-                            }
-                        
-                        },
-                    })
-                }
-              
-                
-            },
-            //前往示例
-            goExamples(ret){
-                if(ret==1){
-                    this.$router.push({
-                        path:'/cardDelay/examples',query:{ret:1}
-                    })
-                }else {
-                    this.$router.push({
-                        path:'/cardDelay/examples'
-                    })
-                }
-            },
-            goCode() {
-            
-                scanQRCode().then(
-                    res=>{
-                        console.log(res.res)
-                        this.$router.push({
-                            path:'/cardDelay/queryResulte',query:{
-                                storeID:this.$route.query.storeID,
-                                token: this.tokens,
-                                verificationCode:res.res,
-                            }
-                        })
-                    },
-                    err=>{
-                       alert('出现未知错误')
-                    }
-                )
             }
+            
+            
+        },
+        //前往示例
+        goExamples(ret){
+            if(ret==1){
+                this.$router.push({
+                    path:'/cardDelay/examples',query:{ret:1}
+                })
+            }else {
+                this.$router.push({
+                    path:'/cardDelay/examples'
+                })
+            }
+        },
+        goCode() {
+        
+            scanQRCode().then(
+                res=>{
+                    console.log(res.res)
+                    this.$router.push({
+                        path:'/cardDelay/queryResulte',query:{
+                            storeID:this.$route.query.storeID,
+                            token: this.tokens,
+                            verificationCode:res.res,
+                        }
+                    })
+                },
+                err=>{
+                    alert('出现未知错误')
+                }
+            )
         }
     }
+}
+
 </script>
 
 <style lang='less' scoped>

@@ -35,7 +35,8 @@
                 <div id="score">
                     <p>
                         <span>评分 </span>
-                        <img v-for="index in 3" src="../../assets/img/icon_star01@2x.png" alt=""><img v-for="INDEX in 5-3" src="../../assets/img/icon_star02@2x.png" alt="">
+                        <img v-for="(index, key) in 3" :key="key" src="../../assets/img/icon_star01@2x.png" alt="" />
+                        <img v-for="(index, key) in 5-3" :key="key + '11'" src="../../assets/img/icon_star02@2x.png" alt="" />
                     </p>
                     <p>
                         服务很细致，态度好，环境好。服务很细致，态度好，环境好。服务很细致，态度好，环境好。服务很细致，态度好，环境好。
@@ -84,172 +85,187 @@
         </div>
     </div>
 </template>
+
 <script>
 import Vue from "vue";
 import { Toast } from "mint-ui";
-import "mint-ui/lib/style.min.css";
+
 export default {
-  components:{
-    Toast,
-  },
-  data() {
-    return {
-      isShow: false,
-      imgData: [
-        { src: require("../../assets/img/icon_star04@2x.png"), active: false },
-        { src: require("../../assets/img/icon_star04@2x.png"), active: false },
-        { src: require("../../assets/img/icon_star04@2x.png"), active: false },
-        { src: require("../../assets/img/icon_star04@2x.png"), active: false },
-        { src: require("../../assets/img/icon_star04@2x.png"), active: false }
-      ],
-      comment: [
-        { name: "服务专业", active: false },
-        { name: "服务专业", active: false },
-        { name: "服务专业", active: false }
-      ],
-      commentTxt: "",
-      isChange: false
-    };
-  },
-  created() {},
-  methods: {
-    goShopList() {
-      this.$router.push({
-        path: "/card/shopList"
-      });
+    components:{
+        Toast,
     },
-    //点击星星
-    redStar(index) {
-      let data = this.imgData;
-      for (let i = 0; i < data.length; i++) {
-        if (data[4].active == true) {
-            data[0].active = true;
-            data[1].active = true;
-            data[2].active = true;
-            data[3].active = true;
-          }
-          if (data[3].active == true) {
-            data[0].active = true;
-            data[1].active = true;
-            data[2].active = true;
-          }
-          if (data[2].active == true) {
-            data[0].active = true;
-            data[1].active = true;
-          }
-          if (data[1].active == true) {
-            data[0].active = true;
-          }
-        }
+
+    data() {
+        return {
+            isShow: false,
+            imgData: [
+                { src: require("../../assets/img/icon_star04@2x.png"), active: false },
+                { src: require("../../assets/img/icon_star04@2x.png"), active: false },
+                { src: require("../../assets/img/icon_star04@2x.png"), active: false },
+                { src: require("../../assets/img/icon_star04@2x.png"), active: false },
+                { src: require("../../assets/img/icon_star04@2x.png"), active: false }
+            ],
+            comment: [
+                { name: "服务专业", active: false },
+                { name: "服务专业", active: false },
+                { name: "服务专业", active: false }
+            ],
+            commentTxt: "",
+            isChange: false
+        };
     },
-    change(index) {
-      let data = this.comment;
-      for (let i = 0; i < data.length; i++) {
-          console.log(data[i].active)
-          if(data[i].active ==true){
-           this.isChange = true
-          }
-          if(data[0].active==false&&data[1].active==false&&data[2].active==false) {
+
+    created() {},
+  
+    methods: {
+        goShopList() {
+            this.$router.push({
+            path: "/card/shopList"
+            });
+        },
+
+        //点击星星
+        redStar(index) {
+            let data = this.imgData;
+            for (let i = 0; i < data.length; i++) {
+            if (data[4].active == true) {
+                data[0].active = true;
+                data[1].active = true;
+                data[2].active = true;
+                data[3].active = true;
+                }
+                if (data[3].active == true) {
+                data[0].active = true;
+                data[1].active = true;
+                data[2].active = true;
+                }
+                if (data[2].active == true) {
+                data[0].active = true;
+                data[1].active = true;
+                }
+                if (data[1].active == true) {
+                data[0].active = true;
+                }
+            }
+        },
+
+        change(index) {
+            let data = this.comment;
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i].active)
+                if(data[i].active ==true){
+                this.isChange = true
+                }
+                if(data[0].active==false&&data[1].active==false&&data[2].active==false) {
+                this.isChange = false
+                }
+            }
+        },
+
+        success() {
+            Toast({
+                message: "评价完成",
+                duration: 1500
+            });
+
+            //清空输入框
+            this.commentTxt = ''
+
+            //清空选中的评论
+            let data = this.comment
+            for(let i=0;i<data.length;i++){
+                data[i].active = false
+            }
+
+            //把星星变回灰色
+            let data1 = this.imgData
+            for(let i=0;i<data1.length;i++){
+                data1[i].active = false
+            }
+            
+            //把确定按钮变成灰色的
             this.isChange = false
-          }
-      }
-    },
-    success() {
-       Toast({
-        message: "评价完成",
-        duration: 1500
-      });
-      //清空输入框
-      this.commentTxt = ''
-      //清空选中的评论
-      let data = this.comment
-      for(let i=0;i<data.length;i++){
-        data[i].active = false
-      }
-      //把星星变回灰色
-      let data1 = this.imgData
-      for(let i=0;i<data1.length;i++){
-        data1[i].active = false
-      }
-      //把确定按钮变成灰色的
-      this.isChange = false
+        }
     }
-  }
 };
+
 </script>
+
 <style lang="less" scoped>
+
 #cardInfo {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }
+
 #main {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding-top: 10px;
-  #header {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 10px;
+    #header {
     width: 95%;
     height: auto;
     margin: 0 auto;
     border-radius: 5px;
     position: relative;
     .top {
-      background-color: #fff;
-      width: 100%;
-      height: 113px;
-      padding: 20px 15px 0px 15px;
-      box-sizing: border-box;
-      border-bottom: 1px dotted #ddd;
-      border-radius: 5px;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      position: relative;
-      .icon {
+        background-color: #fff;
+        width: 100%;
+        height: 113px;
+        padding: 20px 15px 0px 15px;
+        box-sizing: border-box;
+        border-bottom: 1px dotted #ddd;
+        border-radius: 5px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: relative;
+        .icon {
         width: 90px;
         height: 62px;
         float: left;
         margin-right: 10px;
-      }
-      .arrow {
+        }
+        .arrow {
         position: absolute;
         width: 14px;
         height: 12px;
         top: 40px;
         right: 15px;
-      }
-      span {
+        }
+        span {
         display: block;
         float: left;
         color: #333;
         font-size: 14px;
         width: 50%;
-      }
-      span:nth-child(2) {
+        }
+        span:nth-child(2) {
         font-weight: bold;
         height: 45px;
         overflow: hidden;
-      }
-      span:nth-child(3) {
+        }
+        span:nth-child(3) {
         color: #cccccc;
         font-size: 12px;
         width: 74%;
-      }
+        }
     }
     .bottom {
-      width: 100%;
-      background-color: #fff;
-      padding-top: 30px;
-      padding-bottom: 30px;
-      border-radius: 5px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      img {
+        width: 100%;
+        background-color: #fff;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-radius: 5px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        img {
         width: 60px;
         height: 60px;
         position: absolute;
         right: 20px;
         top: 35%;
-      }
-      p:nth-child(2) {
+        }
+        p:nth-child(2) {
         width: 80%;
         background-color: #f0f0f0;
         height: 40px;
@@ -258,126 +274,126 @@ export default {
         text-align: center;
         border-radius: 5px;
         color: #aaaaaa;
-      }
+        }
     }
-  }
-  #shopInfo {
+    }
+    #shopInfo {
     width: 100%;
     margin-top: 5px;
     background-color: #fff;
     padding: 0px 15px;
     box-sizing: border-box;
     .allShop {
-      height: 40px;
-      line-height: 40px;
-      font-size: 14px;
-      border-bottom: 1px solid #ddd;
-      span:first-child {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+        span:first-child {
         color: #666;
-      }
-      span:nth-child(2) {
+        }
+        span:nth-child(2) {
         color: #ff8d18;
         float: right;
-      }
-      img {
+        }
+        img {
         width: 14px;
         height: 14px;
         // float:right;
         vertical-align: middle;
         margin-top: -2px;
-      }
+        }
     }
     .address {
-      position: relative;
-      width: 100%;
-      padding: 10px 0px;
-      p:nth-child(1) {
+        position: relative;
+        width: 100%;
+        padding: 10px 0px;
+        p:nth-child(1) {
         height: 25px;
         font-size: 14px;
         width: 90%;
         overflow: hidden;
-      }
-      p:nth-child(2) {
+        }
+        p:nth-child(2) {
         color: #808080;
         font-size: 12px;
-      }
-      p:nth-child(3) {
+        }
+        p:nth-child(3) {
         img {
-          width: 16px;
-          height: 16px;
-          float: left;
-          margin-top: 10px;
-          margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            float: left;
+            margin-top: 10px;
+            margin-right: 10px;
         }
         span {
-          display: table-cell;
-          vertical-align: middle;
-          width: 300px;
-          height: 35px;
-          overflow: hidden;
-          color: #808080;
-          font-size: 12px;
+            display: table-cell;
+            vertical-align: middle;
+            width: 300px;
+            height: 35px;
+            overflow: hidden;
+            color: #808080;
+            font-size: 12px;
         }
-      }
+        }
     }
-  }
-  #score {
+    }
+    #score {
     width: 100%;
     background-color: #fff;
     margin-top: 5px;
     padding: 0px 15px;
     box-sizing: border-box;
     p:first-child {
-      font-size: 14px;
-      color: #666;
-      height: 40px;
-      line-height: 40px;
-      border-bottom: 1px solid #ddd;
-      span {
+        font-size: 14px;
+        color: #666;
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ddd;
+        span {
         vertical-align: middle;
         margin-right: 5px;
-      }
-      img {
+        }
+        img {
         width: 14px;
         height: 14px;
         margin-left: 5px;
         vertical-align: middle;
-      }
+        }
     }
     p:nth-child(2) {
-      padding: 5px;
-      font-size: 14px;
-      color: #333;
+        padding: 5px;
+        font-size: 14px;
+        color: #333;
     }
-  }
-  #introduce {
+    }
+    #introduce {
     width: 100%;
     background-color: #fff;
     margin-top: 5px;
     padding: 0px 15px 15px 15px;
     box-sizing: border-box;
     p:first-child {
-      height: 40px;
-      line-height: 40px;
-      color: #666666;
-      font-size: 14px;
-      border-bottom: 1px solid #ddd;
+        height: 40px;
+        line-height: 40px;
+        color: #666666;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
     }
     p:nth-child(2) {
-      padding-top: 10px;
-      span {
+        padding-top: 10px;
+        span {
         display: block;
         font-size: 13px;
         color: #333;
         margin-left: 10px;
-      }
-      a {
+        }
+        a {
         color: #666;
         font-size: 14px;
-      }
+        }
     }
-  }
-  #order {
+    }
+    #order {
     width: 100%;
     margin-top: 5px;
     background-color: #fff;
@@ -385,23 +401,23 @@ export default {
     padding-bottom: 10px;
     box-sizing: border-box;
     p {
-      font-size: 13px;
-      margin-left: 10px;
+        font-size: 13px;
+        margin-left: 10px;
     }
     p:first-child {
-      height: 40px;
-      line-height: 40px;
-      color: #666;
-      font-size: 14px;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 10px;
-      margin-left: 0px;
+        height: 40px;
+        line-height: 40px;
+        color: #666;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        margin-left: 0px;
     }
-  }
-  .space {
+    }
+    .space {
     height: 40px;
-  }
-  #comment {
+    }
+    #comment {
     width: 100%;
     height: 316px;
     background-color: #fff;
@@ -409,28 +425,28 @@ export default {
     padding: 0px 15px;
     box-sizing: border-box;
     p:first-child {
-      height: 40px;
-      line-height: 40px;
-      border-bottom: 1px solid #ddd;
-      color: #666;
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ddd;
+        color: #666;
     }
     p:nth-child(2) {
-      margin-top: 30px;
-      text-align: center;
-      img {
+        margin-top: 30px;
+        text-align: center;
+        img {
         width: 31px;
         height: 30px;
         margin-left: 5px;
-      }
+        }
     }
     p:nth-child(3) {
-      width: 100%;
-      padding: 15px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      span {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        span {
         width: 30%;
         height: 35px;
         display: inline-block;
@@ -440,46 +456,43 @@ export default {
         line-height: 35px;
         color: #999;
         font-size: 14px;
-      }
-      .bgcColor {
+        }
+        .bgcColor {
         background-color: #ffeff0;
         border: 1px solid rgba(229, 0, 18, 1);
         color: #e50012;
-      }
+        }
     }
     textarea {
-      width: 100%;
-      height: 75px;
-      outline: none;
-      padding: 10px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      color: #666;
+        width: 100%;
+        height: 75px;
+        outline: none;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        color: #666;
     }
     p:nth-child(5) {
         width: 100%;
-      height: 44px;
-      color: #fff;
-      background-color: #ccc;
-      border-radius: 3px;
-      text-align: center;
-      line-height: 44px;
-      margin-top: 10px;
+        height: 44px;
+        color: #fff;
+        background-color: #ccc;
+        border-radius: 3px;
+        text-align: center;
+        line-height: 44px;
+        margin-top: 10px;
     }
     p:last-child {
-      width: 100%;
-      height: 44px;
-      color: #fff;
-      background-color: #ccc;
-      border-radius: 3px;
-      text-align: center;
-      line-height: 44px;
-      margin-top: 10px;
+        width: 100%;
+        height: 44px;
+        color: #fff;
+        background-color: #ccc;
+        border-radius: 3px;
+        text-align: center;
+        line-height: 44px;
+        margin-top: 10px;
         background-color: #e50012 !important;
     }
-  }
+    }
 }
 </style>
-
-
-

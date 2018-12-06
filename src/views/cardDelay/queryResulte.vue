@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import RequestedURL from './../../config/RequestedURL.js'; //导入链接
-import { setTimeout } from 'timers';
-import { EILSEQ } from 'constants';
+
 import { Toast } from "mint-ui";
+import RequestedURL from '@/config/RequestedURL.js'; //导入链接
+
 export default {
     components: {
         // mint-ui

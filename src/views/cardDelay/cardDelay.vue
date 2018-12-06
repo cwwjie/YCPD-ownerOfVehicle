@@ -52,35 +52,35 @@
 </template>
 
 <script>
-import RequestedURL from './../../config/RequestedURL.js'; //导入链接
+
+import RequestedURL from '@/config/RequestedURL.js'; //导入链接
+
 export default {
-  name: "",
+	name: "",
 
-  data() {
-    return {};
-  },
+	data() {
+		return {}
+	},
 
-  methods: {
-	  goCardQueryPage(){
+	methods: {
+		goCardQueryPage () {
 
-		  let _this = this
-		   $.ajax({
-                url: RequestedURL.getStationHandler1,
-                type: "post",
-                data: {
-                    action:"GetAbyStore",
-                    Name:'尊驾汇汽车服务中心'
-                },
-                success: function (datas) {
-					console.log(datas.data[0])
-                      _this.$router.push({
-						  path:'/cardDelay/cardQuery',query:{phoneName:datas.data[0].StringVal8,storeID:datas.data[0].StoreID}
-					  })
-                },
-            })
-		
-	  }
-  }
+			let _this = this;
+			$.ajax({
+				url: RequestedURL.getStationHandler1,
+				type: "post",
+				data: {
+					action:"GetAbyStore",
+					Name:'尊驾汇汽车服务中心'
+				},
+				success: function (datas) {
+					_this.$router.push({
+						path:'/cardDelay/cardQuery',query:{phoneName:datas.data[0].StringVal8,storeID:datas.data[0].StoreID}
+					})
+				},
+			})
+		}
+	}
 };
 </script>
 
@@ -115,7 +115,7 @@ export default {
 		p:first-child,p:nth-child(2) {
 			font-size:16px;
 			background:linear-gradient(225deg,rgba(255,119,0,1) 0%,rgba(229,0,18,1) 100%);
-			-webkit-background-clip: text;
+			// -webkit-background-clip: text;
 			color:transparent;
 			font-weight: bold;
 		}

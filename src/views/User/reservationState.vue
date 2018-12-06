@@ -19,7 +19,8 @@
                 <img class="icon" :src="img" alt="">
                 <p>{{storeName}}</p>
                 <p>
-                    <img v-for="star in 4" :key="star" src="../../assets/img/icon_star01@2x.png" alt=""><img v-for="star in 5-4" src="../../assets/img/icon_star02@2x.png" alt="">
+                    <img v-for="(star, key) in 4" :key="key" src="../../assets/img/icon_star01@2x.png" alt="">
+                    <img v-for="(star, key) in 5-4" :key="key + '11'" src="../../assets/img/icon_star02@2x.png" alt="">
                     <span>4.0</span>
                 </p>
                 <p>
@@ -77,7 +78,7 @@
 import { Toast } from 'mint-ui';
 import { MessageBox } from 'mint-ui';
 import ajaxs from './ajaxs.js';
-import RequestedURL from './../../config/RequestedURL.js'; //导入链接
+import RequestedURL from '@/config/RequestedURL.js'; //导入链接
 
     export default {
         components:{
@@ -425,13 +426,12 @@ import RequestedURL from './../../config/RequestedURL.js'; //导入链接
             //     float:left;
             // }
             a {
+                display: inline-block;
                 width:49%;
                 height:100%;
                 font-size:16px;
                 color:#808080;
                 line-height:44px; 
-                display:inline-block;
-                float:left;
                 vertical-align: middle;
                 img {
                     width:18px;
