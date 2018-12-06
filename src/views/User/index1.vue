@@ -24,7 +24,10 @@
             <img alt="用户头像" :src="loginIofor.headImageUrl" />
           </div>
           <div class="login-portrait" v-else>
-            <personnel width="42" height="42" color="#d8d8d8"/>
+            <svg class="personnel" width="42" height="42" t="1526456513719" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20331" xmlns:xlink="http://www.w3.org/1999/xlink" >
+              <path fill="#d8d8d8" d="M512.0181274414062 140.7236328125c-125.93957519531247 0-228.48156738281247 102.50326538085938-228.48156738281247 228.48074340820312 0 125.90167236328126 102.46701049804688 228.44448852539062 228.48156738281247 228.44448852539062 125.97665405273438 0 228.517822265625-102.54199218749999 228.517822265625-228.44448852539062 0-125.97747802734375-102.54116821289061-228.48074340820312-228.517822265625-228.48074340820312z" p-id="20332"></path>
+              <path fill="#d8d8d8" d="M688.11962890625 592.4355773925781c-48.68206787109375 38.48208618164063-109.30682373046875 62.32461547851563-176.10150146484375 62.32461547851563-66.79550170898438 0-127.38153076171872-23.915863037109375-176.17565917968753-62.32461547851563C243.4666748046875 651.2484130859374 179.14804077148432 754.5303344726562 170.31338500976562 874.1483764648438c32.343475341796875 4.396728515625001 89.89892578124999 9.127990722656248 172.03436279296875 9.127990722656248h339.1916198730469c82.17333984375 0 139.7650451660156-4.731262207031249 172.14724731445312-9.127990722656248-8.762145996093748-119.69384765625-73.07995605468749-222.89996337890622-165.5669860839844-281.71279907226557z" p-id="20333"></path>
+            </svg>
           </div>
           <div class="login-content">
             <div>{{loginIofor.ContactName}}</div>
@@ -46,7 +49,10 @@
           class="header-login main-flex-start"
         >
           <div class="login-portrait">
-            <personnel width="42" height="42" color="#d8d8d8"/>
+            <svg class="personnel" width="42" height="42" t="1526456513719" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20331" xmlns:xlink="http://www.w3.org/1999/xlink" >
+              <path fill="#d8d8d8" d="M512.0181274414062 140.7236328125c-125.93957519531247 0-228.48156738281247 102.50326538085938-228.48156738281247 228.48074340820312 0 125.90167236328126 102.46701049804688 228.44448852539062 228.48156738281247 228.44448852539062 125.97665405273438 0 228.517822265625-102.54199218749999 228.517822265625-228.44448852539062 0-125.97747802734375-102.54116821289061-228.48074340820312-228.517822265625-228.48074340820312z" p-id="20332"></path>
+              <path fill="#d8d8d8" d="M688.11962890625 592.4355773925781c-48.68206787109375 38.48208618164063-109.30682373046875 62.32461547851563-176.10150146484375 62.32461547851563-66.79550170898438 0-127.38153076171872-23.915863037109375-176.17565917968753-62.32461547851563C243.4666748046875 651.2484130859374 179.14804077148432 754.5303344726562 170.31338500976562 874.1483764648438c32.343475341796875 4.396728515625001 89.89892578124999 9.127990722656248 172.03436279296875 9.127990722656248h339.1916198730469c82.17333984375 0 139.7650451660156-4.731262207031249 172.14724731445312-9.127990722656248-8.762145996093748-119.69384765625-73.07995605468749-222.89996337890622-165.5669860839844-281.71279907226557z" p-id="20333"></path>
+            </svg>
           </div>
           <div class="login-content">
             注册会员
@@ -232,22 +238,6 @@ import 'vue-awesome/icons/exclamation';
 import 'vue-awesome/icons/circle-o';
 import 'vue-awesome/icons/check-square';
 
-// 自己封装 ICON
-import headphones from '@/assets/headphones.vue'; // 耳机
-import integration from '@/assets/integration.vue'; // 积分
-import coupon2 from '@/assets/coupon2.vue'; // 优惠券
-import VIP from '@/assets/VIP.vue'; // 会员
-import personnel from '@/assets/personnel.vue'; // 登录人员
-import add from '@/assets/add.vue'; // 新增按钮
-import alreadyReserved from '@/assets/alreadyReserved.vue'; // 已预约
-import payment2 from '@/assets/payment2.vue'; // 待付款
-import addedServices from '@/assets/addedServices.vue'; // 待服务
-import evaluate2 from '@/assets/evaluate2.vue'; // 待评价
-import financialRecords from '@/assets/financialRecords.vue'; // 消费记录
-import evaluate from '@/assets/evaluate.vue'; // 我的评价
-import invoice from '@/assets/invoice.vue'; // 我的发票
-import collection from '@/assets/collection.vue'; // 我的收藏
-
 // 自己封装的组件
 import tabbar from '@/components/TabBar.vue';
 
@@ -257,10 +247,6 @@ export default {
   name: 'user',
 
   components: {
-    // 自己封装 ICON
-    headphones, integration, coupon2, VIP, personnel, add,
-    alreadyReserved, payment2, addedServices, evaluate2,
-    financialRecords, evaluate, invoice, collection,
     // 自写组件
     tabbar,
     // vue-awesome

@@ -61,10 +61,7 @@
                 </p>
             </div>
             <!-- 底部 TabBar -->
-            <tabbar 
-            :selectIndex="2"
-            :callbackFun="tabbarClick"
-            />
+            <tabbar :selectIndex="2" />
         </div>
     </div>
 </template>
