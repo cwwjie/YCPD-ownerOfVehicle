@@ -1,3 +1,7 @@
+/**
+ * 下面的 配置文件 是 很久之前写的 不够规范
+ */
+
 // 真实环境跳转链接
 let RedirectRUL = {
     host: 'http://picc.hotgz.com',
