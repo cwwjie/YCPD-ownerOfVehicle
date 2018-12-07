@@ -146,10 +146,19 @@ export default {
             if (loadPageCode) {
                 // 如果存在 code 则进行一次 openid 的交换
                 this.$store.dispatch('getOpenidCode', loadPageCode) // 交换 openid
-                .then(openid => {
+                .then(res => {
 
-                    _this.saveOpenid(openid);
-                    _this.initUserInfor(openid);
+                    // 判断状态码 是否为1
+                    if (res.code === 1) {
+                        _this.saveOpenid(res.openid);
+                        _this.initUserInfor(res.openid);
+
+                    // 如果状态码为 2 表示状态码已被使用过
+                    } else if (res.code === 2) {
+                        // 重新跳转一次获取 code
+                        window.location.href = config.YcpdUrlWidthWxCode();
+
+                    }
 
                 // 通过 code 获取 openid 失败的情况
                 }, error => errorHandle(error));

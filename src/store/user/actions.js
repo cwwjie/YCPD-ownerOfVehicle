@@ -71,9 +71,21 @@ let actions = {
                 response => response.json(),
                 error => error
             ).then(val => {
+                // 判断 code 是否被使用
+                if (val && val.msg && val.msg === 'code已被使用') {
+                    // 如果 code 被使用了 返个状态码 2
+                    return resolve({
+                        code: 2, 
+                        openid: null
+                    });
+                }
+
                 // 判空 并且 校验openid的合法性
                 if (val && val.OpenID && val.OpenID.length > 15) {
-                    resolve(val.OpenID);
+                    resolve({
+                        code: 1,
+                        openid: val.OpenID
+                    });
 
                 } else {
 
