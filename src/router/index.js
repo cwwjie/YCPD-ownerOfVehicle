@@ -10,24 +10,30 @@ const routes = [
 		name: 'home',
 		component: () => import('@/views/Home/index'), // 主页 首屏
 		meta: { title: '养车频道' },
-	}, {
-		path: '/city',
-		component: () => import('@/views/Home/city'), // 主页 首屏
-		name: 'city',
-		meta: { title: '选择地区' },
-	}, {
+	}, 
+	{
 		path: '/user/index',
 		alias: ['/user/', '/user'],
 		name: 'user',
 		component: () => import('@/views/User/index'), // 个人中心
 		meta: { title: '个人中心' },
 	},
-	{
+	
+	{ // 这个页面的需求 已经废弃
+		path: '/city',
+		component: () => import('@/views/Home/city'), // 主页 选择城市
+		name: 'city',
+		meta: { title: '选择地区' },
+	}, 
+
+	{  // 这个页面也是废弃了
 		path: '/user/infor',
 		name: 'userInfor',
 		component: () => import('@/views/User/infor'), // 个人信息
 		meta: { title: '个人信息' },
-	}, {
+	}, 
+	
+	{
 		path: '/user/order',
 		name: 'userOrder',
 		component: () => import('@/views/User/order'), // 订单页面

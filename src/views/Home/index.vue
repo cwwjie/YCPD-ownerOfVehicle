@@ -131,6 +131,7 @@ import { Swipe, SwipeItem, Toast } from "mint-ui";
 import ajaxs from "./ajaxs.js";
 
 // 配置文件类
+import config from '@/config';
 import RequestedURL from "@/config/RequestedURL.js";
 
 // 自定义组件类
@@ -187,7 +188,27 @@ export default {
          * 跳转到注册页
          */
         jumpToLogin: function jumpToLogin() {
-            window.location.href = `http://${window.location.host}/wx20/register/index.html#/index/${window.localStorage.openid}/`;
+            // 判断是否存在openid 并且 校验 openid 的合法性
+            if (window.localStorage.openid && window.localStorage.openid.length > 15) {
+                // 只有 openid 正确的情况下才可以跳转到注册页面
+                window.location.href = `http://${window.location.host}/wx20/register/index.html#/index/${window.localStorage.openid}/`;
+
+            } else {
+                // 判断是否出现过 获取openid错误
+                if (window.localStorage.haveOpenidError) {
+                    // 表示第二次出现 获取openid错误
+                    alert('无法获取微信openid, 请联系客服人员');
+
+                // 未出现过获取openid错误
+                } else {
+                    // 缓存 获取openid出现错误 的状态
+                    window.localStorage.setItem('haveOpenidError', 'true'); 
+                    // 并且弹出提示
+                    if (confirm('获取微信用户信息失败, 是否重新获取?')) {
+                        window.location.href = config.YcpdUrlWidthWxCode(); // 重新获取 code
+                    }
+                }
+            }
         },
 
         /**

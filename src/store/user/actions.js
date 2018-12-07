@@ -44,10 +44,13 @@ let actions = {
                 response => response.text(),
                 error => error
             ).then(headImageUrl => {
+                // 判空
                 if (headImageUrl) {
                     commit('initHeadImageUrl', headImageUrl); // 初始化 登录信息 传入到 mutations 里面
                     resolve(headImageUrl);
+
                 } else {
+
                     reject('向服务器获用户信息的头像成功, 但是头像不存在');
                 }
             })
@@ -68,9 +71,12 @@ let actions = {
                 response => response.json(),
                 error => error
             ).then(val => {
-                if (val && val.OpenID) {
+                // 判空 并且 校验openid的合法性
+                if (val && val.OpenID && val.OpenID.length > 15) {
                     resolve(val.OpenID);
+
                 } else {
+
                     reject(`向服务器获用于交换 openid 的 code 有错误！ 原因:${JSON.stringify(val)}`);
                 }
             })
