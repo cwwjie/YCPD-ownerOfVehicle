@@ -35,7 +35,7 @@
         <div class="entry-list-content">
 
             <!-- 洗车美容 优惠加油 停车服务 快速充电 -->
-            <div class="entry-item" @click="jumpToUrlWhetherLogin(`http://${window.location.host}/wx20/storeList/index.html#/?productTypeId=''&openId=${window.localStorage.openid}`)">
+            <div class="entry-item" @click="goStoreList">
                 <div class="entry-svg-content" >
                     <img src="../../assets/img/洗车美容 copy@2x.png"/>
                 </div>
@@ -65,14 +65,14 @@
 
 
             <!-- 放心保养 维修养护 紧急救援 违章查询 -->
-            <div class="entry-item" @click="jumpToUrlWhetherLogin(`http://${window.location.host}/wx20/storeList/index.html#/?productTypeId=''&openId=${window.localStorage.openid}`)">
+            <div class="entry-item" @click="goStoreList">
                 <div class="entry-svg-content" >
                 <img src="../../assets/img/放心保养 copy@2x.png"/>
                 </div>
                 <div class="item-name">放心保养</div>
             </div>
 
-            <div class="entry-item" @click="jumpToUrlWhetherLogin(`http://${window.location.host}/wx20/storeList/index.html#/?productTypeId=''&openId=${window.localStorage.openid}`)">
+            <div class="entry-item" @click="goStoreList">
                 <div class="entry-svg-content" >
                 <img src="../../assets/img/维修养护 copy@2x.png"/>
                 </div>
@@ -158,8 +158,7 @@ export default {
                     alt: "养车频道-banner",
                     src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner01.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`, // 放置在阿里云储存里, 方便替换
                     click: this.jumpToGasStation
-                },
-                {
+                }, {
                     alt: "养车频道-banner",
                     src: `https://ycpduser.oss-cn-shenzhen.aliyuncs.com/wx20/home/banner02.jpg?${convertDate.dateToYYYYmmDDhhMM00(new Date())}`,
                     click: () => this.jumpToUrlWhetherLogin("http://picc.hotgz.com/Merchant/Merchanthome.html?id=180724010002017319")
@@ -167,8 +166,6 @@ export default {
             ],
 
             locationhost: window.location.host,
-            latitude: "",
-            longitude: ""
         };  
     },
 
@@ -180,6 +177,7 @@ export default {
         loginIofor: function loginIofor() {
             return this.$store.getters.getLoginIofor; // 如果未登录 返回 false
         },
+
     },
 
     mounted() { },
@@ -200,6 +198,21 @@ export default {
             if (this.loginIofor) {
                 // 存在 用户信息 表示已注册 跳转到 指定链接
                 window.location.href = url;
+
+            } else {
+                // 不存在 用户信息 注册页面
+                this.jumpToLogin();
+            }
+        },
+
+        /**
+         * 跳转到 商家列表
+         */
+        goStoreList: function goStoreList() {
+            // 判断是否 存在 用户信息
+            if (this.loginIofor) {
+                // 存在 用户信息 表示已注册 跳转到 商家列表
+                window.location.href = `http://${window.location.host}/wx20/storeList/index.html#/?productTypeId=''&openId=${window.localStorage.openid}`;
 
             } else {
                 // 不存在 用户信息 注册页面
