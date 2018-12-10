@@ -194,7 +194,7 @@ export default {
             // 判断是否 存在 用户信息
             if (this.loginIofor) {
                 // 存在 用户信息 表示已注册 跳转到 我的车辆
-                window.location.href = `http://${window.location.host}/wx20/register/index.html#/mycar/${this.loginIofor.CustomerID}/2/3/4`;
+                window.location.href = `http://${window.location.host}/wx20/register/index.html#/mycar/${this.loginIofor.CustomerID}/${window.localStorage.openid}`;
 
             } else {
                 // 不存在 用户信息 注册页面
