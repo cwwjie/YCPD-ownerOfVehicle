@@ -264,6 +264,12 @@ export default {
             const _this = this;
             let openid = window.localStorage.openid;
 
+            // 判断是否 存在 用户信息
+            if (!this.loginIofor) {
+                // 不存在 用户信息 注册页面
+                return this.jumpToLogin();
+            }
+
             /**
              * 【第二步】 获取优惠加油的链接
              */
