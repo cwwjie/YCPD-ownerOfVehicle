@@ -7,4 +7,12 @@ module.exports = {
     location: {
         ycpd: 'http://store.demo.ichebaoyang.com/wx20/index.html', // 养车频道 地址
     },
+
+    /**
+     * 请求源
+     */
+    origin: {
+        store: 'http://store.demo.ichebaoyang.com',
+        api: 'http://api.demo.hotgz.com',
+    }
 };

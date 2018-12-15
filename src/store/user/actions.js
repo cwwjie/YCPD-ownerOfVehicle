@@ -3,6 +3,7 @@
  * Action 可以包含任意异步操作。
  */
 import RequestedURL from './../../config/RequestedURL';
+import config from './../../config';
 
 let actions = {
     /**
@@ -32,22 +33,21 @@ let actions = {
 
     /**
      * 通过 openid 获取 用户信息的头像
-     * @param {string} param openid
-     * @return {Promise} resolve(headImageUrl) reject(error)
+     * @param {string} openid openid
      */
-    getHeadImageUrl: ({commit}, param) => {
+    getHeadImageUrl: ({commit}, openid) => {
         return new Promise((resolve, reject) => {
-            fetch(`${RequestedURL.getHeadImageUrl}?Type=1&OpenID=${param}`, {
+            fetch(`${config.origin.api}/Weixin/GetHeadImageUrl?openid=${openid}`, {
                 'method': 'GET',
                 'contentType': "text/html; charset=utf-8"
             }).then(
-                response => response.text(),
+                response => response.json(),
                 error => error
-            ).then(headImageUrl => {
+            ).then(res => {
                 // 判空
-                if (headImageUrl) {
-                    commit('initHeadImageUrl', headImageUrl); // 初始化 登录信息 传入到 mutations 里面
-                    resolve(headImageUrl);
+                if (res && res.Data && res.Data.headimgurl) {
+                    commit('initHeadImageUrl', res.Data.headimgurl); // 初始化 登录信息 传入到 mutations 里面
+                    resolve(res.Data.headimgurl);
 
                 } else {
 
@@ -59,12 +59,12 @@ let actions = {
     },
     
     /**
-     * 获取 用于交换 openid 的 code 方法
-     * @param {string} param code
+     * 通过code 交换 openid
+     * @param {string} code code
      */
-    getOpenidCode: ({commit}, param) => {
+    getOpenidCode: ({commit}, code) => {
         return new Promise((resolve, reject) => {
-            fetch(`${RequestedURL.getOpenidCode}?action=GetOpenID&code=${param}`, {
+            fetch(`${config.origin.api}/Weixin/Get_WxOpenID?code=${code}`, {
                 'method': 'GET',
                 'contentType': "application/json; charset=utf-8"
             }).then(
@@ -72,8 +72,7 @@ let actions = {
                 error => error
             ).then(val => {
                 // 判断 code 是否被使用
-                if (val && val.msg && val.msg === 'code已被使用') {
-                    // 如果 code 被使用了 返个状态码 2
+                if (val.Code === 202) {
                     return resolve({
                         code: 2, 
                         openid: null
@@ -81,10 +80,10 @@ let actions = {
                 }
 
                 // 判空 并且 校验openid的合法性
-                if (val && val.OpenID && val.OpenID.length > 15) {
+                if (val && val.Data.OpenID && val.Data.OpenID.length > 15) {
                     resolve({
                         code: 1,
-                        openid: val.OpenID
+                        openid: val.Data.OpenID
                     });
 
                 } else {

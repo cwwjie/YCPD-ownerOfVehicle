@@ -33,7 +33,6 @@ export default {
             const _this = this;
             let openid = window.localStorage.openid;
 
-
             /**
              * 【第四步】 获取优惠加油的链接
              */

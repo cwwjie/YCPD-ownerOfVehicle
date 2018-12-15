@@ -7,4 +7,12 @@ module.exports = {
     location: {
         ycpd: 'http://picc.hotgz.com/wx20/index.html', // 养车频道 地址
     },
+
+    /**
+     * 请求源
+     */
+    origin: {
+        store: 'http://picc.hotgz.com',
+        api: 'http://ycpdapi.hotgz.com',
+    }
 };
