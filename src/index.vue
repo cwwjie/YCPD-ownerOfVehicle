@@ -156,7 +156,7 @@ export default {
                     // 如果状态码为 2 表示状态码已被使用过
                     } else if (res.code === 2) {
                         // 重新跳转一次获取 code
-                        errorHandle('获取用户信息失败, 不存在微信code凭证 通过 微信code凭证 获取 微信用户唯一标识openid失败, 状态码已被使用');
+                        window.location.href = config.YcpdUrlWidthWxCode(); // 重新获取 code
                     }
 
                 // 通过 code 获取 openid 失败的情况
@@ -164,7 +164,7 @@ export default {
 
             } else {
                 // 不存在 code, 重新跳转一次获取 code
-                errorHandle('获取用户信息失败, 不存在微信code凭证');
+                window.location.href = config.YcpdUrlWidthWxCode(); // 重新获取 code
             }
         },
 

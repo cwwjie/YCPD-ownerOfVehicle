@@ -67,7 +67,7 @@ export default {
                     url: RequestedURL.getStationHandler,
                     type: "post",
                     data: {
-                        action: "GetMembercards",
+                        action: "GetStation",
                         lattude: position.latitude,
                         lontude: position.longitude,
                         openid: openid
@@ -114,8 +114,10 @@ export default {
             // 判断是否测试环境
             if ( window.location.host === "store.demo.ichebaoyang.com" || process.env.NODE_ENV === "development" ) {
                 window.location.href =  "http://store.demo.ichebaoyang.com/Merchant/Merchanthome.html?id=180727010001925946";
+                
             } else {
                 window.location.href =  "http://picc.hotgz.com/Merchant/Merchanthome.html?id=180724010002017319";
+
             }
         },
 

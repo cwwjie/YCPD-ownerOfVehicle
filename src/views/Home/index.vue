@@ -278,7 +278,7 @@ export default {
                     url: RequestedURL.getStationHandler,
                     type: "post",
                     data: {
-                        action: "GetMembercard",
+                        action: "GetStation",
                         lattude: position.latitude,
                         lontude: position.longitude,
                         openid: openid
