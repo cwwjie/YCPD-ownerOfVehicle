@@ -4,60 +4,40 @@
     <div id="main">
         <div id="header">
             <div class="top">
-                <img class="icon" src="../../assets/img/5.jpg">
-                <span>深圳百店通用精致洗车券深圳</span>
-                <span>有效期 : 2018.07.01-2018.12.31</span>
-                <img class="arrow" src="../../assets/img/icon_arrow@2x.png">
+                <img class="icon" :src=Voucher.CouponImgUrl>
+                <span>{{Voucher.VoucherName}}</span>
+                <span>有效期 : {{BeginTime+'-'+EndTime}}</span>
+               <!--  <img class="arrow" src="../../assets/img/icon_arrow@2x.png"> -->
             </div>
-            <div class="bottom">
-                <p>核销码：6661 2616 3322 2112</p>
-                <p v-if="!this.$route.query.type">
-                    <img src="../../assets/img/5.jpg">
+            <div class="bottom clearFloat">
+                <p>核销码：{{Voucher.VoucherCode}}</p>
+                <p >
+                    <img :src="src">
                 </p>
-                <p v-if="!this.$route.query.type">
+                <p class="goPlay storList" v-if="!this.$route.query.type" @click="goShopList"
+                >
+                    <span >查看服务网点</span> 
+                </p>
+                <p class="goPlay" v-if="!this.$route.query.type" @click="appointment">
                     <span>立即预约</span> 
                 </p>
+
+                 <div v-if="this.$route.query.type" class="storList" @click="goShopList">
+                    <span>查看服务网点</span>
+                </div>
                 <div v-if="this.$route.query.type" class="goPlay">
                     <img src="../../assets/img/icon_Payment02@2x.png">
                     <span>缴费出场</span>
                 </div>
             </div>
         </div>
-        <!-- 门店信息 -->
-        <div id="shopInfo">
-            <p class="allShop">
-                <span>适用商家</span>
-                <span @click="goShopList()">查看全部99家门店<img src="../../assets/img/Path 2@2x.png">
-                </span>
-            </p>
-            <div class="address">
-                <P>中国和谐控股豪华汽车维修中心（清龙路店）</P>
-                <P>6.10km 离我最近</P>
-                <P>
-                    <img src="../../assets/img/icon_position02@2x.png" alt="">
-                    <a>
-                        <span>深圳市龙华新区清龙路原</span>
-                    </a>
-                    
-                </P>
-                <img class="call" src="../../assets/img/icon_call@3x.png">
-                <p class="solid"></p>
-            </div>
-        </div>
         <!-- 服务介绍 -->
         <div id="introduce">
             <p>服务内容</p>
-            <p>
-                <a>消费介绍</a>
-                <span> • 仅限XXXXXXXX消费</span>
-                <span> • 仅限XXXXXXXX消费</span>
-                <span> • 仅限XXXXXXXX消费</span>
-                <span> • 仅限XXXXXXXX消费</span>
-                
-            </p>
+            <p>{{Voucher.Introduce}}</p>
         </div>
         <!-- 订单信息 -->
-        <div id="order">
+    <!--     <div id="order">
             <p>订单信息</p>
             <p>
                 领取渠道 : <span>积分兑换</span>
@@ -68,29 +48,77 @@
             <p>
                 购买时间：<span>2018-07-01 15:30:59</span>
             </p>
-        </div>
-        <div class="space"></div>
+        </div> -->
+        <!-- <div class="space"></div> -->
     </div>
 </div>
 
 </template>
 
 <script>
-
+import RequestedURL from '@/config/RequestedURL.js';
 export default {
     data(){
-        return {
+        return { 
+            id:this.$route.query.id,   // 获取券的id
+
+            Voucher:'',         // 券详情
+
+            src:'',            // 二维码路径
+
+            BeginTime:'',      // 券生效时间
+
+            EndTime:'',        // 券失效时间
+
+            openId:this.$route.query.openId,  // 用户openId
+
+            CustomerID:this.$route.query.CustomerID  // 车主id
 
         }
     },
     created(){
+        // 获取券详情
+        this.getVoucherInfo()
 
+        
     },
     methods:{
+        // 前往商家列表
         goShopList(){
-            this.$router.push({
-                path:'/card/shopList'
+            window.location.href = `http://${window.location.host}/wx20/storeList/index.html#/?productId=${this.Voucher.ProductID}`
+        },
+
+        // 获取券的详情
+        getVoucherInfo:function(){
+            const that = this
+            $.ajax({
+                url:RequestedURL.getVoucherCarOwnerList,
+                type:'post',
+                data:{
+                    CustomerID:that.CustomerID,
+                    CarOwnerID:that.id,
+                },
+                success:function(res){
+                    console.log(res)
+                    if(res.Code===200){
+                          that.src=`http://ycpd.demo.hotgz.com/WebPages/DataManagePages/StoreHandler/qrcode.aspx?url=${res.Data.List[0].VoucherCode}`
+
+                            that.BeginTime = res.Data.List[0].BeginTime.slice(0,10)
+                            that.EndTime = res.Data.List[0].EndTime.slice(0,10)
+                            that.Voucher = res.Data.List[0]
+                    }else {
+                        alert(res.Msg)
+                    }
+                },
+                error:function(){
+                    alert('服务器异常')
+                }
             })
+        },
+
+        // 前往预约
+        appointment:function(){
+            window.location.href = `http://${window.location.host}/wx20/carReservation/index.html#/?name=公众号&openId=${window.localStorage.openid}&ProductID=${this.Voucher.ProductID}`;
         }
     }
 }
@@ -98,6 +126,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.clearFloat {
+    overflow: hidden;
+    zoom: 1;
+}
 
 #cardInfo {
     background-color: #f5f5f5;
@@ -105,11 +137,12 @@ export default {
 
 #main {
     width:100%;
-    height:100%;
+    height:100vh;
     box-sizing: border-box;
+    padding:0px 15px;
     padding-top:10px;
     #header {
-        width:95%;
+        width:100%;
         height:auto;
         margin:0 auto;
         // background-color: #fff;
@@ -187,29 +220,29 @@ export default {
                 img {
                     width:100%;
                     height:100%;
-                    padding:6px;
+                    // padding:6px;
                     box-sizing: border-box;
                 }
             }
-            p:nth-child(3) {
-                width:160px;
-                height:40px;
-                color:#fff;
-                background-color: #E50012;
-                line-height: 40px;
-                text-align: center;
-                font-size:15px;
-                margin:0 auto;
-                border-radius:5px;
-                margin-top:20px;
-            }
+            // p:nth-child(3) {
+            //     width:160px;
+            //     height:40px;
+            //     color:#fff;
+            //     background-color: #E50012;
+            //     line-height: 40px;
+            //     text-align: center;
+            //     font-size:15px;
+            //     margin:0 auto;
+            //     border-radius:5px;
+            //     margin-top:20px;
+            // }
             .goPlay {
-                width:200px;
-                height:45px;
+                width:39%;
+                height:40px;
                 background-color: #E50012;
                 color:#fff;
                 text-align: center;
-                line-height: 45px;
+                line-height: 40px;
                 border-radius:25px;
                 margin:0 auto;
                 margin-top:30px;
@@ -218,6 +251,21 @@ export default {
                     height:20px;
                     vertical-align: middle;
                 }
+                float:right;
+                margin-right:25px;
+            }
+            .storList {
+                background-color: #FFAA00;
+                float:left;
+                width:39%;
+                height:40px;
+                color:#fff;
+                text-align: center;
+                line-height: 40px;
+                border-radius:25px;
+                margin:0 auto;
+                margin-top:30px;
+                margin-left: 25px;
             }
         }
         
@@ -305,9 +353,11 @@ export default {
     #introduce {
         width:100%;
         background-color: #fff;
-        margin-top:5px;
+        margin-top:10px;
         padding:0px 15px 15px 15px;
-            box-sizing: border-box;
+        box-sizing: border-box;
+        border-radius: 5px;
+
         p:first-child {
             height:40px;
             line-height: 40px;
@@ -317,17 +367,18 @@ export default {
         }
         p:nth-child(2) {
             padding-top:10px;
-            span {
-                display: block;
-                font-size:13px;
-                color:#333;
-                margin-left:10px;
-            }
-            a{
-                color:#666;
-                font-size:14px;
+            font-size: 14px;
+            // span {
+            //     display: block;
+            //     font-size:13px;
+            //     color:#333;
+            //     margin-left:10px;
+            // }
+            // a{
+            //     color:#666;
+            //     font-size:14px;
 
-            }
+            // }
         }
     }
     #order {

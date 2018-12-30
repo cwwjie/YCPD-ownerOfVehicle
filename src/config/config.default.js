@@ -13,6 +13,6 @@ module.exports = {
      * 养车频道 url 链接 附带 code
      */
     YcpdUrlWidthWxCode: function YcpdUrlWidthWxCode() {
-        return this.initUrlWidthWxCodeBy(this.location.ycpd, this.wxappid.ycpd);
+        return this.initUrlWidthWxCodeBy(window.location.href, this.wxappid.ycpd);
     },
 };

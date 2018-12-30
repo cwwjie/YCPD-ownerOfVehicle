@@ -79,6 +79,13 @@ let RequestedURL = {
 
     // 获取商家列表服务项目id
     getStoreProductId:'http://ycpdapi.hotgz.com',
+
+    // 获取券列表
+    getVoucherCarOwnerList:'http://ycpdapi.hotgz.com/Voucher/GetVoucherCarOwnerList',
+
+
+    cancelApointment1:'http://ycpdapi.hotgz.com/Apointment/UpdateABYApointment'
+
 }
 
 /**
@@ -101,6 +108,8 @@ if (window.location.host === 'store.demo.icheboayang.com' || process.env.NODE_EN
     RequestedURL.reservationList = 'http://api.demo.hotgz.com'; // 预约列表
     RequestedURL.upDataReservation = 'http://api.demo.hotgz.com'; // 修改预约记录
     RequestedURL.getStoreProductId = 'http://api.demo.hotgz.com'; // 获取商家列表服务项目id
+    RequestedURL.getVoucherCarOwnerList = 'http://api.demo.hotgz.com/Voucher/GetVoucherCarOwnerList'; // 获取券列表
+    RequestedURL.cancelApointment1 = 'http://api.demo.hotgz.com/Apointment/UpdateABYApointment'; // 评论
 }
 
 export default RequestedURL

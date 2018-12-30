@@ -179,7 +179,15 @@ export default {
             // 判断是否 存在 用户信息
             if (this.loginIofor) {
                 // 存在 用户信息 表示已注册 跳转到 卡券列表页面
-                window.location.href = `http://${window.location.host}/wx/Coupons.aspx`;
+                // window.location.href = `http://${window.location.host}/wx/Coupons.aspx`;
+
+                this.$router.push({
+                    path: '/card/cardList', 
+                    query: { 
+                        openId: window.localStorage.openid, 
+                        CustomerID: this.loginIofor.CustomerID
+                    },
+                });
 
             } else {
                 // 不存在 用户信息 注册页面

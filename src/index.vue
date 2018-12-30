@@ -140,6 +140,12 @@ export default {
                 }
             }
 
+            if (window.localStorage.openid && window.localStorage.openid.length > 15) {
+                this.saveOpenid(window.localStorage.openid);
+                this.initUserInfor(window.localStorage.openid);
+                return false;
+            }
+
             /**
              * 先判断 是否存在 code
              */

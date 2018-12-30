@@ -9,23 +9,29 @@
     </div>
     <!-- 数据列表 -->
     <div id="list">
-        <ul>
-            <li v-for="(item,index) in listData" :key="index" :class="[item.type=='已过期'?'bgcGray':'']">
-                <p  @click="goCardInfoPage(item.type)">
-                    <img src="../../assets/img/5.jpg" alt="">
-                    <span>{{item.name}}</span>
-                    <span>{{item.time}}</span>
+        <ul   v-infinite-scroll="loadMore"
+              infinite-scroll-disabled="loading"
+              infinite-scroll-distance="10">
+            <li v-for="(item,index) in listData" :key="index" :class="[item.VouMsg=='已过期'?'bgcGray':'']">
+                <p  @click="goCardInfoPage(item.VouMsg)">
+                    <img :src=item.CouponImgUrl alt="">
+                    <span :class="[item.VouMsg=='已过期'?'fontColor':'']">{{item.VoucherName}}</span>
+                    <span :class="[item.VouMsg=='已过期'?'fontColor1':'']">{{item.BeginTime.slice(0,10)+'-'+item.EndTime.slice(0,10)}}</span>
                 </p>
-                <p @click="showCode(item.type)">核销码 : <span v-if="item.type=='预约'||item.type=='免预约'||item.type=='评价'||item.type=='已评价'">(点击查看二维码)</span> <span>{{item.code}}</span></p>
-                <p  @click="goCardInfoPage(item.type)" :class="[item.type=='去使用'||item.type=='预约'?'red':item.type=='免预约'||item.type=='评价'?'blue':'gray']">{{item.type}}</p>
+                <p @click="showCode(item.VoucherCode,item.VouMsg)" :class="[item.VouMsg=='已过期'?'fontColor1':'']">核销码 : <span >(点击查看二维码)</span> <span>{{item.VoucherCode}}</span></p>
+                <p  @click="goCardInfoPage(item.VouMsg,item.VoucherCarOwnerID)" :class="[item.VouMsg=='可使用'||item.VouMsg=='预约'?'red':'gray']">{{item.VouMsg=='可使用'?'立即使用':item.VouMsg=='已过期'?'已过期':item.VouMsg=='已失效'?'已失效':item.VouMsg=='已使用'?'已使用':''}}</p>
             </li>
+            <div style="text-align: center;margin-top: 5px;padding-bottom:10px" v-if="noMore">没有更多数据啦</div>
         </ul>
+        <div v-if="noData" style="text-align: center;margin-top: 40px;color:#999;">
+            暂无优惠券
+        </div>
     </div>
     <!-- 显示二维码模块 -->
     <div v-show="showCodeBox" id="codeBox">
         <div class="content">
             <p>深圳市通用精洗套餐深</p>
-            <img src="../../assets/img/5.jpg" alt="">
+            <img :src="codeSrc" alt="">
             <p>6661 2616 3322 1122</p>
         </div>
         <img @click="showCodeBox=false" class="close" src="../../assets/img/icon_close@2x.png" alt="">
@@ -34,71 +40,172 @@
 </template>
 
 <script>
-
+import Vue from 'vue'
+import RequestedURL from '@/config/RequestedURL.js';
+import { Indicator,Toast } from 'mint-ui';
+import { InfiniteScroll } from 'mint-ui';
+Vue.use(InfiniteScroll);
 export default {
+    components:{
+        Indicator,
+        Toast
+    },
     data() {
         return {
             tabList:[
-                {name:'全部',active:true},
-                {name:'可使用',active:false},
-                {name:'待评价',active:false},
+                {name:'可使用',active:true},
+                {name:'未生效',active:false},
+                {name:'已使用',active:false},
                 {name:'已过期',active:false},
             ],
             listData:[
-                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'去使用'},
-                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已评价'},
-                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'预约'},
-                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'免预约'},
-                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
-                {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
-                {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已过期'},
+                // {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'去使用'},
+                // {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已评价'},
+                // {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'预约'},
+                // {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'免预约'},
+                // {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
+                // {name:'深圳市通用精洗套餐深 圳市通用精洗深圳市通用精洗套餐深',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'评价'},
+                // {name:'接听车5元停车券哈哈哈',time:'2018.1.45-2018.4.6',code:'6661 2616 3322 1122',type:'已过期'},
             ],
-            showCodeBox:false, 
+            showCodeBox:false,    // 控制点击二维码显示
+
+            codeSrc:"",          // 点击查看二维码链接
+
+            VoucherType:'1',    // 获取券列表 1:可使用 2:未生效 3:已过期 4:已使用
+
+            loading:true,   // 是否启用加载更多  true:禁止 false:开启
+
+            PageIndex:1,    // 页码数
+
+            noData:false,  // 没有数据
+
+            noMore:false,  // 没有更多数据
+
+            openId:this.$route.query.openId,  // 获取传递过来的用户openId
+
+            CustomerID:this.$route.query.CustomerID, // 获取用户传递过来的车主id
         }
     },
+
+    created(){
+        this.getVoucherCarOwnerList()
+    },
     methods:{
-        showCode(val){
-            if(val=='去使用'||val=='已过期'){
-                return
+        // 点击显示券的二维码
+        showCode(val,msg){ 
+            if(msg=='已过期'||msg=='未生效') {
+                return false
             }else {
+                this.codeSrc = `http://ycpd.demo.hotgz.com/WebPages/DataManagePages/StoreHandler/qrcode.aspx?url=${val}`
                 this.showCodeBox = true
             }
         },
-        //头部切换栏
+
+        // 头部切换栏
         tab(index){
+            this.PageIndex = 1
+            this.noData = false
             let data = this.tabList
             for(let i=0;i<data.length;i++){
                 if(i==index){
                     data[i].active = true
+                    if(index===0){
+                        this.VoucherType = 1
+                    }
+                    if(index===1){
+                        this.VoucherType = 2
+                    }
+                    if(index===2){
+                        this.VoucherType = 4
+                    }
+                    if(index===3){
+                        this.VoucherType = 3
+                    }
+                    this.getVoucherCarOwnerList()
                 }else {
                     data[i].active = false
                 }
             }
         },
-        //前往详情页
-        goCardInfoPage(type){
-            if(type=='已评价'){
+
+        // 前往详情页
+        goCardInfoPage(type,VoucherCarOwnerID){
+            if(type=='已使用'){
                 this.$router.push({
-                    path:'/card/cardUsed',query:{type:1}
+                    path:'/card/cardUsed',query:{id:VoucherCarOwnerID,CustomerID:this.CustomerID}
                 })
             }
-            if(type=='评价'){
-                this.$router.push({
-                    path:'/card/cardUsed'
-                })
+            if(type=='已过期'||type=='未生效'){
+                
             }
-            if(type=='去使用') {
+            if(type=='可使用') {
                 this.$router.push({
-                    path:'/card/cardInfo',query:{type:1}
+                    path:'/card/cardInfo',query:{id:VoucherCarOwnerID,CustomerID:this.CustomerID}
                 })
-            }
-            
-            if(type=='预约'||type=='免预约') {
-                this.$router.push({
-                    path:'/card/cardInfo'
-                })
-            }
-            
+            } 
+        },
+
+        // 获取券列表
+        getVoucherCarOwnerList:function(flag){
+            Indicator.open('加载中...')
+            const that = this
+            $.ajax({
+                url:RequestedURL.getVoucherCarOwnerList,
+                type:'post',
+                data:{
+                    CustomerID: '181127010002152874', //that.CustomerID,
+                    VoucherType:that.VoucherType,
+                    PageIndex:that.PageIndex,
+                    PageSize:6
+                },
+                    // that.listData = res.Data.List
+                    // }else {
+                    //     alert(res.Msg)
+                success:function(res){
+                    Indicator.close()   // 关闭加载提示框
+                    console.log(res)
+                    if(res.Code===200){
+                        console.log(flag)
+                        if(res.Data.TotalRecord===0){
+                            that.noData = true
+                        }else {
+                             that.noData = false
+                        }
+                        if (flag==true) {
+                            if (that.listData.length == res.Data.TotalRecord) {
+                                that.loading = true;
+                                that.noMore = true;
+                            } else {
+                                that.noMore = false;
+                                that.loading = false;
+                                that.listData = that.listData.concat(res.Data.List);
+                            }
+                        } else {
+                            that.listData = res.Data.List;
+                            if (res.Data.TotalRecord <= 6) {
+                                that.loading = true;
+                                that.noMore = false;
+                            } else {
+                                that.loading = false;
+                            }
+                        }
+                    }else {
+                        alert(res.Msg)
+                    }
+                },
+                error:function(){
+                    Indicator.close()   // 关闭加载提示框
+                    alert('服务器异常')
+                }
+            })
+        },
+
+        // 加载更多
+        loadMore:function(){
+            this.loading = true
+            this.PageIndex ++
+            this.getVoucherCarOwnerList(true)
+            console.log(1111)
         }
     }
 }
@@ -107,9 +214,8 @@ export default {
 <style lang="less" scoped>
     #cardList {
         width:100%;
-        // height:100%;
+        height: 100vh;
         background-color: #f5f5f5;
-        padding-top: 60px;
     }
     #header {
         background-color: #fff;
@@ -119,6 +225,7 @@ export default {
         position:fixed;
         top:0px;
         z-index: 4;
+        border-bottom: 1px solid #E0E0E0; 
         ul {
             width:100%;
             height:100%;
@@ -148,18 +255,20 @@ export default {
         width:100%;
         padding:0px 15px;
         box-sizing: border-box;
+        padding-top: 46px;
+        background-color: #F5F5F5;
         ul {
             width:100%;
             li {
                 width:100%;
-                height:120px;
+                height:130px;
                 background:url('../../assets/img/box_bg01@2x.png');
-                background-size:100% 120px;
+                background-size:100% 130px;
                 background-repeat:no-repeat;
                 box-sizing:border-box;
                 padding:15px 15px 0px 15px;
                 position:relative;
-                margin-bottom:10px;
+                margin-top:10px;
                 p:nth-child(1) {
                     width:100%;
                     height:78px;
@@ -192,7 +301,8 @@ export default {
                     font-size:13px;
                     color:#999;
                     overflow: hidden;
-                    height:17px;
+                    height:32px;
+                    line-height: 36px;
                 }
                 p:nth-child(3) {
                     width:20%;
@@ -219,10 +329,18 @@ export default {
                 
             }
             .bgcGray {
-                 background:url('../../assets/img/box_bg02@2x.png');
-                  background-size:100% 120px;
+                background:url('../../assets/img/box_bg02@2x.png');
+                background-size:100% 130px;
                 background-repeat:no-repeat;
             }
+
+            .fontColor {
+                color:#999 !important;
+            }
+            .fontColor1 {
+                color:#bbb !important;
+            }
+
         }
     }
     #codeBox {
@@ -255,9 +373,8 @@ export default {
             img {
                 width:150px;
                 height:150px;
-                padding:5px;
                 border:1px solid #ddd;
-                 box-sizing: border-box;
+                box-sizing: border-box;
             }
             
         }
